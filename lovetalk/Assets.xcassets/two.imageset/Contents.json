@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "Teal_and_Pink_Duo_Close-up__1_-removebg-preview.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Teal_and_Pink_Duo_Close-up__1_-removebg-preview 1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "Teal_and_Pink_Duo_Close-up__1_-removebg-preview 2.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

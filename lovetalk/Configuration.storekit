@@ -1,0 +1,228 @@
+{
+  "identifier" : "8A3B5C7D-1E2F-4A6B-9C8D-0E1F2A3B4C5D",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6738958590",
+    "_developerTeamID" : "XNQFM58FKT",
+    "_failTransactionsEnabled" : false,
+    "_locale" : "ja",
+    "_storefront" : "JPN",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21611498",
+      "localizations" : [
+
+      ],
+      "name" : "めろとーく Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "500",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6738970988",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "1週間のプレミアムプラン",
+              "displayName" : "Premium 1週間",
+              "locale" : "ja"
+            }
+          ],
+          "productID" : "mero.weekly",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Premium Weekly",
+          "subscriptionGroupID" : "21611498",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "980",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6738971089",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "1ヶ月のプレミアムプラン",
+              "displayName" : "Premium 1ヶ月",
+              "locale" : "ja"
+            }
+          ],
+          "productID" : "mero.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Premium Monthly",
+          "subscriptionGroupID" : "21611498",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "5000",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6738971190",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "1年間のプレミアムプラン",
+              "displayName" : "Premium 1年間",
+              "locale" : "ja"
+            }
+          ],
+          "productID" : "mero.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Premium Yearly",
+          "subscriptionGroupID" : "21611498",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "980",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6738971291",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "1週間のPremium+プラン — 相談無制限",
+              "displayName" : "Premium+ 1週間",
+              "locale" : "ja"
+            }
+          ],
+          "productID" : "mero.plus.weekly",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Premium+ Weekly",
+          "subscriptionGroupID" : "21611498",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "1980",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6738971392",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "1ヶ月のPremium+プラン — 相談無制限",
+              "displayName" : "Premium+ 1ヶ月",
+              "locale" : "ja"
+            }
+          ],
+          "productID" : "mero.plus.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Premium+ Monthly",
+          "subscriptionGroupID" : "21611498",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "12800",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6738971493",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "1年間のPremium+プラン — 相談無制限",
+              "displayName" : "Premium+ 1年間",
+              "locale" : "ja"
+            }
+          ],
+          "productID" : "mero.plus.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Premium+ Yearly",
+          "subscriptionGroupID" : "21611498",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

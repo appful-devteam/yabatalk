@@ -1,0 +1,43 @@
+excluded:
+  - .build
+  - DerivedData
+  - LP
+
+disabled_rules:
+  - identifier_name
+  - line_length
+  - file_length
+  - type_body_length
+  - function_body_length
+  - cyclomatic_complexity
+  - type_name
+  - large_tuple
+  - force_cast
+  - force_try
+  - todo
+  - opening_brace
+  - trailing_comma
+  - statement_position
+  - colon
+  - comma
+  - control_statement
+  - vertical_whitespace
+  - trailing_whitespace
+  - trailing_newline
+  - operator_whitespace
+  - return_arrow_whitespace
+  - mark
+  - leading_whitespace
+  - block_based_kvo
+  - private_over_fileprivate
+  - reduce_boolean
+  - shorthand_operator
+  - syntactic_sugar
+  - unused_optional_binding
+  - empty_enum_arguments
+  - multiple_closures_with_trailing_closure
+  - redundant_string_enum_value
+  - for_where
+  - notification_center_detachment
+  - function_parameter_count
+  - nesting

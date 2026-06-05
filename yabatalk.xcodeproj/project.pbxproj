@@ -1,0 +1,795 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1B8B02672F2B273D00A802C8 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 1B8B02662F2B273D00A802C8 /* GoogleMobileAds */; };
+		1B8BE9372F12B29700A802C8 /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1B8BE9362F12B29700A802C8 /* GoogleGenerativeAI */; };
+		DAAE60342F611ECB00E4D3AA /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DAAE60332F611ECB00E4D3AA /* FirebaseAnalytics */; };
+		DAAE60362F611ECB00E4D3AA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DAAE60352F611ECB00E4D3AA /* FirebaseAuth */; };
+		DAAE60382F611ECB00E4D3AA /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DAAE60372F611ECB00E4D3AA /* FirebaseFirestore */; };
+		DAAE603A2F611ECB00E4D3AA /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DAAE60392F611ECB00E4D3AA /* FirebaseStorage */; };
+		DAAE603C2F611ECB00E4D3AA /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = DAAE603B2F611ECB00E4D3AA /* FirebaseRemoteConfig */; };
+		DAAE603E2F611ECB00E4D3AA /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = DAAE603D2F611ECB00E4D3AA /* FirebaseFunctions */; };
+		DAAE60402F611ECB00E4D3AA /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = DAAE603F2F611ECB00E4D3AA /* FirebaseCrashlytics */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1BA860402F0E402400ED1807 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BA860262F0E402300ED1807 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1BA8602D2F0E402300ED1807;
+			remoteInfo = lovetalk;
+		};
+		1BA8604A2F0E402400ED1807 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BA860262F0E402300ED1807 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1BA8602D2F0E402300ED1807;
+			remoteInfo = lovetalk;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1B8BE75C2F12689D00A802C8 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1BA8602E2F0E402300ED1807 /* yabatalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = yabatalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BA8603F2F0E402400ED1807 /* yabatalkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = yabatalkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BA860492F0E402400ED1807 /* yabatalkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = yabatalkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1BA863112F0F463B00ED1807 /* Exceptions for "lovetalk" folder in "yabatalk" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1BA8602D2F0E402300ED1807 /* yabatalk */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1B8BE74E2F12689D00A802C8 /* LineExportShare */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LineExportShare;
+			sourceTree = "<group>";
+		};
+		1BA860302F0E402300ED1807 /* lovetalk */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1BA863112F0F463B00ED1807 /* Exceptions for "lovetalk" folder in "yabatalk" target */,
+			);
+			path = lovetalk;
+			sourceTree = "<group>";
+		};
+		1BA860422F0E402400ED1807 /* lovetalkTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = lovetalkTests;
+			sourceTree = "<group>";
+		};
+		1BA8604C2F0E402400ED1807 /* lovetalkUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = lovetalkUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1BA8602B2F0E402300ED1807 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B8B02672F2B273D00A802C8 /* GoogleMobileAds in Frameworks */,
+				1B8BE9372F12B29700A802C8 /* GoogleGenerativeAI in Frameworks */,
+				DAAE60342F611ECB00E4D3AA /* FirebaseAnalytics in Frameworks */,
+				DAAE60362F611ECB00E4D3AA /* FirebaseAuth in Frameworks */,
+				DAAE60382F611ECB00E4D3AA /* FirebaseFirestore in Frameworks */,
+				DAAE603A2F611ECB00E4D3AA /* FirebaseStorage in Frameworks */,
+				DAAE603C2F611ECB00E4D3AA /* FirebaseRemoteConfig in Frameworks */,
+				DAAE603E2F611ECB00E4D3AA /* FirebaseFunctions in Frameworks */,
+				DAAE60402F611ECB00E4D3AA /* FirebaseCrashlytics in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BA8603C2F0E402400ED1807 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BA860462F0E402400ED1807 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1BA860252F0E402300ED1807 = {
+			isa = PBXGroup;
+			children = (
+				1BA860302F0E402300ED1807 /* lovetalk */,
+				1BA860422F0E402400ED1807 /* lovetalkTests */,
+				1BA8604C2F0E402400ED1807 /* lovetalkUITests */,
+				1B8BE74E2F12689D00A802C8 /* LineExportShare */,
+				1BA8602F2F0E402300ED1807 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1BA8602F2F0E402300ED1807 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1BA8602E2F0E402300ED1807 /* yabatalk.app */,
+				1BA8603F2F0E402400ED1807 /* yabatalkTests.xctest */,
+				1BA860492F0E402400ED1807 /* yabatalkUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1BA8602D2F0E402300ED1807 /* yabatalk */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1BA860532F0E402400ED1807 /* Build configuration list for PBXNativeTarget "yabatalk" */;
+			buildPhases = (
+				8615408B777443AE97C0935D /* SwiftLint */,
+				1BA8602A2F0E402300ED1807 /* Sources */,
+				1BA8602B2F0E402300ED1807 /* Frameworks */,
+				1BA8602C2F0E402300ED1807 /* Resources */,
+				1B8BE75C2F12689D00A802C8 /* Embed Foundation Extensions */,
+				6E877D522FAE06D0004F5ED0 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1BA860302F0E402300ED1807 /* lovetalk */,
+			);
+			name = yabatalk;
+			packageProductDependencies = (
+				1B8BE9362F12B29700A802C8 /* GoogleGenerativeAI */,
+				1B8B02662F2B273D00A802C8 /* GoogleMobileAds */,
+				DAAE60332F611ECB00E4D3AA /* FirebaseAnalytics */,
+				DAAE60352F611ECB00E4D3AA /* FirebaseAuth */,
+				DAAE60372F611ECB00E4D3AA /* FirebaseFirestore */,
+				DAAE60392F611ECB00E4D3AA /* FirebaseStorage */,
+				DAAE603B2F611ECB00E4D3AA /* FirebaseRemoteConfig */,
+				DAAE603D2F611ECB00E4D3AA /* FirebaseFunctions */,
+				DAAE603F2F611ECB00E4D3AA /* FirebaseCrashlytics */,
+			);
+			productName = lovetalk;
+			productReference = 1BA8602E2F0E402300ED1807 /* yabatalk.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1BA8603E2F0E402400ED1807 /* yabatalkTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1BA860562F0E402400ED1807 /* Build configuration list for PBXNativeTarget "yabatalkTests" */;
+			buildPhases = (
+				1BA8603B2F0E402400ED1807 /* Sources */,
+				1BA8603C2F0E402400ED1807 /* Frameworks */,
+				1BA8603D2F0E402400ED1807 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1BA860412F0E402400ED1807 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1BA860422F0E402400ED1807 /* lovetalkTests */,
+			);
+			name = yabatalkTests;
+			packageProductDependencies = (
+			);
+			productName = lovetalkTests;
+			productReference = 1BA8603F2F0E402400ED1807 /* yabatalkTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		1BA860482F0E402400ED1807 /* yabatalkUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1BA860592F0E402400ED1807 /* Build configuration list for PBXNativeTarget "yabatalkUITests" */;
+			buildPhases = (
+				1BA860452F0E402400ED1807 /* Sources */,
+				1BA860462F0E402400ED1807 /* Frameworks */,
+				1BA860472F0E402400ED1807 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1BA8604B2F0E402400ED1807 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1BA8604C2F0E402400ED1807 /* lovetalkUITests */,
+			);
+			name = yabatalkUITests;
+			packageProductDependencies = (
+			);
+			productName = lovetalkUITests;
+			productReference = 1BA860492F0E402400ED1807 /* yabatalkUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1BA860262F0E402300ED1807 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					1BA8602D2F0E402300ED1807 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					1BA8603E2F0E402400ED1807 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 1BA8602D2F0E402300ED1807;
+					};
+					1BA860482F0E402400ED1807 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 1BA8602D2F0E402300ED1807;
+					};
+				};
+			};
+			buildConfigurationList = 1BA860292F0E402300ED1807 /* Build configuration list for PBXProject "yabatalk" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1BA860252F0E402300ED1807;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1B8BE9352F12B29700A802C8 /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
+				1B8B02652F2B273D00A802C8 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				DAAE60322F611ECB00E4D3AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1BA8602F2F0E402300ED1807 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1BA8602D2F0E402300ED1807 /* yabatalk */,
+				1BA8603E2F0E402400ED1807 /* yabatalkTests */,
+				1BA860482F0E402400ED1807 /* yabatalkUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1BA8602C2F0E402300ED1807 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BA8603D2F0E402400ED1807 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BA860472F0E402400ED1807 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6E877D522FAE06D0004F5ED0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)どう",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8615408B777443AE97C0935D /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed. Run: brew install swiftlint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1BA8602A2F0E402300ED1807 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BA8603B2F0E402400ED1807 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BA860452F0E402400ED1807 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1BA860412F0E402400ED1807 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1BA8602D2F0E402300ED1807 /* yabatalk */;
+			targetProxy = 1BA860402F0E402400ED1807 /* PBXContainerItemProxy */;
+		};
+		1BA8604B2F0E402400ED1807 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1BA8602D2F0E402300ED1807 /* yabatalk */;
+			targetProxy = 1BA8604A2F0E402400ED1807 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1BA860512F0E402400ED1807 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1BA860522F0E402400ED1807 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		1BA860542F0E402400ED1807 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = lovetalk/lovetalk.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"lovetalk/Preview Content\"";
+				DEVELOPMENT_TEAM = M3S945Y467;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = lovetalk/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "やばとーく";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = appful.yabatalk;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		1BA860552F0E402400ED1807 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = lovetalk/lovetalk.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"lovetalk/Preview Content\"";
+				DEVELOPMENT_TEAM = M3S945Y467;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = lovetalk/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "やばとーく";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = appful.yabatalk;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+		1BA860572F0E402400ED1807 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M3S945Y467;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = appful.yabatalk.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/lovetalk.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/lovetalk";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		1BA860582F0E402400ED1807 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M3S945Y467;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = appful.yabatalk.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/lovetalk.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/lovetalk";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+		1BA8605A2F0E402400ED1807 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M3S945Y467;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = appful.yabatalk.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_TARGET_NAME = lovetalk;
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		1BA8605B2F0E402400ED1807 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M3S945Y467;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = appful.yabatalk.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_TARGET_NAME = lovetalk;
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1BA860292F0E402300ED1807 /* Build configuration list for PBXProject "yabatalk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BA860512F0E402400ED1807 /* Debug */,
+				1BA860522F0E402400ED1807 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1BA860532F0E402400ED1807 /* Build configuration list for PBXNativeTarget "yabatalk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BA860542F0E402400ED1807 /* Debug */,
+				1BA860552F0E402400ED1807 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1BA860562F0E402400ED1807 /* Build configuration list for PBXNativeTarget "yabatalkTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BA860572F0E402400ED1807 /* Debug */,
+				1BA860582F0E402400ED1807 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1BA860592F0E402400ED1807 /* Build configuration list for PBXNativeTarget "yabatalkUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BA8605A2F0E402400ED1807 /* Debug */,
+				1BA8605B2F0E402400ED1807 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1B8B02652F2B273D00A802C8 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.14.0;
+			};
+		};
+		1B8BE9352F12B29700A802C8 /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/generative-ai-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.6;
+			};
+		};
+		DAAE60322F611ECB00E4D3AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1B8B02662F2B273D00A802C8 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B8B02652F2B273D00A802C8 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+		1B8BE9362F12B29700A802C8 /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B8BE9352F12B29700A802C8 /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
+		};
+		DAAE60332F611ECB00E4D3AA /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DAAE60322F611ECB00E4D3AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		DAAE60352F611ECB00E4D3AA /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DAAE60322F611ECB00E4D3AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		DAAE60372F611ECB00E4D3AA /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DAAE60322F611ECB00E4D3AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		DAAE60392F611ECB00E4D3AA /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DAAE60322F611ECB00E4D3AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		DAAE603B2F611ECB00E4D3AA /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DAAE60322F611ECB00E4D3AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		DAAE603D2F611ECB00E4D3AA /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DAAE60322F611ECB00E4D3AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+		DAAE603F2F611ECB00E4D3AA /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DAAE60322F611ECB00E4D3AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1BA860262F0E402300ED1807 /* Project object */;
+}

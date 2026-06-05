@@ -1,0 +1,59 @@
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# --- Xcode ---
+build/
+DerivedData/
+**/build/
+**/DerivedData/
+**/xcuserdata/
+**/*.xcuserstate
+**/*.xcscmblueprint
+**/*.xccheckout
+**/*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# --- Swift Package Manager ---
+.swiftpm/
+.build/
+Packages/
+Package.pins
+**/Package.resolved.bak
+
+# --- Secrets / Code Signing ---
+*.p12
+*.cer
+*.mobileprovision
+*.pem
+**/secrets.swift
+**/Secrets.swift
+**/.env
+**/.env.*
+!**/.env.example
+*.xcconfig.local
+
+# --- IDE ---
+.idea/
+.vscode/
+*.swp
+
+# --- Logs / Scratch ---
+*.log
+*.tmp
+*.bak
+*.profraw
+
+# --- Generated assets ---
+assets/generated/
+
+# --- Claude Code local ---
+.claude/settings.local.json
+.claude/cache/
+.claude/state/
+.claude/sessions/

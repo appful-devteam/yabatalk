@@ -1,0 +1,120 @@
+# yabatalk/.app-meta.yaml
+# このアプリの機械可読マニフェスト。skill/agent はここを最初に読む。
+# スキーマ仕様: docs/APP-LAYOUT-STANDARD.md / docs/schemas/app-meta.schema.json
+
+# yaml-language-server: $schema=../docs/schemas/app-meta.schema.json
+
+schemaVersion: 1
+
+name: yabatalk
+displayName: yabatalk
+kind: ios
+
+xcode:
+  # Xcode "Rename Project" wizard でプロジェクト + ターゲット + scheme は yabatalk 化済み。
+  # ソースフォルダ (lovetalk/) と pbxproj 内の `path = lovetalk;` 参照はそのまま（リネームしても pbxproj
+  # と整合する必要があるので低リスクな現状維持）。conventions.* は実フォルダ名に合わせて lovetalk/ で正本。
+  project: yabatalk.xcodeproj
+  workspace: null
+  schemes:
+    - yabatalk
+  configurations: [Debug, Release]
+  deploymentTarget: "26.0"
+  supportedDestinations: [iPhone]
+  defaultSimulator: "iPhone 17 Pro"
+
+swift:
+  version: "6.2"
+  concurrencyMode: approachable
+  packageManager: spm
+
+identity:
+  bundleIDs:
+    main: appful.yabatalk
+  marketingVersion: "1.0"
+  buildNumber: "1"
+  teamID: REPLACE_FROM_LOCAL_SETTINGS
+
+stack:
+  ui: swiftui
+  state: observable
+  navigation: navigationstack
+  persistence:
+    - swiftdata
+  networking: urlsession
+  dependency:
+    manager: spm
+    packages:
+      - ZIPFoundation
+
+extensions:
+  appClip: false
+  widget: false
+  watchApp: false
+  intents: false
+  shareExtension: true
+  notificationService: false
+
+services:
+  firebase: null
+  cloudflare: null
+  inAppPurchase:
+    enabled: false
+    products: []
+  analytics: []
+  crashReporting: null
+
+features:
+  signInWithApple: false
+  signInWithGoogle: false
+  signInWithEmail: false
+  healthKit: false
+  mapKit: false
+  push: false
+  ar: false
+  appClip: false
+  widget: false
+
+conventions:
+  views: lovetalk/Presentation/{feature}
+  viewModels: lovetalk/Presentation/{feature}
+  services: lovetalk/Data/Services
+  models: lovetalk/Domain/Models
+  designSystem: lovetalk/Core/Design
+  resources: lovetalk/Resources
+  tests: lovetalkTests
+  uiTests: lovetalkUITests
+
+testing:
+  framework: swift-testing
+  coverageThreshold: 80
+  uiTestRunner: xcuitest
+
+tooling:
+  swiftformat:
+    config: .swiftformat
+  swiftlint:
+    config: .swiftlint.yml
+  xcconfig:
+    debug: null
+    release: null
+
+ci:
+  provider: none
+  workflow: null
+  fastlane: false
+
+localization:
+  default: ja
+  supported: [ja]
+
+secrets:
+  keychainService: appful.yabatalk
+  envVars: []
+
+links:
+  repository: https://github.com/appful-devteam/yabatalk
+  designs: null
+  appStore: null
+  testflight: null
+  productionMonitoring: null
