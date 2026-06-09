@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDisplayName</key>
 	<string>ハラスメントーク</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>あなたの興味により関連性の高い広告を表示するために、デバイスの広告識別子（IDFA）の使用を許可するか確認します。許可は任意で、いつでも設定アプリから変更できます。</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>appful.yabatalk.personaMessage</string>

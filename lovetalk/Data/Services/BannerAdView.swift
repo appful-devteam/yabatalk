@@ -24,17 +24,20 @@ final class AdGate: ObservableObject {
 
     /// やばトーク専用キー（darkめろとーくの `ads_enabled` と独立）。
     private let key = "ads_enabled_yabatalk"
-    private let remoteConfig = RemoteConfig.remoteConfig()
     private let logger = Logger(subsystem: "appful.yabatalk", category: "AdGate")
 
-    private init() {
-        // アプリ内デフォルトは false（審査・初回起動で広告を出さない安全側）。
-        remoteConfig.setDefaults([key: false as NSObject])
-    }
+    // ⚠️ init / 格納プロパティで Firebase(RemoteConfig)を一切触らないこと。
+    //    AdGate.shared は FirebaseApp.configure() より前（lovetalkApp.init の広告ゲート判定など）に
+    //    生成され得るため、`RemoteConfig.remoteConfig()` をプロパティ初期化や init で呼ぶと
+    //    FIRAppNotConfigured でクラッシュする。RemoteConfig は refresh()（.task = configure 後）でのみ参照。
+    private init() {}
 
-    /// 起動後に呼ぶ。Remote Config を fetch & activate して adsEnabled を更新。
+    /// 起動後（FirebaseApp.configure 完了後）に呼ぶ。Remote Config を fetch & activate して adsEnabled を更新。
     @MainActor
     func refresh() async {
+        let remoteConfig = RemoteConfig.remoteConfig()
+        // アプリ内デフォルトは false（審査・初回起動で広告を出さない安全側）。
+        remoteConfig.setDefaults([key: false as NSObject])
         do {
             try await remoteConfig.fetchAndActivate()
             adsEnabled = remoteConfig[key].boolValue
