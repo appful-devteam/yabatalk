@@ -9,7 +9,7 @@ struct ShimmerModifier: ViewModifier {
         animation: Animation = .linear(duration: 1.5).repeatForever(autoreverses: false),
         gradient: Gradient = Gradient(colors: [
             .clear,
-            Color.white.opacity(0.5),
+            Color.white.opacity(0.25),
             .clear
         ])
     ) {
@@ -42,7 +42,7 @@ struct ShimmerModifier: ViewModifier {
 extension View {
     func shimmer(
         animation: Animation = .linear(duration: 1.5).repeatForever(autoreverses: false),
-        gradient: Gradient = Gradient(colors: [.clear, Color.white.opacity(0.5), .clear])
+        gradient: Gradient = Gradient(colors: [.clear, Color.white.opacity(0.25), .clear])
     ) -> some View {
         modifier(ShimmerModifier(animation: animation, gradient: gradient))
     }
@@ -60,7 +60,7 @@ struct SkeletonView: View {
 
     var body: some View {
         RoundedRectangle(cornerRadius: height / 2)
-            .fill(Color.gray.opacity(0.2))
+            .fill(MeloColors.Dark.bgElevated)
             .frame(width: width, height: height)
             .shimmer()
     }
@@ -106,7 +106,7 @@ struct GlowModifier: ViewModifier {
 }
 
 extension View {
-    func glow(color: Color = MeloColors.Brand.pinkDeep, radius: CGFloat = 10) -> some View {
+    func glow(color: Color = MeloColors.Dark.accent, radius: CGFloat = 10) -> some View {
         modifier(GlowModifier(color: color, radius: radius))
     }
 }
@@ -116,7 +116,7 @@ extension View {
     VStack(spacing: 30) {
         Text("Shimmer Effect")
             .font(MeloTypography.title)
-            .foregroundStyle(MeloColors.Gradient.pinkPrimary)
+            .foregroundStyle(MeloColors.Dark.accentGradient)
             .shimmer()
 
         VStack(alignment: .leading, spacing: 8) {
@@ -128,12 +128,12 @@ extension View {
 
         Image(systemName: "heart.fill")
             .font(.system(size: 60))
-            .foregroundStyle(MeloColors.Gradient.pinkPrimary)
+            .foregroundStyle(MeloColors.Dark.accentGradient)
             .pulse()
 
         Text("Glowing")
             .font(MeloTypography.headline)
-            .foregroundColor(MeloColors.Brand.pinkDeep)
+            .foregroundColor(MeloColors.Dark.accent)
             .glow()
     }
     .padding()

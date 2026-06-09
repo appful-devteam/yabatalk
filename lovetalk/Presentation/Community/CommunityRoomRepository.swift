@@ -258,55 +258,10 @@ final class InMemoryCommunityRoomRepository: CommunityRoomRepository {
 
     // MARK: - Seed Data
     //
-    // Firestore にデータがまったく無い場合のフォールバック表示用。
-    // サーバには書き込まない (= 他ユーザにも同じシードが見えるが、
-    // 投稿や参加状態の同期は出来ない)。
-
-    static let defaultRooms: [CommunityRoom] = [
-        CommunityRoom(
-            id: "room_heartbreak",
-            title: "失恋した人、集まれ",
-            subtitle: "失恋した時のエピソード聞かせてください\n一緒に話して忘れましょーーーーー",
-            participantCount: 20,
-            imageURL: nil,
-            isJoined: false,
-            iconColor: MeloColors.Brand.pink
-        ),
-        CommunityRoom(
-            id: "room_crush",
-            title: "片思いで悩んでいる人",
-            subtitle: "好きな人ができた、片思いで辛い…\n気持ちをそっと打ち明けよう",
-            participantCount: 34,
-            imageURL: nil,
-            isJoined: false,
-            iconColor: MeloColors.Surface.pinkPale
-        ),
-        CommunityRoom(
-            id: "room_new_couple",
-            title: "付き合いたての人",
-            subtitle: "付き合って間もないカップル集合\n不安も幸せもシェアしよう",
-            participantCount: 42,
-            imageURL: nil,
-            isJoined: false,
-            iconColor: MeloColors.Brand.pink
-        ),
-        CommunityRoom(
-            id: "room_working_adult",
-            title: "社会人恋愛",
-            subtitle: "仕事と恋愛の両立が難しい…\n社会人ならではの悩みを語ろう",
-            participantCount: 28,
-            imageURL: nil,
-            isJoined: false,
-            iconColor: MeloColors.Gray.subButton
-        ),
-        CommunityRoom(
-            id: "room_long_distance",
-            title: "遠距離恋愛",
-            subtitle: "会えない時間の過ごし方や\n寂しさの紛らわせ方を話そう",
-            participantCount: 17,
-            imageURL: nil,
-            isJoined: false,
-            iconColor: MeloColors.Brand.pink
-        )
-    ]
+    // ハードコードのシード部屋は廃止 (ヤミトーク=darkmerotalk と同じく空)。
+    // ユーザー作成の相談部屋は project `darkmerotalk` の `community_rooms`
+    // コレクションを yabatalk / ヤミトークで共有しているため、Firestore から
+    // 取得した実部屋のみを表示する。定型のテーマ別相談部屋 (CommunityThemeRoom)
+    // は `PostTheme` 由来の仮想部屋として ViewModel 側で一覧に追加される。
+    static let defaultRooms: [CommunityRoom] = []
 }

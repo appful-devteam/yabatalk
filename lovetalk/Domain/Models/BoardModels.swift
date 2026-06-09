@@ -150,6 +150,24 @@ struct DiagnosisCard: Codable, Hashable {
     var selfLoveTotal: Int?
     var partnerLoveTotal: Int?
 
+    // MARK: - yabatalk 毒性鑑定カード用（全て Optional・後方互換）
+    var toxicityScore: Int?            // overallRiskScore 0-100
+    var toxicityLevel: String?         // RiskLevel.rawValue (low/caution/medium/high/severe)
+    var toxicityDangerLabel: String?   // dangerLabel
+    var toxicityCatchCopy: String?     // catchCopy
+    var toxicityCategoryCode: String?  // primaryCategory.labCode (PWR/SEX/MRL/ETC)
+    var toxicitySpecimenNo: String?    // 検体番号 "YT-MMdd"
+    var toxicityTitle: String?         // sessionTitle（相手名）
+
+    /// 毒性データが揃っているか（描画分岐のフォールバック判定に使用）。
+    var hasToxicityData: Bool { toxicityScore != nil }
+
+    /// toxicityLevel を RiskLevel に復元（不正値は .medium）。
+    var toxicityRiskLevel: RiskLevel {
+        guard let raw = toxicityLevel, let level = RiskLevel(rawValue: raw) else { return .medium }
+        return level
+    }
+
     // MARK: - タイプカード再ローカライズ（typeCodeから現在のロケールで再取得）
 
     /// 現在のロケールでのタイプ名
@@ -192,12 +210,14 @@ struct DiagnosisCard: Codable, Hashable {
         case score = "score"
         case type = "type"
         case loveWords = "loveWords"
+        case toxicity = "toxicity"   // yabatalk: 毒性鑑定書カード
 
         var localizedName: String {
             switch self {
             case .score: return String(localized: "スコアカード", bundle: LanguageManager.appBundle)
             case .type: return String(localized: "相性タイプ", bundle: LanguageManager.appBundle)
             case .loveWords: return String(localized: "愛情表現", bundle: LanguageManager.appBundle)
+            case .toxicity: return String(localized: "毒性鑑定", bundle: LanguageManager.appBundle)
             }
         }
 
@@ -206,6 +226,7 @@ struct DiagnosisCard: Codable, Hashable {
             case .score: return "chart.bar.fill"
             case .type: return "heart.text.clipboard.fill"
             case .loveWords: return "heart.fill"
+            case .toxicity: return "testtube.2"
             }
         }
     }

@@ -3,7 +3,7 @@ import Foundation
 enum Constants {
     // MARK: - App Info
     enum App {
-        static let name = "やばトーク"
+        static let name = "ハラスメントーク"
         static let version: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         static let build: String = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
         static let bundleId = "appful.yabatalk"
@@ -155,6 +155,11 @@ enum Constants {
         /// ```
         /// minimum_version 未満で起動した場合、全画面ロック画面に遷移する。
         static let forceUpdateConfig = "force_update_config"
+        /// 全広告（バナー / App Open / Rewarded）の ON/OFF。
+        /// デフォルト false（公開前は広告なし）。ストア公開後に Console で true に切り替える。
+        /// ⚠️ darkめろとーくと同一 Firebase プロジェクトを共有するため、**やばトーク専用キー**。
+        /// （RemoteConfig はプロジェクト単位 → アプリ別キーで独立制御。darkめろとーく=ads_enabled）
+        static let adsEnabled = "ads_enabled_yabatalk"
     }
 
     // MARK: - Validation

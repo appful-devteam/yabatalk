@@ -113,23 +113,21 @@ private extension PostTheme {
     /// 部屋詳細・カードに表示するサブタイトル文 (テーマ別)。
     var subtitle: String {
         switch self {
-        case .oneSided:   return "片思いの悩み・キュンを共有しよう"
-        case .mutual:     return "両思いだからこその不安や幸せをシェア"
-        case .breakup:    return "失恋した時のエピソードを語り合おう"
-        case .reunite:    return "復縁したい / した人の体験談"
-        case .ex:         return "元カレ・元カノの話、聞かせて"
-        case .confession: return "告白する / された話を共有しよう"
-        case .dateLine:   return "デートや LINE のあれこれを話そう"
-        case .fight:      return "喧嘩・倦怠期を乗り越えるヒント"
+        case .power:    return "職場の上下関係・威圧的な言動の悩みを話そう"
+        case .sexual:   return "性的な言動・不快な接触の相談はこちら"
+        case .moral:    return "言葉や態度による精神的な攻撃について"
+        case .customer: return "客からの理不尽な要求・暴言の相談に"
+        case .other:    return "アカハラ・マタハラなど、その他の悩みを"
+        case .consult:  return "カテゴリ問わず、本音で相談しよう"
         }
     }
 
     /// 部屋アイコンの背景色 (テーマ別)。
     var iconColor: Color {
         switch self {
-        case .oneSided, .mutual, .confession: return MeloColors.Brand.pink
-        case .breakup, .ex, .fight:           return MeloColors.Brand.pinkLight
-        case .reunite, .dateLine:             return MeloColors.Surface.pinkPale
+        case .power, .customer:  return MeloColors.Brand.pink
+        case .sexual, .moral:    return MeloColors.Brand.pinkLight
+        case .other, .consult:   return MeloColors.Surface.pinkPale
         }
     }
 }

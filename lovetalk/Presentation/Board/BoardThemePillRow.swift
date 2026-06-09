@@ -24,15 +24,15 @@ struct BoardThemePillRow: View {
         Text("#\(label)")
             .font(MeloFonts.zenMaruMedium(11))
             .tracking(0.3)
-            .foregroundColor(MeloColors.Brand.pink)
+            .foregroundColor(MeloColors.Dark.accent)
             .padding(.horizontal, 10)
             .padding(.vertical, 4)
             .background(
                 Capsule()
-                    .fill(MeloColors.Surface.pinkPale)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         Capsule()
-                            .stroke(MeloColors.Brand.pink.opacity(0.5), lineWidth: 0.8)
+                            .stroke(MeloColors.Dark.accent.opacity(0.5), lineWidth: 0.8)
                     )
             )
     }
@@ -40,11 +40,11 @@ struct BoardThemePillRow: View {
 
 #Preview {
     VStack(alignment: .leading, spacing: 12) {
-        BoardThemePillRow(themes: ["片思い"])
-        BoardThemePillRow(themes: ["両思い", "デート・LINE"])
-        BoardThemePillRow(themes: ["失恋", "復縁", "元カレ・元カノ"])
+        BoardThemePillRow(themes: ["パワハラ"])
+        BoardThemePillRow(themes: ["セクハラ", "モラハラ"])
+        BoardThemePillRow(themes: ["カスハラ", "その他", "ぶっちゃけ相談"])
         BoardThemePillRow(themes: [])
     }
     .padding()
-    .background(Color.white)
+    .background(MeloColors.Dark.bg)
 }

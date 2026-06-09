@@ -18,12 +18,12 @@ struct ConsultationChatView: View {
     @FocusState private var isInputFocused: Bool
 
     // MARK: - Design Tokens
-    private let brandPink = MeloColors.Brand.pink
-    private let textDark = MeloColors.Text.primary
-    private let textMuted = MeloColors.Text.secondary
-    private let textGrey = MeloColors.Text.secondary
-    private let brown = MeloColors.Text.primary
-    private let divider = MeloColors.Gray.subButtonLight
+    private let brandPink = MeloColors.Dark.accent
+    private let textDark = MeloColors.Dark.textPrimary
+    private let textMuted = MeloColors.Dark.textSecondary
+    private let textGrey = MeloColors.Dark.textSecondary
+    private let brown = MeloColors.Dark.cardStroke
+    private let divider = MeloColors.Dark.divider
 
     init(
         session: ChatSession?,
@@ -100,7 +100,7 @@ struct ConsultationChatView: View {
 
     private var background: some View {
         ZStack {
-            MeloColors.Surface.pinkPale
+            MeloColors.Dark.bg
             Image("bg_diagnose_stardust")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
@@ -133,7 +133,7 @@ struct ConsultationChatView: View {
                 Text(String(localized: "めろまるに相談", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaru(20))
                     .tracking(0.6)
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .lineLimit(1)
                 if let remaining = viewModel.remainingRalliesText {
                     Text(String(format: String(localized: "今日の残り: %@", bundle: LanguageManager.appBundle), remaining))
@@ -183,13 +183,13 @@ struct ConsultationChatView: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(MeloColors.Gradient.pinkPrimary)
+                        .fill(MeloColors.Dark.accentGradient)
                     Image(systemName: "ellipsis")
                         .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                 }
                 .frame(width: 32, height: 32)
-                .shadow(color: MeloColors.Brand.pink.opacity(0.45), radius: 6, x: 0, y: 2)
+                .shadow(color: MeloColors.Dark.accent.opacity(0.15), radius: 6, x: 0, y: 2)
             }
             .accessibilityLabel(Text(String(localized: "メニュー", bundle: LanguageManager.appBundle)))
         }
@@ -231,7 +231,7 @@ struct ConsultationChatView: View {
                     .padding(.vertical, 10)
                     .background(
                         RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .fill(Color.white.opacity(0.95))
+                            .fill(MeloColors.Dark.card)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 18, style: .continuous)
                                     .stroke(brandPink.opacity(0.28), lineWidth: 1)
@@ -250,13 +250,13 @@ struct ConsultationChatView: View {
         Button(action: action) {
             ZStack {
                 Circle()
-                    .fill(MeloColors.Gradient.pinkPrimary)
+                    .fill(MeloColors.Dark.accentGradient)
                 Image(systemName: systemName)
                     .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
             }
             .frame(width: 32, height: 32)
-            .shadow(color: MeloColors.Brand.pink.opacity(0.45), radius: 6, x: 0, y: 2)
+            .shadow(color: MeloColors.Dark.accent.opacity(0.15), radius: 6, x: 0, y: 2)
         }
         .buttonStyle(.plain)
     }
@@ -337,13 +337,13 @@ struct ConsultationChatView: View {
                 Spacer(minLength: 0)
                 Text(entry.text)
                     .font(MeloFonts.zenMaruMedium(14))
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
                     .lineSpacing(4)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 10)
                     .background(
                         RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .fill(MeloColors.Gradient.pinkPrimary)
+                            .fill(MeloColors.Dark.accentGradient)
                     )
                     // 内容に応じて自然なサイズで折り返し、最大は画面の 75%
                     .frame(maxWidth: UIScreen.main.bounds.width * 0.72, alignment: .trailing)
@@ -353,7 +353,7 @@ struct ConsultationChatView: View {
             HStack(alignment: .top, spacing: 8) {
                 avatarImage
                     .frame(width: 36, height: 36)
-                    .background(Circle().fill(Color.white))
+                    .background(Circle().fill(MeloColors.Dark.card))
                     .overlay(Circle().stroke(brandPink.opacity(0.6), lineWidth: 1))
 
                 Text(entry.text)
@@ -364,7 +364,7 @@ struct ConsultationChatView: View {
                     .padding(.vertical, 10)
                     .background(
                         RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .fill(Color.white)
+                            .fill(MeloColors.Dark.card)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 18, style: .continuous)
                                     .stroke(brandPink.opacity(0.5), lineWidth: 1)
@@ -392,7 +392,7 @@ struct ConsultationChatView: View {
         HStack(alignment: .top, spacing: 8) {
             avatarImage
                 .frame(width: 36, height: 36)
-                .background(Circle().fill(Color.white))
+                .background(Circle().fill(MeloColors.Dark.card))
                 .overlay(Circle().stroke(brandPink.opacity(0.6), lineWidth: 1))
 
             HStack(spacing: 6) {
@@ -413,7 +413,7 @@ struct ConsultationChatView: View {
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: 18, style: .continuous)
                             .stroke(brown, lineWidth: 1)
@@ -452,7 +452,7 @@ struct ConsultationChatView: View {
                             .padding(.vertical, 10)
                             .background(
                                 Capsule()
-                                    .fill(MeloColors.Surface.pinkPale)
+                                    .fill(MeloColors.Dark.bgElevated)
                                     .overlay(
                                         Capsule()
                                             .stroke(brandPink.opacity(0.35), lineWidth: 1)
@@ -477,7 +477,7 @@ struct ConsultationChatView: View {
                                         .padding(.vertical, 8)
                                         .background(
                                             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                                .fill(Color.white)
+                                                .fill(MeloColors.Dark.card)
                                                 .overlay(
                                                     RoundedRectangle(cornerRadius: 18, style: .continuous)
                                                         .stroke(
@@ -502,7 +502,7 @@ struct ConsultationChatView: View {
                     .padding(.bottom, 24)
                 }
             }
-            .background(MeloColors.Surface.pinkPale.ignoresSafeArea())
+            .background(MeloColors.Dark.bg.ignoresSafeArea())
             .navigationTitle(String(localized: "相手の画像", bundle: LanguageManager.appBundle))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -538,7 +538,7 @@ struct ConsultationChatView: View {
                             .padding(.vertical, 8)
                             .background(
                                 Capsule()
-                                    .fill(Color.white)
+                                    .fill(MeloColors.Dark.card)
                                     .overlay(
                                         Capsule()
                                             .stroke(brandPink, lineWidth: 1)
@@ -569,7 +569,7 @@ struct ConsultationChatView: View {
             .padding(.vertical, 10)
             .background(
                 Capsule()
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         Capsule()
                             .stroke(brandPink, lineWidth: 1)
@@ -583,16 +583,16 @@ struct ConsultationChatView: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(MeloColors.Gradient.pinkPrimary)
+                        .fill(MeloColors.Dark.accentGradient)
                         .frame(width: 40, height: 40)
                         .opacity(viewModel.canSend ? 1.0 : 0.4)
                     Image(systemName: "paperplane.fill")
                         .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                         .rotationEffect(.degrees(45))
                         .offset(x: -1, y: 1)
                 }
-                .shadow(color: MeloColors.Brand.pink.opacity(viewModel.canSend ? 0.45 : 0), radius: 5, x: 0, y: 2)
+                .shadow(color: MeloColors.Dark.accent.opacity(viewModel.canSend ? 0.15 : 0), radius: 5, x: 0, y: 2)
             }
             .buttonStyle(.plain)
             .disabled(!viewModel.canSend)
@@ -604,7 +604,7 @@ struct ConsultationChatView: View {
         // 背景は edge-to-edge の白 + 上に1本の細い区切り線。
         // キーボード追従は body 側の offset に集約し、ここはバー単体の見た目だけを持つ。
         .background(
-            Color.white
+            MeloColors.Dark.bgElevated
                 .overlay(Rectangle().fill(divider).frame(height: 0.5), alignment: .top)
         )
     }
@@ -625,7 +625,7 @@ struct ConsultationChatView: View {
                             .foregroundColor(textGrey)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(MeloColors.Surface.pinkPale.ignoresSafeArea())
+                    .background(MeloColors.Dark.bg.ignoresSafeArea())
                 } else {
                     List {
                         ForEach(viewModel.sessions) { session in
@@ -652,7 +652,7 @@ struct ConsultationChatView: View {
                     }
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
-                    .background(MeloColors.Surface.pinkPale.ignoresSafeArea())
+                    .background(MeloColors.Dark.bg.ignoresSafeArea())
                 }
             }
             .navigationTitle(String(localized: "相談履歴", bundle: LanguageManager.appBundle))
@@ -664,7 +664,7 @@ struct ConsultationChatView: View {
                     } label: {
                         Text(String(localized: "閉じる", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruMedium(14))
-                            .foregroundColor(MeloColors.Brand.pink)
+                            .foregroundColor(MeloColors.Dark.accent)
                     }
                 }
             }
@@ -694,7 +694,7 @@ struct ConsultationChatView: View {
         .padding(14)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 12)
@@ -740,7 +740,7 @@ struct ConsultationChatView: View {
                 }
                 .padding(20)
             }
-            .background(MeloColors.Surface.pinkPale.ignoresSafeArea())
+            .background(MeloColors.Dark.bg.ignoresSafeArea())
             .navigationTitle(String(localized: "相談の設定", bundle: LanguageManager.appBundle))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -750,7 +750,7 @@ struct ConsultationChatView: View {
                     } label: {
                         Text(String(localized: "完了", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruMedium(14))
-                            .foregroundColor(MeloColors.Brand.pink)
+                            .foregroundColor(MeloColors.Dark.accent)
                     }
                 }
             }
@@ -776,7 +776,7 @@ struct ConsultationChatView: View {
             .padding(14)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(isSelected ? brandPink : brandPink.opacity(0.25), lineWidth: isSelected ? 1.5 : 1)
@@ -805,7 +805,7 @@ struct ConsultationChatView: View {
             .padding(14)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(isSelected ? brandPink : brandPink.opacity(0.25), lineWidth: isSelected ? 1.5 : 1)
@@ -888,7 +888,7 @@ struct ConsultationChatView: View {
             .padding(20)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .stroke(brandPink.opacity(0.4), lineWidth: 1)
@@ -926,7 +926,7 @@ struct ConsultationChatView: View {
         let customImageData = ConsultationPartnerAvatarStore.customImageData(for: viewModel.consultationPartnerSessionId)
         return ZStack {
             Circle()
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
 
             if let data = customImageData, let uiImage = UIImage(data: data) {
                 Image(uiImage: uiImage)

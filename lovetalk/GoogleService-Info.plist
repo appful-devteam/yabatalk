@@ -2,18 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>58853794280-r2esdl2o93s3p6u81dne4mvpvf4307er.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.58853794280-r2esdl2o93s3p6u81dne4mvpvf4307er</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDEQAP-6X89veNmRF2IsH1nLNHbdWkbS4s</string>
+	<string>AIzaSyBVR15aET7GX_ar6ZAE-xTKTm3tcyczVqg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>545663183986</string>
+	<string>58853794280</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>appful.yabatalk</string>
 	<key>PROJECT_ID</key>
-	<string>merotalk-f8479</string>
+	<string>darkmerotalk</string>
 	<key>STORAGE_BUCKET</key>
-	<string>merotalk-f8479.firebasestorage.app</string>
+	<string>darkmerotalk.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,8 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:545663183986:ios:a1a237d2115391b3fa26eb</string>
-	<key>DATABASE_URL</key>
-	<string>https://merotalk-f8479-default-rtdb.firebaseio.com</string>
+	<string>1:58853794280:ios:5e98a120e43a546f09c45d</string>
 </dict>
 </plist>

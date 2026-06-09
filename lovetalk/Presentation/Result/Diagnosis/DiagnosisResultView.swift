@@ -23,115 +23,118 @@ enum DiagnosisTab: String, CaseIterable, Identifiable {
 // MARK: - Color tokens (yabatalk 用)
 
 private enum DiagTabColors {
-    static let headerBg = MeloColors.Surface.pinkPale
-    static let nameText = MeloColors.Text.primary
-    static let selectedBg = MeloColors.Brand.pink
-    static let unselectedBg = Color.white
-    static let tabBorder = MeloColors.Surface.pinkPale
-    static let tabText = MeloColors.Text.primary
-    static let accentPink = MeloColors.Brand.pink
+    static let headerBg = MeloColors.Dark.bgElevated
+    static let nameText = MeloColors.Dark.textPrimary
+    static let selectedBg = MeloColors.Dark.accent
+    static let unselectedBg = MeloColors.Dark.bgElevated
+    static let tabBorder = MeloColors.Dark.cardStroke
+    static let tabText = MeloColors.Dark.textSecondary
+    static let accentPink = MeloColors.Dark.accent
 }
 
 // MARK: - Header
 
 struct DiagnosisResultHeader: View {
     let displayName: String
+    let dateText: String
+    let specimenNo: String
     @Binding var selectedTab: DiagnosisTab
     let onBack: () -> Void
-    var subtitle: String? = nil
 
     var body: some View {
-        VStack(spacing: 10) {
-            ZStack {
-                VStack(spacing: 1) {
-                    Text(displayName)
-                        .font(MeloFonts.zenMaruOrFallback(20))
-                        .foregroundColor(MeloColors.Text.primary)
-                        .tracking(0.6)
-                        .lineLimit(1)
-                        .truncationMode(.tail)
-                    if let subtitle {
-                        Text(subtitle)
-                            .font(MeloFonts.zenMaruRegular(11))
-                            .foregroundColor(MeloColors.Text.secondary)
-                            .lineLimit(1)
-                    }
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Button {
+                    HapticManager.light()
+                    onBack()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(MeloColors.Dark.textPrimary)
+                        .frame(width: 28, height: 28)
                 }
-                .padding(.horizontal, 54)
+                .buttonStyle(.plain)
 
-                HStack {
-                    Button {
-                        HapticManager.light()
-                        onBack()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(DiagTabColors.nameText)
-                            .frame(width: 32, height: 32)
-                    }
-                    .buttonStyle(.plain)
+                Text("検体 No. \(specimenNo)")
+                    .font(MeloFonts.mono(11))
+                    .foregroundColor(MeloColors.Dark.textSecondary)
 
-                    Spacer()
-                }
-                .padding(.horizontal, 8)
+                Spacer()
+                inspectedStamp
             }
 
-            HStack(spacing: 5) {
+            HStack(alignment: .bottom, spacing: 8) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("毒性鑑定書")
+                        .font(MeloFonts.anton(30))
+                        .foregroundColor(MeloColors.Dark.textPrimary)
+                    Text("TOXICITY REPORT")
+                        .font(MeloFonts.mono(9))
+                        .foregroundColor(MeloColors.Dark.accent)
+                        .tracking(1.5)
+                }
+                Spacer(minLength: 8)
+                MascotImage(name: LabMascot.pose(for: selectedTab), size: 86)
+                    .id(selectedTab)
+                    .transition(.scale(scale: 0.65).combined(with: .opacity))
+            }
+
+            Text("\(displayName)  /  \(dateText)")
+                .font(MeloFonts.mono(11))
+                .foregroundColor(MeloColors.Dark.textSecondary)
+                .lineLimit(1)
+                .truncationMode(.tail)
+
+            Rectangle()
+                .fill(MeloColors.Dark.cardStroke)
+                .frame(height: 1)
+
+            HStack(spacing: 18) {
                 ForEach(DiagnosisTab.allCases) { tab in
                     tabPill(for: tab)
                 }
+                Spacer(minLength: 0)
             }
-            .padding(.horizontal, 20)
-            .frame(maxWidth: .infinity, alignment: .center)
         }
-        .padding(.bottom, 10)
+        .padding(.horizontal, 20)
+        .padding(.top, 8)
+        .padding(.bottom, 12)
+    }
+
+    private var inspectedStamp: some View {
+        VStack(spacing: 0) {
+            Text("毒見済")
+                .font(MeloFonts.zenMaru(11))
+                .foregroundColor(MeloColors.Dark.accent)
+            Text("INSPECTED")
+                .font(MeloFonts.mono(6))
+                .foregroundColor(MeloColors.Dark.accent)
+        }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+        .overlay(
+            RoundedRectangle(cornerRadius: 6)
+                .stroke(MeloColors.Dark.accent, lineWidth: 1.5)
+        )
+        .rotationEffect(.degrees(-7))
     }
 
     private func tabPill(for tab: DiagnosisTab) -> some View {
         let isSelected = selectedTab == tab
         return Button {
             HapticManager.light()
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.75)) {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                 selectedTab = tab
             }
         } label: {
-            HStack(spacing: 4) {
-                if !isSelected {
-                    Image(systemName: "heart.fill")
-                        .font(.system(size: 10))
-                        .foregroundColor(DiagTabColors.accentPink)
-                }
+            VStack(spacing: 6) {
                 Text(tab.localizedName)
-                    .font(MeloFonts.zenMaruOrFallback(12))
-                    .tracking(0.36)
-                    .foregroundColor(isSelected ? .white : DiagTabColors.tabText)
+                    .font(isSelected ? MeloFonts.zenMaru(13) : MeloFonts.zenMaruMedium(13))
+                    .foregroundColor(isSelected ? MeloColors.Dark.accent : MeloColors.Dark.textSecondary)
+                Rectangle()
+                    .fill(isSelected ? MeloColors.Dark.accent : Color.clear)
+                    .frame(width: 28, height: 2)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 7)
-            .frame(minWidth: 76)
-            .background(
-                Group {
-                    if isSelected {
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(MeloColors.Gradient.pinkPrimary)
-                    } else {
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(DiagTabColors.unselectedBg)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(DiagTabColors.tabBorder, lineWidth: 1)
-                            )
-                    }
-                }
-            )
-            .shadow(
-                color: isSelected
-                    ? MeloColors.Brand.pink.opacity(0.45)
-                    : MeloColors.Brand.pinkLight.opacity(0.5),
-                radius: isSelected ? 6 : 3,
-                x: 0,
-                y: isSelected ? 2 : 1
-            )
         }
         .buttonStyle(.plain)
     }
@@ -148,9 +151,10 @@ struct DiagnosisResultView: View {
         VStack(spacing: 0) {
             DiagnosisResultHeader(
                 displayName: displayName,
+                dateText: result.labDateText,
+                specimenNo: result.labSpecimenNo,
                 selectedTab: $selectedTab,
-                onBack: { coordinator.popToRoot() },
-                subtitle: subtitleText
+                onBack: { coordinator.popToRoot() }
             )
 
             ScrollView {
@@ -172,17 +176,13 @@ struct DiagnosisResultView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(
-            ZStack {
-                MeloColors.Surface.pinkPale
-                Image("bg_diagnose_stardust")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .opacity(0.3)
-            }
-            .ignoresSafeArea()
-        )
+        .background(MeloColors.Dark.bg.ignoresSafeArea())
         .ignoresSafeArea(.keyboard)
+        .onAppear {
+            #if DEBUG
+            if let t = YabatalkDebug.seedInitialTab { selectedTab = t }
+            #endif
+        }
         .navigationBarHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .toolbar {
@@ -223,143 +223,85 @@ struct DiagnosisScoreTab: View {
     let result: DiagnosisResult
 
     var body: some View {
-        VStack(spacing: 18) {
+        VStack(spacing: 16) {
             verdictCard
-            categoryBarsCard
-            ingredientsCard
+            componentsCard
+            classificationCard
         }
     }
 
+    // 鑑定結果（試験管メーター + 危険度 + 疑似バーコード）
+    // 見た目の正本は再利用ビュー ToxicityVerdictCardView に集約（掲示板の毒性添付カードと共有）。
     private var verdictCard: some View {
-        VStack(spacing: 10) {
-            Text(verdictHeadline)
-                .font(MeloFonts.zenMaru(22))
-                .foregroundColor(MeloColors.Brand.pink)
-                .multilineTextAlignment(.center)
-                .tracking(0.6)
-
-            HStack(alignment: .firstTextBaseline, spacing: 4) {
-                Text("\(result.overallRiskScore)")
-                    .font(.system(size: 72, weight: .heavy, design: .rounded))
-                    .foregroundStyle(MeloColors.Gradient.pinkPrimary)
-                Text("%")
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundStyle(MeloColors.Gradient.pinkPrimary)
-            }
-
-            Text(result.dangerLabel)
-                .font(MeloFonts.zenMaruMedium(14))
-                .foregroundColor(MeloColors.Text.secondary)
-
-            Text(result.catchCopy)
-                .font(MeloFonts.zenMaruRegular(13))
-                .foregroundColor(MeloColors.Text.primary)
-                .multilineTextAlignment(.center)
-                .padding(.top, 6)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(24)
-        .background(whiteCard)
+        ToxicityVerdictCardView(result: result)
     }
 
-    private var verdictHeadline: String {
-        switch result.riskLevel {
-        case .low: return "今のところ平和です ✨"
-        case .caution: return "ちょっと怪しい香り…"
-        case .medium: return "それなりに香ばしい関係"
-        case .high: return "かなりヤバいトークです 🚨"
-        case .severe: return "ヤバ度 MAX。即避難レベル！"
-        }
-    }
-
-    private var categoryBarsCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionHeader("カテゴリ別やばさ")
+    // 毒性成分分析（成分表シート + 濃度ドット）
+    private var componentsCard: some View {
+        LabCard {
             VStack(spacing: 12) {
+                LabCardHeader(jp: "毒性成分分析", en: "TOXIC COMPONENTS")
+                Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
+
+                let items = result.topIngredients()
+                if items.isEmpty {
+                    Text("ヤバ成分は検出されませんでした。")
+                        .font(MeloFonts.zenMaruRegular(12))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    ForEach(Array(items.enumerated()), id: \.element.id) { idx, item in
+                        componentRow(item)
+                        if idx < items.count - 1 {
+                            Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private func componentRow(_ item: FactorScore) -> some View {
+        let c = labSeverityColor(item.score)
+        return HStack(spacing: 10) {
+            Text(item.displayName)
+                .font(MeloFonts.zenMaruMedium(13))
+                .foregroundColor(MeloColors.Dark.textPrimary)
+            Spacer(minLength: 8)
+            SeverityDots(pct: item.score, color: c)
+            Text("\(item.score)%")
+                .font(MeloFonts.monoMedium(13))
+                .foregroundColor(c)
+        }
+    }
+
+    // ハラスメント分類（分類コードチップ + ハザードバー）
+    private var classificationCard: some View {
+        LabCard {
+            VStack(alignment: .leading, spacing: 14) {
+                LabCardHeader(jp: "ハラスメント分類", en: "CLASSIFICATION")
                 ForEach(HarassmentCategory.allCases, id: \.self) { cat in
-                    let score = result.categoryScores[cat] ?? 0
-                    categoryRow(cat: cat, score: score)
+                    classificationRow(cat)
                 }
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(whiteCard)
-    }
-
-    private func categoryRow(cat: HarassmentCategory, score: Int) -> some View {
-        HStack(spacing: 10) {
-            Text(cat.emoji)
-                .font(.system(size: 22))
-                .frame(width: 28)
-            VStack(alignment: .leading, spacing: 4) {
-                HStack {
-                    Text(cat.displayName)
-                        .font(MeloFonts.zenMaruMedium(14))
-                        .foregroundColor(MeloColors.Text.primary)
-                    Spacer()
-                    Text("\(score)%")
-                        .font(MeloFonts.zenMaruMedium(14).monospacedDigit())
-                        .foregroundColor(colorForScore(score))
-                }
-                GeometryReader { proxy in
-                    ZStack(alignment: .leading) {
-                        Capsule().fill(Color.white.opacity(0.7))
-                            .overlay(
-                                Capsule().stroke(MeloColors.Surface.pinkPale, lineWidth: 1)
-                            )
-                        Capsule()
-                            .fill(MeloColors.Gradient.pinkPrimary)
-                            .frame(width: proxy.size.width * CGFloat(score) / 100)
-                    }
-                }
-                .frame(height: 10)
             }
         }
     }
 
-    private var ingredientsCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionHeader("🧪 闇成分ミックス")
-            let items = result.topIngredients()
-            if items.isEmpty {
-                Text("ヤバ成分は検出されませんでした。")
-                    .font(MeloFonts.zenMaruRegular(12))
-                    .foregroundColor(MeloColors.Text.secondary)
-            } else {
-                VStack(spacing: 8) {
-                    ForEach(items) { item in
-                        ingredientRow(item: item)
-                    }
-                }
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(whiteCard)
-    }
-
-    private func ingredientRow(item: FactorScore) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack {
-                Text(item.displayName)
-                    .font(MeloFonts.zenMaruMedium(13))
-                    .foregroundColor(MeloColors.Text.primary)
+    private func classificationRow(_ cat: HarassmentCategory) -> some View {
+        let score = result.categoryScores[cat] ?? 0
+        let c = labSeverityColor(score)
+        return VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 10) {
+                LabCategoryTag(code: cat.labCode, color: c)
+                Text(cat.displayName)
+                    .font(MeloFonts.zenMaruMedium(14))
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                 Spacer()
-                Text("\(item.score)%")
-                    .font(MeloFonts.zenMaruMedium(12).monospacedDigit())
-                    .foregroundColor(colorForScore(item.score))
+                Text("\(score)%")
+                    .font(MeloFonts.monoMedium(14))
+                    .foregroundColor(c)
             }
-            GeometryReader { proxy in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(MeloColors.Surface.pinkPale)
-                    Capsule()
-                        .fill(MeloColors.Gradient.pinkPrimary)
-                        .frame(width: proxy.size.width * CGFloat(item.score) / 100)
-                }
-            }
-            .frame(height: 6)
+            LabBar(pct: score, color: c)
         }
     }
 }
@@ -370,13 +312,12 @@ struct DiagnosisTypeTab: View {
     let result: DiagnosisResult
 
     var body: some View {
-        VStack(spacing: 18) {
+        VStack(spacing: 16) {
+            LabSectionTitle(jp: "検体プロファイル", en: "SPECIMEN PROFILE  /  個別に毒性判定")
             if !result.speakerVerdicts.isEmpty {
-                speakerVerdictsHeadline
                 ForEach(result.speakerVerdicts) { verdict in
                     speakerVerdictCard(verdict: verdict)
                 }
-                Divider().padding(.horizontal, 20)
                 conversationOverallCard
             } else {
                 heroTypeCard
@@ -388,248 +329,211 @@ struct DiagnosisTypeTab: View {
         }
     }
 
-    private var speakerVerdictsHeadline: some View {
-        VStack(spacing: 4) {
-            Text("👥 二人それぞれのタイプ")
-                .font(MeloFonts.zenMaru(22))
-                .foregroundColor(MeloColors.Brand.pink)
-            Text("発言主ごとに独立して判定しました。会話全体ではなく、それぞれ個別のヤバ度。")
-                .font(MeloFonts.zenMaruRegular(11))
-                .foregroundColor(MeloColors.Text.secondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.top, 4)
-    }
-
     private func speakerVerdictCard(verdict: SpeakerVerdict) -> some View {
-        VStack(spacing: 14) {
-            // 話者名 + スコア
-            HStack {
-                Text(verdict.speakerName)
-                    .font(MeloFonts.zenMaru(16))
-                    .foregroundColor(MeloColors.Text.primary)
-                Spacer()
-                Text("\(verdict.score)%")
-                    .font(MeloFonts.zenMaru(20).monospacedDigit())
-                    .foregroundStyle(MeloColors.Gradient.pinkPrimary)
-                Text(verdict.level.displayName)
-                    .font(MeloFonts.zenMaruMedium(11))
-                    .foregroundColor(MeloColors.Text.secondary)
-            }
-
-            // タイプ円 + 名前
-            HStack(spacing: 16) {
-                ZStack {
-                    Circle()
-                        .fill(MeloColors.Surface.pinkPale)
-                        .frame(width: 92, height: 92)
-                    Text(verdict.primaryType.emoji)
-                        .font(.system(size: 56))
+        let color = verdict.level.labColor
+        return LabCard(hazardColor: color) {
+            VStack(alignment: .leading, spacing: 14) {
+                // 上段: 検体ラベル + 話者名 + スコア
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text("検体")
+                        .font(MeloFonts.mono(10))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                    Text(verdict.speakerName)
+                        .font(MeloFonts.zenMaru(16))
+                        .foregroundColor(MeloColors.Dark.textPrimary)
+                        .lineLimit(1)
+                    Spacer(minLength: 8)
+                    HStack(alignment: .firstTextBaseline, spacing: 2) {
+                        Text("\(verdict.score)")
+                            .font(MeloFonts.anton(26))
+                            .foregroundColor(color)
+                        Text("%")
+                            .font(MeloFonts.anton(12))
+                            .foregroundColor(color)
+                    }
+                    Text(verdict.level.displayName)
+                        .font(MeloFonts.zenMaruMedium(11))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                 }
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(verdict.primaryType.typeName)
-                        .font(MeloFonts.zenMaru(17))
-                        .foregroundColor(MeloColors.Text.primary)
+
+                // ヒーロー: キャラ・プレート + タイプ名 + 分類chip
+                HStack(alignment: .top, spacing: 14) {
+                    MascotPlate(name: LabMascot.typePlate, color: color, size: 72)
+
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(verdict.primaryType.typeName)
+                            .font(MeloFonts.zenMaru(17))
+                            .foregroundColor(MeloColors.Dark.textPrimary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        PhraseFlowLayout(spacing: 4) {
+                            ForEach(Array(verdict.primaryType.primaryCategories.enumerated()), id: \.offset) { _, cat in
+                                LabCodeChip(text: cat.shortName, color: MeloColors.Dark.accent, filled: true)
+                            }
+                        }
+                        Text(verdict.dangerLabel)
+                            .font(MeloFonts.zenMaruRegular(11))
+                            .foregroundColor(MeloColors.Dark.textSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Spacer(minLength: 0)
+                }
+
+                Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
+
+                // 所見
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("所見 / FINDINGS")
+                        .font(MeloFonts.monoMedium(10))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                    Text(verdict.oneLineVerdict)
+                        .font(MeloFonts.zenMaruRegular(13))
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                         .fixedSize(horizontal: false, vertical: true)
-                    HStack(spacing: 4) {
-                        ForEach(Array(verdict.primaryType.primaryCategories.enumerated()), id: \.offset) { _, cat in
-                            Text(cat.shortName)
-                                .font(MeloFonts.zenMaruMedium(10))
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 3)
-                                .background(Capsule().fill(MeloColors.Gradient.pinkPrimary))
+                    Text(verdict.catchCopy)
+                        .font(MeloFonts.zenMaruRegular(12))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.top, 2)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                // 検出フレーズ
+                if !verdict.signaturePhrases.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("検出フレーズ / SIGNATURE")
+                            .font(MeloFonts.monoMedium(10))
+                            .foregroundColor(MeloColors.Dark.textSecondary)
+                        PhraseFlowLayout(spacing: 6) {
+                            ForEach(verdict.signaturePhrases) { p in
+                                LabCodeChip(text: "[\(p.phrase)] ×\(p.count)", color: MeloColors.Dark.accent)
+                            }
                         }
                     }
-                    Text(verdict.dangerLabel)
-                        .font(MeloFonts.zenMaruRegular(11))
-                        .foregroundColor(MeloColors.Text.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                Spacer(minLength: 0)
-            }
 
-            Divider()
-
-            // ひとことで言うと
-            VStack(alignment: .leading, spacing: 4) {
-                Text("ひとことで言うと")
-                    .font(MeloFonts.zenMaruMedium(11))
-                    .foregroundColor(MeloColors.Text.secondary)
-                Text(verdict.oneLineVerdict)
-                    .font(MeloFonts.zenMaruRegular(13))
-                    .foregroundColor(MeloColors.Text.primary)
-                    .fixedSize(horizontal: false, vertical: true)
-                Text(verdict.catchCopy)
-                    .font(MeloFonts.zenMaruRegular(12))
-                    .foregroundColor(MeloColors.Text.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 2)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            // 口癖シグネチャ
-            if !verdict.signaturePhrases.isEmpty {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("🗣 \(verdict.speakerName) がよく出す言葉")
-                        .font(MeloFonts.zenMaruMedium(12))
-                        .foregroundColor(MeloColors.Text.primary)
-                    PhraseChips(phrases: verdict.signaturePhrases)
+                // 最毒サンプル
+                if let q = verdict.topQuote {
+                    LabWell {
+                        Text("最毒サンプル / KEY SAMPLE")
+                            .font(MeloFonts.monoMedium(10))
+                            .foregroundColor(MeloColors.Dark.textSecondary)
+                        Text("「\(q.quote)」")
+                            .font(MeloFonts.zenMaru(13))
+                            .foregroundColor(MeloColors.Dark.textPrimary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text("→ \(q.explanation)")
+                            .font(MeloFonts.zenMaruRegular(11))
+                            .foregroundColor(MeloColors.Dark.textSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-
-            // 刺さってる一言
-            if let q = verdict.topQuote {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("💬 特に刺さってる発言")
-                        .font(MeloFonts.zenMaruMedium(12))
-                        .foregroundColor(MeloColors.Text.primary)
-                    Text("「\(q.quote)」")
-                        .font(MeloFonts.zenMaruRegular(13))
-                        .foregroundColor(MeloColors.Text.primary)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Text("→ \(q.explanation)")
-                        .font(MeloFonts.zenMaruRegular(11))
-                        .foregroundColor(MeloColors.Text.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 4)
             }
         }
-        .padding(20)
-        .background(whiteCard)
     }
 
     private var conversationOverallCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("📍 会話全体の総括タイプ")
-                .font(MeloFonts.zenMaruMedium(13))
-                .foregroundColor(MeloColors.Text.secondary)
-            HStack(spacing: 12) {
-                Text(result.primaryType.emoji)
-                    .font(.system(size: 36))
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(result.primaryType.typeName)
-                        .font(MeloFonts.zenMaru(15))
-                    Text(result.harassmentLabel)
-                        .font(MeloFonts.zenMaruRegular(11))
-                        .foregroundColor(MeloColors.Brand.pink)
+        LabCard {
+            VStack(alignment: .leading, spacing: 12) {
+                LabCardHeader(jp: "総合判定", en: "OVERALL")
+                HStack(spacing: 14) {
+                    LabCategoryTag(code: result.primaryCategory.labCode, color: MeloColors.Dark.accent)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(result.primaryType.typeName)
+                            .font(MeloFonts.zenMaru(15))
+                            .foregroundColor(MeloColors.Dark.textPrimary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text("CATEGORY: \(result.harassmentLabel)")
+                            .font(MeloFonts.monoMedium(11))
+                            .foregroundColor(MeloColors.Dark.accent)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Spacer(minLength: 0)
                 }
-                Spacer()
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(16)
-        .background(whiteCard)
     }
 
     private var heroTypeCard: some View {
-        VStack(spacing: 12) {
-            Text(verdictHeadline)
-                .font(MeloFonts.zenMaru(22))
-                .foregroundColor(MeloColors.Brand.pink)
-                .multilineTextAlignment(.center)
-
-            ZStack {
-                Circle()
-                    .fill(MeloColors.Surface.pinkPale)
-                    .frame(width: 140, height: 140)
-                Text(result.primaryType.emoji)
-                    .font(.system(size: 84))
-            }
-
-            Text(result.primaryType.typeName)
-                .font(MeloFonts.zenMaru(20))
-                .foregroundColor(MeloColors.Text.primary)
-                .tracking(0.6)
-                .multilineTextAlignment(.center)
-
-            HStack(spacing: 6) {
-                ForEach(Array(result.primaryType.primaryCategories.enumerated()), id: \.offset) { _, cat in
-                    Text(cat.shortName)
-                        .font(MeloFonts.zenMaruMedium(11))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 4)
-                        .background(Capsule().fill(MeloColors.Gradient.pinkPrimary))
+        LabCard(hazardColor: result.riskLevel.labColor) {
+            VStack(alignment: .leading, spacing: 12) {
+                LabCardHeader(jp: "総合判定", en: "OVERALL")
+                HStack(alignment: .top, spacing: 14) {
+                    LabCategoryTag(code: result.primaryCategory.labCode, color: result.riskLevel.labColor)
+                        .scaleEffect(1.4)
+                        .frame(width: 56, height: 40)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(result.primaryType.typeName)
+                            .font(MeloFonts.zenMaru(18))
+                            .foregroundColor(MeloColors.Dark.textPrimary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        PhraseFlowLayout(spacing: 4) {
+                            ForEach(Array(result.primaryType.primaryCategories.enumerated()), id: \.offset) { _, cat in
+                                LabCodeChip(text: cat.shortName, color: MeloColors.Dark.accent, filled: true)
+                            }
+                        }
+                    }
+                    Spacer(minLength: 0)
                 }
+                Text(result.catchCopy)
+                    .font(MeloFonts.zenMaruRegular(13))
+                    .foregroundColor(MeloColors.Dark.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-
-            Text(result.catchCopy)
-                .font(MeloFonts.zenMaruRegular(13))
-                .foregroundColor(MeloColors.Text.primary)
-                .multilineTextAlignment(.center)
-                .padding(.top, 4)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(24)
-        .background(whiteCard)
-    }
-
-    private var verdictHeadline: String {
-        switch result.riskLevel {
-        case .low, .caution: return "あなたのトーク相手の正体"
-        case .medium: return "ちょっと香ばしいタイプ"
-        case .high: return "かなりヤバいタイプ"
-        case .severe: return "ヤバ度 MAX のタイプ"
         }
     }
 
     private var structureCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            sectionHeader("このタイプの特徴")
-            Text(result.primaryType.structureSummary)
-                .font(MeloFonts.zenMaruMedium(14))
-                .foregroundColor(MeloColors.Text.primary)
-            Text(result.primaryType.darkHumorAdvice)
-                .font(MeloFonts.zenMaruRegular(13))
-                .foregroundColor(MeloColors.Text.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 4)
+        LabCard {
+            VStack(alignment: .leading, spacing: 10) {
+                LabCardHeader(jp: "型の特性", en: "PROFILE")
+                Text(result.primaryType.structureSummary)
+                    .font(MeloFonts.zenMaruMedium(14))
+                    .foregroundColor(MeloColors.Dark.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(result.primaryType.darkHumorAdvice)
+                    .font(MeloFonts.zenMaruRegular(13))
+                    .foregroundColor(MeloColors.Dark.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(whiteCard)
     }
 
     private var categoryBreakdownsCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionHeader("📂 カテゴリ別の根拠")
-            ForEach(result.categoryBreakdowns) { breakdown in
-                breakdownRow(breakdown: breakdown)
-                if breakdown.id != result.categoryBreakdowns.last?.id {
-                    Divider().padding(.vertical, 4)
+        LabCard {
+            VStack(alignment: .leading, spacing: 14) {
+                LabCardHeader(jp: "カテゴリ別の根拠", en: "BASIS")
+                ForEach(result.categoryBreakdowns) { breakdown in
+                    breakdownRow(breakdown: breakdown)
+                    if breakdown.id != result.categoryBreakdowns.last?.id {
+                        Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
+                    }
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(whiteCard)
     }
 
     private func breakdownRow(breakdown: CategoryBreakdown) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(breakdown.category.emoji)
+        let c = labSeverityColor(breakdown.score)
+        return VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 10) {
+                LabCategoryTag(code: breakdown.category.labCode, color: c)
                 Text(breakdown.category.displayName)
                     .font(MeloFonts.zenMaruMedium(14))
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                 Spacer()
                 Text("\(breakdown.score)%")
-                    .font(MeloFonts.zenMaruMedium(14).monospacedDigit())
-                    .foregroundColor(colorForScore(breakdown.score))
+                    .font(MeloFonts.monoMedium(14))
+                    .foregroundColor(c)
             }
             Text(breakdown.narrative)
                 .font(MeloFonts.zenMaruRegular(12))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
             if !breakdown.contributingFactors.isEmpty {
-                Text(breakdown.contributingFactors.map { "「\($0.factor.displayName)」\($0.score)%" }.joined(separator: " ・ "))
-                    .font(MeloFonts.zenMaruRegular(11))
-                    .foregroundColor(MeloColors.Text.secondary.opacity(0.8))
+                Text(breakdown.contributingFactors.map { "\($0.factor.displayName) \($0.score)%" }.joined(separator: "  ・  "))
+                    .font(MeloFonts.mono(11))
+                    .foregroundColor(MeloColors.Dark.textSecondary.opacity(0.8))
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -642,7 +546,8 @@ struct DiagnosisDataTab: View {
     let result: DiagnosisResult
 
     var body: some View {
-        VStack(spacing: 18) {
+        VStack(spacing: 16) {
+            LabSectionTitle(jp: "検査データ", en: "LAB DATA  /  全発言スキャン結果")
             speakerCompareCard
             funStatsCard
             if !result.factorDeepDives.isEmpty {
@@ -650,6 +555,14 @@ struct DiagnosisDataTab: View {
             }
             quotesCard
             allDetectionsLogCard
+        }
+    }
+
+    private func severityColor(for severity: FactorSeverity) -> Color {
+        switch severity {
+        case .low: return MeloColors.Dark.accent
+        case .medium: return MeloColors.Dark.caution
+        case .high: return MeloColors.Dark.danger
         }
     }
 
@@ -668,19 +581,19 @@ struct DiagnosisDataTab: View {
             }
             .sorted { $0.timestamp < $1.timestamp }
 
-        return VStack(alignment: .leading, spacing: 14) {
-            sectionHeader("📜 全検出ログ (\(allDetections.count) 件)")
-            Text("検出されたヤバ要素を全部時系列で。誰がいつ何のパターンで引っかかったか、納得できなければ実際の発言と比べてください。")
-                .font(MeloFonts.zenMaruRegular(11))
-                .foregroundColor(MeloColors.Text.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-            if allDetections.isEmpty {
-                Text("検出されたヤバ要素はありません。")
-                    .font(MeloFonts.zenMaruRegular(12))
-                    .foregroundColor(MeloColors.Text.secondary)
-            } else {
-                VStack(spacing: 8) {
-                    ForEach(Array(allDetections.enumerated()), id: \.offset) { _, det in
+        return LabCard {
+            VStack(alignment: .leading, spacing: 12) {
+                LabCardHeader(jp: "検出ログ", en: "DETECTION LOG")
+                Text("検出されたヤバ要素を全部時系列で。誰がいつ何のパターンで引っかかったか、納得できなければ実際の発言と比べてください。")
+                    .font(MeloFonts.zenMaruRegular(11))
+                    .foregroundColor(MeloColors.Dark.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                if allDetections.isEmpty {
+                    Text("検出されたヤバ要素はありません。")
+                        .font(MeloFonts.zenMaruRegular(12))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                } else {
+                    ForEach(Array(allDetections.enumerated()), id: \.offset) { idx, det in
                         detectionLogRow(
                             speakerName: det.speakerName,
                             timestamp: det.timestamp,
@@ -689,13 +602,13 @@ struct DiagnosisDataTab: View {
                             matchedPattern: det.matchedPattern,
                             severity: det.severity
                         )
+                        if idx < allDetections.count - 1 {
+                            Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
+                        }
                     }
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(whiteCard)
     }
 
     private func detectionLogRow(
@@ -706,254 +619,212 @@ struct DiagnosisDataTab: View {
         matchedPattern: String,
         severity: FactorSeverity
     ) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 6) {
-                Text(speakerName)
-                    .font(MeloFonts.zenMaruMedium(11))
-                    .foregroundColor(MeloColors.Brand.pink)
+        let c = severityColor(for: severity)
+        return VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 8) {
                 Text(timestamp.formatted(date: .abbreviated, time: .shortened))
-                    .font(MeloFonts.zenMaruRegular(10))
-                    .foregroundColor(MeloColors.Text.secondary)
-                Spacer()
-                Text(factor.displayName)
-                    .font(MeloFonts.zenMaruMedium(10))
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(Capsule().fill(MeloColors.Surface.pinkPale))
-                    .foregroundColor(MeloColors.Brand.pink)
-                Text(severityBadge(for: severity))
-                    .font(MeloFonts.zenMaruMedium(10))
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(Capsule().fill(severityFill(for: severity)))
-                    .foregroundColor(.white)
+                    .font(MeloFonts.mono(10))
+                    .foregroundColor(c)
+                LabCodeChip(text: factor.displayName, color: c)
+                Spacer(minLength: 4)
+                Text(speakerName)
+                    .font(MeloFonts.mono(9))
+                    .foregroundColor(MeloColors.Dark.textSecondary)
             }
-            Text(evidence)
-                .font(MeloFonts.zenMaruRegular(12))
-                .foregroundColor(MeloColors.Text.primary)
+            Text("「\(evidence)」")
+                .font(MeloFonts.zenMaruRegular(11))
+                .foregroundColor(MeloColors.Dark.textPrimary)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
-            Text("パターン: \(matchedPattern)")
-                .font(MeloFonts.zenMaruRegular(10))
-                .foregroundColor(MeloColors.Text.secondary.opacity(0.8))
+            Text("PATTERN: \(matchedPattern)")
+                .font(MeloFonts.mono(9))
+                .foregroundColor(MeloColors.Dark.textSecondary.opacity(0.8))
+                .lineLimit(1)
+                .truncationMode(.tail)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(MeloColors.Surface.pinkPale.opacity(0.4))
-        )
-    }
-
-    private func severityFill(for severity: FactorSeverity) -> Color {
-        switch severity {
-        case .low: return MeloColors.Brand.pinkLight
-        case .medium: return MeloColors.Brand.pink
-        case .high: return MeloColors.Brand.pinkDeep
-        }
     }
 
     /// 話者別ヤバ発言比較
     private var speakerCompareCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionHeader("👥 誰がよりヤバいか")
-            Text("両者の発言を全部スキャンしてます。お互いの " + "ヤバ発言の出方を比べてみてください。")
-                .font(MeloFonts.zenMaruRegular(11))
-                .foregroundColor(MeloColors.Text.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-            VStack(spacing: 10) {
+        LabCard {
+            VStack(alignment: .leading, spacing: 12) {
+                LabCardHeader(jp: "発生源比較", en: "SOURCE")
+                Text("両者の発言を全部スキャンしてます。お互いのヤバ発言の出方を比べてみてください。")
+                    .font(MeloFonts.zenMaruRegular(11))
+                    .foregroundColor(MeloColors.Dark.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
                 ForEach(result.stats.perSpeaker) { speaker in
                     speakerRow(speaker: speaker)
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(whiteCard)
     }
 
     private func speakerRow(speaker: SpeakerStats) -> some View {
         let totalDetections = max(1, result.stats.perSpeaker.map(\.detectionCount).reduce(0, +))
         let ratio = Double(speaker.detectionCount) / Double(totalDetections)
+        let hasHits = speaker.detectionCount > 0
+        let barColor = hasHits ? MeloColors.Dark.danger : MeloColors.Dark.track
         return VStack(alignment: .leading, spacing: 6) {
-            HStack {
+            HStack(alignment: .firstTextBaseline) {
                 Text(speaker.speakerName)
-                    .font(MeloFonts.zenMaruMedium(14))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .font(MeloFonts.zenMaruMedium(15))
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                 Spacer()
-                Text("\(speaker.detectionCount) 件")
-                    .font(MeloFonts.zenMaruMedium(13).monospacedDigit())
-                    .foregroundColor(MeloColors.Brand.pink)
+                Text("\(speaker.detectionCount)")
+                    .font(MeloFonts.anton(20))
+                    .foregroundColor(hasHits ? MeloColors.Dark.danger : MeloColors.Dark.textSecondary)
+                Text("件")
+                    .font(MeloFonts.mono(10))
+                    .foregroundColor(MeloColors.Dark.textSecondary)
             }
-            GeometryReader { proxy in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(MeloColors.Surface.pinkPale)
-                    Capsule()
-                        .fill(MeloColors.Gradient.pinkPrimary)
-                        .frame(width: proxy.size.width * CGFloat(ratio))
-                }
-            }
-            .frame(height: 10)
-            HStack(spacing: 8) {
+            LabBar(pct: Int((ratio * 100).rounded()), color: barColor, height: 8)
+            HStack(spacing: 10) {
                 if let topFactor = speaker.topFactor {
                     Text("最多: \(topFactor.displayName)")
-                        .font(MeloFonts.zenMaruRegular(11))
-                        .foregroundColor(MeloColors.Text.secondary)
+                        .font(MeloFonts.mono(10))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                 }
                 if speaker.nightCount > 0 {
-                    Text("🌙 \(speaker.nightCount)")
-                        .font(MeloFonts.zenMaruRegular(11))
-                        .foregroundColor(MeloColors.Text.secondary)
+                    Text("深夜 \(speaker.nightCount)")
+                        .font(MeloFonts.mono(10))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                 }
             }
         }
     }
 
     private var funStatsCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionHeader("📊 おもしろ統計")
-            VStack(spacing: 10) {
-                statRow(title: "総発言数", value: "\(result.stats.totalMessages)")
-                statRow(title: "テキスト発言", value: "\(result.stats.totalTextMessages)")
-                statRow(title: "ヤバ発言の割合", value: "\(result.stats.detectionRatePercent)%")
-                statRow(title: "検出された構成要素", value: "\(result.stats.detectedFactorCount) 件")
+        LabCard {
+            VStack(alignment: .leading, spacing: 10) {
+                LabCardHeader(jp: "検査統計", en: "STATISTICS")
+                statRow(label: "総発言数", value: "\(result.stats.totalMessages)", color: MeloColors.Dark.textPrimary)
+                statRow(label: "テキスト発言", value: "\(result.stats.totalTextMessages)", color: MeloColors.Dark.textPrimary)
+                statRow(label: "ヤバ発言の割合", value: "\(result.stats.detectionRatePercent)%", color: labSeverityColor(result.stats.detectionRatePercent))
+                statRow(label: "検出された構成要素", value: "\(result.stats.detectedFactorCount) 件", color: MeloColors.Dark.accent)
                 if result.stats.nightDetectionCount > 0 {
-                    statRow(title: "🌙 深夜ヤバ発言", value: "\(result.stats.nightDetectionCount) 件")
+                    statRow(label: "深夜ヤバ発言", value: "\(result.stats.nightDetectionCount) 件", color: MeloColors.Dark.caution)
                 }
                 if let first = result.stats.firstDetectionAt {
-                    statRow(title: "最初のヤバ発言", value: first.formatted(date: .abbreviated, time: .shortened))
+                    statRow(label: "最初のヤバ発言", value: first.formatted(date: .abbreviated, time: .shortened), color: MeloColors.Dark.textSecondary)
                 }
                 if let last = result.stats.lastDetectionAt {
-                    statRow(title: "最新のヤバ発言", value: last.formatted(date: .abbreviated, time: .shortened))
+                    statRow(label: "最新のヤバ発言", value: last.formatted(date: .abbreviated, time: .shortened), color: MeloColors.Dark.textSecondary)
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(whiteCard)
     }
 
-    private func statRow(title: String, value: String) -> some View {
+    private func statRow(label: String, value: String, color: Color) -> some View {
         HStack {
-            Text(title)
-                .font(MeloFonts.zenMaruRegular(13))
-                .foregroundColor(MeloColors.Text.secondary)
+            Text(label)
+                .font(MeloFonts.mono(12))
+                .foregroundColor(MeloColors.Dark.textSecondary)
             Spacer()
             Text(value)
-                .font(MeloFonts.zenMaruMedium(14).monospacedDigit())
-                .foregroundColor(MeloColors.Text.primary)
+                .font(MeloFonts.monoMedium(12))
+                .foregroundColor(color)
         }
     }
 
     private var factorDetailsCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionHeader("🔍 構成要素のディテール")
-            ForEach(result.factorDeepDives) { dive in
-                deepDiveRow(dive: dive)
-                if dive.id != result.factorDeepDives.last?.id {
-                    Divider().padding(.vertical, 4)
+        LabCard {
+            VStack(alignment: .leading, spacing: 14) {
+                LabCardHeader(jp: "成分詳細", en: "COMPONENT DETAIL")
+                ForEach(result.factorDeepDives) { dive in
+                    deepDiveRow(dive: dive)
+                    if dive.id != result.factorDeepDives.last?.id {
+                        Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
+                    }
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(whiteCard)
     }
 
     private func deepDiveRow(dive: FactorDeepDive) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
+        let c = labSeverityColor(dive.score)
+        return VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 8) {
                 Text(dive.title)
-                    .font(MeloFonts.zenMaruMedium(14))
-                Spacer()
+                    .font(MeloFonts.zenMaru(14))
+                    .foregroundColor(MeloColors.Dark.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 6)
+                Text("検出 \(dive.detectionCount)")
+                    .font(MeloFonts.mono(10))
+                    .foregroundColor(MeloColors.Dark.textSecondary)
                 Text("\(dive.score)%")
-                    .font(MeloFonts.zenMaruMedium(13).monospacedDigit())
-                    .foregroundColor(colorForScore(dive.score))
-                Text(severityBadge(for: dive.severity))
-                    .font(MeloFonts.zenMaruMedium(10))
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(Capsule().fill(MeloColors.Surface.pinkPale))
-                    .foregroundColor(MeloColors.Brand.pink)
+                    .font(MeloFonts.monoMedium(14))
+                    .foregroundColor(c)
             }
-            Text("検出 \(dive.detectionCount) 件")
-                .font(MeloFonts.zenMaruRegular(11))
-                .foregroundColor(MeloColors.Text.secondary)
             Text(dive.detail)
                 .font(MeloFonts.zenMaruRegular(12))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
             if !dive.sampleEvidences.isEmpty {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("根拠サンプル（\(dive.sampleEvidences.count) 件）")
-                        .font(MeloFonts.zenMaruMedium(11))
-                        .foregroundColor(MeloColors.Brand.pink)
+                LabWell {
+                    Text("根拠サンプル (\(dive.sampleEvidences.count))")
+                        .font(MeloFonts.monoMedium(10))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                     ForEach(dive.sampleEvidences) { sample in
                         evidenceSampleRow(sample: sample)
                     }
                 }
-                .padding(.top, 4)
             }
         }
     }
 
     private func evidenceSampleRow(sample: FactorEvidenceSample) -> some View {
-        VStack(alignment: .leading, spacing: 3) {
+        VStack(alignment: .leading, spacing: 4) {
             if let speaker = sample.speaker, !speaker.isEmpty {
-                Text(speaker)
-                    .font(MeloFonts.zenMaruMedium(10))
-                    .foregroundColor(MeloColors.Brand.pink)
+                LabCodeChip(text: speaker, color: MeloColors.Dark.accent)
             }
             Text("「\(sample.text)」")
                 .font(MeloFonts.zenMaruRegular(12))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)
         }
-        .padding(8)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 8)
-                .fill(MeloColors.Surface.pinkPale.opacity(0.5))
-        )
     }
 
     private var quotesCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionHeader("💬 刺さってる発言")
-            if result.quotedEvidences.isEmpty {
-                Text("引用に値する強い表現は検出されませんでした。")
-                    .font(MeloFonts.zenMaruRegular(12))
-                    .foregroundColor(MeloColors.Text.secondary)
-            } else {
-                ForEach(result.quotedEvidences) { q in
-                    quoteRow(quote: q)
+        LabCard {
+            VStack(alignment: .leading, spacing: 14) {
+                LabCardHeader(jp: "証拠サンプル", en: "EVIDENCE")
+                if result.quotedEvidences.isEmpty {
+                    Text("引用に値する強い表現は検出されませんでした。")
+                        .font(MeloFonts.zenMaruRegular(12))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                } else {
+                    ForEach(result.quotedEvidences) { q in
+                        quoteRow(quote: q)
+                        if q.id != result.quotedEvidences.last?.id {
+                            Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
+                        }
+                    }
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(whiteCard)
     }
 
     private func quoteRow(quote: QuotedEvidence) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            HStack(alignment: .top, spacing: 4) {
-                Text("「")
-                    .font(.title3.weight(.bold))
-                    .foregroundColor(MeloColors.Brand.pink)
-                Text(quote.quote)
-                    .font(MeloFonts.zenMaruRegular(13))
-                    .foregroundColor(MeloColors.Text.primary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
+            LabCodeChip(text: quote.factor.displayName, color: MeloColors.Dark.danger)
+            Text("「\(quote.quote)」")
+                .font(MeloFonts.zenMaru(13))
+                .foregroundColor(MeloColors.Dark.textPrimary)
+                .fixedSize(horizontal: false, vertical: true)
             Text("→ \(quote.explanation)")
                 .font(MeloFonts.zenMaruRegular(11))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
             Text("\(quote.speakerName) · \(quote.timestamp.formatted(date: .abbreviated, time: .shortened))")
-                .font(MeloFonts.zenMaruRegular(10))
-                .foregroundColor(MeloColors.Text.secondary.opacity(0.7))
+                .font(MeloFonts.mono(9))
+                .foregroundColor(MeloColors.Dark.textSecondary.opacity(0.7))
         }
-        .padding(.vertical, 6)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -963,7 +834,8 @@ struct DiagnosisSummaryTab: View {
     let result: DiagnosisResult
 
     var body: some View {
-        VStack(spacing: 18) {
+        VStack(spacing: 16) {
+            LabSectionTitle(jp: "処方箋", en: "PRESCRIPTION  /  これからの処方")
             futureCard
             actionCard
             logicCard
@@ -972,17 +844,16 @@ struct DiagnosisSummaryTab: View {
     }
 
     private var futureCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            sectionHeader("🔮 2人の未来")
-            Text(futureText)
-                .font(MeloFonts.zenMaruRegular(14))
-                .foregroundColor(MeloColors.Text.primary)
-                .fixedSize(horizontal: false, vertical: true)
-                .lineSpacing(4)
+        LabCard {
+            VStack(alignment: .leading, spacing: 10) {
+                LabCardHeader(jp: "予後", en: "PROGNOSIS")
+                Text(futureText)
+                    .font(MeloFonts.zenMaruRegular(14))
+                    .foregroundColor(MeloColors.Dark.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineSpacing(5)
+            }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(whiteCard)
     }
 
     private var futureText: String {
@@ -1001,23 +872,37 @@ struct DiagnosisSummaryTab: View {
     }
 
     private var actionCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            sectionHeader("✨ 来月のアクション")
-            ForEach(Array(actionItems.enumerated()), id: \.offset) { idx, item in
-                HStack(alignment: .top, spacing: 8) {
-                    Text("\(idx + 1).")
-                        .font(MeloFonts.zenMaruMedium(13))
-                        .foregroundColor(MeloColors.Brand.pink)
-                    Text(item)
-                        .font(MeloFonts.zenMaruRegular(13))
-                        .foregroundColor(MeloColors.Text.primary)
-                        .fixedSize(horizontal: false, vertical: true)
+        LabCard {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text("Rx")
+                        .font(MeloFonts.anton(22))
+                        .foregroundColor(MeloColors.Dark.accent)
+                    Text("処方")
+                        .font(MeloFonts.zenMaru(15))
+                        .foregroundColor(MeloColors.Dark.textPrimary)
+                    Spacer()
+                    Text("ACTIONS")
+                        .font(MeloFonts.mono(9))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                        .tracking(1)
+                }
+                ForEach(Array(actionItems.enumerated()), id: \.offset) { idx, item in
+                    HStack(alignment: .top, spacing: 10) {
+                        Text(String(format: "%02d", idx + 1))
+                            .font(MeloFonts.monoMedium(10))
+                            .foregroundColor(MeloColors.Dark.onAccent)
+                            .frame(width: 24, height: 24)
+                            .background(RoundedRectangle(cornerRadius: 6).fill(MeloColors.Dark.accent))
+                        Text(item)
+                            .font(MeloFonts.zenMaruRegular(13))
+                            .foregroundColor(MeloColors.Dark.textPrimary)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(whiteCard)
     }
 
     private var actionItems: [String] {
@@ -1036,27 +921,38 @@ struct DiagnosisSummaryTab: View {
     }
 
     private var logicCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            sectionHeader("📝 占い的に言うと")
-            ForEach(Array(result.logicParagraphs.enumerated()), id: \.offset) { _, p in
-                Text(p)
-                    .font(MeloFonts.zenMaruRegular(13))
-                    .foregroundColor(MeloColors.Text.primary)
-                    .fixedSize(horizontal: false, vertical: true)
+        LabCard {
+            VStack(alignment: .leading, spacing: 10) {
+                LabCardHeader(jp: "総合所見", en: "SUMMARY")
+                ForEach(Array(result.logicParagraphs.enumerated()), id: \.offset) { _, p in
+                    Text(p)
+                        .font(MeloFonts.zenMaruRegular(13))
+                        .foregroundColor(MeloColors.Dark.textPrimary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(whiteCard)
     }
 
     private var disclaimerPanel: some View {
-        Text(result.disclaimer)
-            .font(MeloFonts.zenMaruRegular(10))
-            .foregroundColor(MeloColors.Text.secondary)
-            .multilineTextAlignment(.center)
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, 8)
+        VStack(alignment: .leading, spacing: 6) {
+            Text("DISCLAIMER")
+                .font(MeloFonts.monoMedium(9))
+                .foregroundColor(MeloColors.Dark.textSecondary)
+                .tracking(1)
+            Text(result.disclaimer)
+                .font(MeloFonts.zenMaruRegular(11))
+                .foregroundColor(MeloColors.Dark.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(MeloColors.Dark.bgElevated)
+        )
     }
 }
 
@@ -1064,29 +960,29 @@ struct DiagnosisSummaryTab: View {
 
 private var whiteCard: some View {
     RoundedRectangle(cornerRadius: 20, style: .continuous)
-        .fill(Color.white)
+        .fill(MeloColors.Dark.card)
         .overlay(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .stroke(MeloColors.Brand.pink.opacity(0.15), lineWidth: 1)
+                .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
         )
-        .shadow(color: MeloColors.Brand.pink.opacity(0.08), radius: 8, x: 0, y: 2)
+        .shadow(color: MeloColors.Dark.accent.opacity(0.25), radius: 8, x: 0, y: 2)
 }
 
 private func sectionHeader(_ text: String) -> some View {
     Text(text)
         .font(MeloFonts.zenMaru(15))
-        .foregroundColor(MeloColors.Text.primary)
+        .foregroundColor(MeloColors.Dark.textPrimary)
         .tracking(0.4)
 }
 
 private func colorForScore(_ score: Int) -> Color {
     let level = RiskLevel.from(score: score)
     switch level {
-    case .low: return MeloColors.Text.secondary
-    case .caution: return MeloColors.Brand.pinkLight
-    case .medium: return MeloColors.Brand.pink
-    case .high: return MeloColors.Brand.pinkDeep
-    case .severe: return Color(red: 0.75, green: 0.05, blue: 0.20)
+    case .low: return MeloColors.Dark.textSecondary
+    case .caution: return MeloColors.Dark.accentBright
+    case .medium: return MeloColors.Dark.accent
+    case .high: return MeloColors.Dark.accentDeep
+    case .severe: return Color(red: 0.95, green: 0.25, blue: 0.35)
     }
 }
 
@@ -1110,15 +1006,15 @@ struct PhraseChips: View {
                 HStack(spacing: 4) {
                     Text(p.phrase)
                         .font(MeloFonts.zenMaruMedium(12))
-                        .foregroundColor(MeloColors.Brand.pink)
+                        .foregroundColor(MeloColors.Dark.accent)
                     Text("×\(p.count)")
                         .font(MeloFonts.zenMaruRegular(11).monospacedDigit())
-                        .foregroundColor(MeloColors.Text.secondary)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                 }
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)
                 .background(
-                    Capsule().fill(MeloColors.Surface.pinkPale)
+                    Capsule().fill(MeloColors.Dark.bgElevated)
                 )
             }
         }

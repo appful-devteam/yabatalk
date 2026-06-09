@@ -24,10 +24,19 @@ struct lovetalkApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .preferredColorScheme(.light)
+                .preferredColorScheme(.dark)
                 .modifier(DismissKeyboardOnTap())
                 .onOpenURL { url in
                     fileImportManager.handleIncomingFile(url: url)
+                }
+                .task {
+                    // Remote Config の ads_enabled を取得して広告ゲートを更新。
+                    // init() 時点では gate=false で App Open ロードはスキップされているので、
+                    // ここで true になった場合は改めてロードを試みる。
+                    await AdGate.shared.refresh()
+                    if AdGate.shared.adsEnabled {
+                        AppOpenAdManager.shared.loadAd()
+                    }
                 }
         }
         .modelContainer(SwiftDataContainer.shared.container)

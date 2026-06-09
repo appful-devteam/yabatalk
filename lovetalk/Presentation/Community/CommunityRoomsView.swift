@@ -3,18 +3,18 @@ import SwiftUI
 // MARK: - Palette (Figma node 576:334)
 
 private enum RoomsPalette {
-    static let headerBackground = Color.white               // 全ページで白ヘッダー統一
-    static let headerBorder = MeloColors.Surface.pinkPale         // 薄ピンク (下 border)
-    static let koiPink = MeloColors.Brand.pink              // 濃ピンク（選択タブ・参加ボタン）
-    static let joinedPinkBg = MeloColors.Surface.pinkPale         // 参加中ボタン背景
-    static let pillBorder = MeloColors.Surface.pinkPale           // 非選択タブの枠
-    static let bodyText = MeloColors.Text.primary             // メインテキスト
-    static let subText = MeloColors.Text.secondary              // サブ / キャプション (薄茶 DACDC4 → 薄灰 B6B6B6)
-    static let cardBorder = MeloColors.Text.secondary           // カード枠 (濃いグレー統一)
-    static let imagePlaceholder = MeloColors.Text.secondary     // 画像プレースホルダ (薄茶 → 薄灰)
-    static let shadow = MeloColors.Text.primary
-    static let searchButtonBg = MeloColors.Surface.pinkPale       // 検索ボタン背景
-    static let searchFieldBorder = MeloColors.Surface.pinkPale    // 検索フィールド枠
+    static let headerBackground = MeloColors.Dark.bg          // ダーク: 画面背景（黒）
+    static let headerBorder = MeloColors.Dark.cardStroke          // 下 border（暗い枠）
+    static let koiPink = MeloColors.Dark.accent             // アクセント（選択タブ・参加ボタン）
+    static let joinedPinkBg = MeloColors.Dark.bgElevated          // 参加中ボタン背景（暗い面）
+    static let pillBorder = MeloColors.Dark.cardStroke           // 非選択タブの枠
+    static let bodyText = MeloColors.Dark.textPrimary         // メインテキスト
+    static let subText = MeloColors.Dark.textSecondary          // サブ / キャプション
+    static let cardBorder = MeloColors.Dark.cardStroke          // カード枠
+    static let imagePlaceholder = MeloColors.Dark.textSecondary // 画像プレースホルダ
+    static let shadow = Color.black.opacity(0.3)
+    static let searchButtonBg = MeloColors.Dark.bgElevated       // 検索ボタン背景
+    static let searchFieldBorder = MeloColors.Dark.cardStroke    // 検索フィールド枠
 }
 
 // MARK: - Focus
@@ -50,13 +50,18 @@ struct CommunityRoomsView: View {
             header
             body_
         }
-        .background(Color.white.ignoresSafeArea())
+        .background(MeloColors.Dark.bg.ignoresSafeArea())
         .navigationDestination(for: CommunityRoom.self) { room in
             // 一覧 VM を詳細へ渡し、オーナーの削除 / ブロック操作を
             // そのまま一覧に反映できるようにする。
             CommunityRoomDetailView(room: room, roomsViewModel: viewModel)
         }
-        .onAppear {
+        // 相談部屋は read/write 共に匿名認証が必須（Firestore ルール）。
+        // 掲示板を経由せず直接開いた場合でも、サインインを確立してから読み込む。
+        .task {
+            if !BoardAuthService.shared.isSignedIn {
+                await BoardAuthService.shared.signInAnonymously()
+            }
             if viewModel.rooms.isEmpty {
                 viewModel.load()
             }
@@ -69,12 +74,12 @@ struct CommunityRoomsView: View {
             } label: {
                 Image(systemName: "plus")
                     .font(.system(size: 24, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
                     .frame(width: 56, height: 56)
                     .background(
                         Circle()
-                            .fill(MeloColors.Gradient.pinkPrimary)
-                            .shadow(color: MeloColors.Brand.pink.opacity(0.45), radius: 10, x: 0, y: 4)
+                            .fill(MeloColors.Dark.accentGradient)
+                            .shadow(color: MeloColors.Dark.accent.opacity(0.45), radius: 10, x: 0, y: 4)
                     )
             }
             .buttonStyle(.plain)
@@ -171,7 +176,7 @@ struct CommunityRoomsView: View {
     private var tabBar: some View {
         ZStack(alignment: .bottom) {
             Rectangle()
-                .fill(MeloColors.Gray.subButton.opacity(0.5))
+                .fill(MeloColors.Dark.divider)
                 .frame(height: 1)
                 .frame(maxWidth: .infinity)
 
@@ -198,7 +203,7 @@ struct CommunityRoomsView: View {
                     .tracking(0.48)
                     .foregroundStyle(
                         isSelected
-                        ? AnyShapeStyle(MeloColors.Gradient.pinkPrimary)
+                        ? AnyShapeStyle(MeloColors.Dark.accentGradient)
                         : AnyShapeStyle(RoomsPalette.bodyText)
                     )
                     .lineLimit(1)
@@ -207,7 +212,7 @@ struct CommunityRoomsView: View {
                 Rectangle()
                     .fill(
                         isSelected
-                        ? AnyShapeStyle(MeloColors.Gradient.pinkPrimary)
+                        ? AnyShapeStyle(MeloColors.Dark.accentGradient)
                         : AnyShapeStyle(Color.clear)
                     )
                     .frame(height: isSelected ? 3 : 1)
@@ -265,7 +270,7 @@ struct CommunityRoomsView: View {
         .frame(height: 32)
         .background(
             RoundedRectangle(cornerRadius: 20)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 20)
@@ -349,7 +354,7 @@ struct CommunityRoomsView: View {
                     Text("検索キーワードをクリア")
                         .font(MeloFonts.zenMaruMedium(13))
                         .tracking(0.3)
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                         .padding(.horizontal, 18)
                         .padding(.vertical, 8)
                         .background(
@@ -415,7 +420,7 @@ private struct RoomCard: View {
         ZStack(alignment: .topLeading) {
             // 背景
             RoundedRectangle(cornerRadius: 15)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: 15)
                         .stroke(RoomsPalette.cardBorder, lineWidth: 1)
@@ -539,7 +544,7 @@ private struct RoomCard: View {
             Text(room.isJoined ? "参加中" : "参加")
                 .font(MeloFonts.zenMaruMedium(16))
                 .tracking(0.48)
-                .foregroundColor(room.isJoined ? RoomsPalette.koiPink : .white)
+                .foregroundColor(room.isJoined ? RoomsPalette.koiPink : MeloColors.Dark.onAccent)
                 .frame(width: 73, height: 29)
                 .background(
                     RoundedRectangle(cornerRadius: 30)

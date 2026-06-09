@@ -14,7 +14,7 @@ struct BoardNotificationsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.white
+                MeloColors.Dark.bg
                     .ignoresSafeArea()
 
                 if isLoading {
@@ -35,7 +35,7 @@ struct BoardNotificationsView: View {
                     } label: {
                         Image(systemName: "xmark")
                             .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(MeloColors.Text.secondary)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
                     }
                 }
             }
@@ -126,8 +126,8 @@ struct BoardNotificationsView: View {
             .padding(.vertical, 12)
             .background(
                 notification.read
-                ? Color.white
-                : MeloColors.Gray.subButtonLight
+                ? MeloColors.Dark.card
+                : MeloColors.Dark.bgElevated
             )
         }
         .buttonStyle(.plain)

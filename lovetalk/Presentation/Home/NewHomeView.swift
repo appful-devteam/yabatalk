@@ -18,16 +18,16 @@ import UniformTypeIdentifiers
 
 // MARK: - Design Tokens
 private enum NewHomeTokens {
-    static let brandPink = MeloColors.Brand.pink
-    static let textDark = MeloColors.Text.primary
-    static let textMuted = MeloColors.Text.secondary
-    static let textGrey = MeloColors.Text.secondary
-    static let cardBorder = MeloColors.Brand.pink
-    static let pinkShadow = MeloColors.Brand.pinkLight.opacity(0.6)
+    static let brandPink = MeloColors.Dark.accent
+    static let textDark = MeloColors.Dark.textPrimary
+    static let textMuted = MeloColors.Dark.textSecondary
+    static let textGrey = MeloColors.Dark.textSecondary
+    static let cardBorder = MeloColors.Dark.accent
+    static let pinkShadow = MeloColors.Dark.accent.opacity(0.25)
 
-    /// ピンクスターダスト背景画像（30% opacity）
+    /// ピンクスターダスト背景画像（後でダーク用アセットに差し替え予定）
     static let backgroundImageName = "bg_diagnose_stardust"
-    static let backgroundOpacity: Double = 0.3
+    static let backgroundOpacity: Double = 0.12
 }
 
 // MARK: - Diagnose Page Background
@@ -36,11 +36,11 @@ private enum NewHomeTokens {
 struct DiagnoseStardustBackground: View {
     var body: some View {
         ZStack {
-            MeloColors.Surface.pinkPale
+            MeloColors.Dark.bg
             Image("bg_diagnose_stardust")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .opacity(0.3)
+                .opacity(0.12)
         }
         .ignoresSafeArea()
     }
@@ -268,7 +268,7 @@ struct NewHomeView: View {
             Text(String(localized: "ヤバ診断", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaru(20))
                 .tracking(0.6)
-                .foregroundStyle(MeloColors.Gradient.pinkPrimary)
+                .foregroundStyle(MeloColors.Dark.accentGradient)
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
                 .truncationMode(.tail)
@@ -294,13 +294,13 @@ struct NewHomeView: View {
         } label: {
             ZStack {
                 Circle()
-                    .fill(MeloColors.Gradient.pinkPrimary)
+                    .fill(MeloColors.Dark.accentGradient)
                 Image(systemName: "gearshape.fill")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
             }
             .frame(width: PremiumBadgeButton.height, height: PremiumBadgeButton.height)
-            .shadow(color: MeloColors.Brand.pink.opacity(0.45), radius: 6, x: 0, y: 2)
+            .shadow(color: MeloColors.Dark.accent.opacity(0.25), radius: 6, x: 0, y: 2)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text(String(localized: "設定", bundle: LanguageManager.appBundle)))
@@ -371,7 +371,7 @@ struct NewHomeView: View {
             HStack(spacing: -6) {
                 ZStack {
                     Circle()
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.bgElevated)
                     Image(systemName: icon)
                         .font(.system(size: 14, weight: .regular))
                         .foregroundColor(NewHomeTokens.brandPink)
@@ -383,7 +383,7 @@ struct NewHomeView: View {
                 Text(label)
                     .font(MeloFonts.zenMaru(10))
                     .tracking(0.24)
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .lineLimit(1)
                     .fixedSize(horizontal: true, vertical: false)
                     .padding(.leading, 18)
@@ -399,7 +399,7 @@ struct NewHomeView: View {
                             ),
                             style: .continuous
                         )
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.bgElevated)
                         .shadow(color: NewHomeTokens.pinkShadow, radius: 3, x: 0, y: 1)
                     )
             }
@@ -418,13 +418,13 @@ struct NewHomeView: View {
                     Text(String(localized: "LINEトーク毒見をはじめる", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaru(18))
                         .tracking(0.54)
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.CTA.onLime)
                         .lineLimit(1)
                         .minimumScaleFactor(0.85)
                     Text(String(localized: "トーク履歴からハラスメント構造を毒見診断", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaru(10))
                         .tracking(0.24)
-                        .foregroundColor(.white.opacity(0.85))
+                        .foregroundColor(MeloColors.CTA.onLime.opacity(0.8))
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
                 }
@@ -432,7 +432,7 @@ struct NewHomeView: View {
 
                 ZStack {
                     Circle()
-                        .fill(Color.white)
+                        .fill(MeloColors.CTA.onLime)
                         .frame(width: 37, height: 37)
                     Image(systemName: "chevron.right")
                         .font(.system(size: 14, weight: .bold))
@@ -453,31 +453,58 @@ struct NewHomeView: View {
     }
 
     // MARK: - History Card (Figma: 白オーバーレイ + 診断履歴 + 行 + ソート切替)
+    /// 診断結果を保持する履歴を「やばさスコア降順」でランキング化（1 位 = 最高スコア）。
+    private var diagnosisHistory: [(rank: Int, stored: StoredAnalysisResult, result: DiagnosisResult)] {
+        let items = analysisHistory.compactMap { s -> (StoredAnalysisResult, DiagnosisResult)? in
+            guard let dr = s.diagnosisResult else { return nil }
+            return (s, dr)
+        }
+        .sorted { a, b in
+            a.1.overallRiskScore != b.1.overallRiskScore
+                ? a.1.overallRiskScore > b.1.overallRiskScore
+                : a.0.analyzedAt > b.0.analyzedAt
+        }
+        return items.enumerated().map { (idx, e) in (idx + 1, e.0, e.1) }
+    }
+
     private var historyCard: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 6) {
                 Image(systemName: "clock")
                     .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                 Text(String(localized: "診断履歴", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaru(14))
                     .tracking(0.42)
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                 Spacer()
             }
             .padding(.leading, 6)
             .padding(.trailing, 4)
             .padding(.top, 6)
 
-            emptyHistoryContent
+            if diagnosisHistory.isEmpty {
+                emptyHistoryContent
+                    .padding(.bottom, 6)
+            } else {
+                VStack(spacing: 8) {
+                    ForEach(diagnosisHistory, id: \.stored.id) { item in
+                        historyRow(rank: item.rank, stored: item.stored, result: item.result)
+                    }
+                }
                 .padding(.bottom, 6)
+            }
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
+                )
         )
     }
 
@@ -498,6 +525,97 @@ struct NewHomeView: View {
         }
         .padding(.horizontal, 20)
         .frame(maxWidth: .infinity, minHeight: 160)
+    }
+
+    /// 診断履歴の1行（めろとーく Figma 724:881 のレイアウト踏襲: 行ごと角丸カード /
+    /// 左=ランクキャラ 50×50 / 名前+日付 / 右=やばさスコア。配色は yabatーク ダーク + severity 色）。
+    /// タップで結果を再オープン。
+    private func historyRow(rank: Int, stored: StoredAnalysisResult, result: DiagnosisResult) -> some View {
+        Button {
+            HapticManager.light()
+            let s = ChatSession(title: result.sessionTitle, messages: [], participants: [])
+            coordinator.navigateToDiagnosis(result: result, session: s)
+        } label: {
+            HStack(spacing: 0) {
+                // 1〜3 位はランクキャラ画像、4 位以降は数字。
+                rankBadge(rank)
+                    .frame(width: 54, alignment: .center)
+                    .padding(.leading, 6)
+
+                // 名前 + 日付
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(result.sessionTitle.isEmpty ? "毒見結果" : result.sessionTitle)
+                        .font(MeloFonts.zenMaru(16))
+                        .tracking(0.48)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
+                        .lineLimit(1)
+                    Text(formatHistoryDate(stored.analyzedAt))
+                        .font(MeloFonts.zenMaruRegular(12))
+                        .tracking(0.36)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                        .lineLimit(1)
+                }
+                .padding(.leading, 6)
+
+                Spacer(minLength: 8)
+
+                // やばさスコア（severity 色: 安全=ライム / 注意=黄 / 危険=ピンク）+ 警告アイコン
+                HStack(alignment: .firstTextBaseline, spacing: 2) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(result.riskLevel.labColor)
+                        .baselineOffset(-2)
+                    Text("\(result.overallRiskScore)")
+                        .font(MeloFonts.anton(28))
+                        .foregroundColor(result.riskLevel.labColor)
+                    Text("%")
+                        .font(MeloFonts.mono(11))
+                        .foregroundColor(result.riskLevel.labColor)
+                }
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(MeloColors.Dark.textSecondary)
+                    .padding(.leading, 10)
+                    .padding(.trailing, 12)
+            }
+            .padding(.vertical, 8)
+            .frame(minHeight: 72)
+            .background(
+                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                    .fill(MeloColors.Dark.bgElevated)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .stroke(MeloColors.Dark.accent.opacity(0.30), lineWidth: 1)
+                    )
+            )
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    /// 履歴行の日付表示（yyyy/MM/dd）。
+    private func formatHistoryDate(_ date: Date) -> String {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "ja_JP")
+        f.dateFormat = "yyyy/MM/dd"
+        return f.string(from: date)
+    }
+
+    /// 1〜3 位はランクキャラ画像（50×50）、4 位以降は数字（アクセント色）。
+    @ViewBuilder
+    private func rankBadge(_ rank: Int) -> some View {
+        if rank <= 3 {
+            Image("rank_\(rank)")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 50, height: 50)
+        } else {
+            Text(String(format: "%02d", rank))
+                .font(MeloFonts.anton(26))
+                .foregroundColor(MeloColors.Dark.accent)
+                .frame(width: 50)
+        }
     }
 
     // MARK: - Actions
@@ -746,14 +864,14 @@ struct NewHomeView: View {
                 Text(String(localized: "使い方はわかりますか？", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruMedium(18))
                     .tracking(0.45)
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .multilineTextAlignment(.center)
 
                 // 本文
                 Text(String(localized: "初めて使う方は使い方ガイドをご覧ください。", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruRegular(13))
                     .tracking(0.3)
-                    .foregroundColor(MeloColors.Text.secondary)
+                    .foregroundColor(MeloColors.Dark.textSecondary)
                     .multilineTextAlignment(.center)
                     .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
@@ -766,21 +884,21 @@ struct NewHomeView: View {
                     HStack(spacing: 8) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 4, style: .continuous)
-                                .fill(promptDontShowAgain ? MeloColors.Brand.pink : Color.white)
+                                .fill(promptDontShowAgain ? MeloColors.Dark.accent : MeloColors.Dark.bgElevated)
                                 .frame(width: 18, height: 18)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 4, style: .continuous)
-                                        .stroke(MeloColors.Brand.pink, lineWidth: 1)
+                                        .stroke(MeloColors.Dark.accent, lineWidth: 1)
                                 )
                             if promptDontShowAgain {
                                 Image(systemName: "checkmark")
                                     .font(.system(size: 11, weight: .bold))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(MeloColors.Dark.onAccent)
                             }
                         }
                         Text(String(localized: "今後表示しない", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruRegular(12))
-                            .foregroundColor(MeloColors.Text.secondary)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
                     }
                 }
                 .buttonStyle(.plain)
@@ -794,12 +912,12 @@ struct NewHomeView: View {
                     Text(String(localized: "使い方を見る", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruMedium(15))
                         .tracking(0.4)
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                         .frame(maxWidth: .infinity)
                         .frame(height: 48)
                         .background(
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(MeloColors.Gradient.pinkPrimary)
+                                .fill(MeloColors.Dark.accentGradient)
                         )
                 }
                 .buttonStyle(NewHomeScaleStyle())
@@ -812,15 +930,15 @@ struct NewHomeView: View {
                     Text(String(localized: "見ない", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruMedium(14))
                         .tracking(0.4)
-                        .foregroundColor(MeloColors.Brand.pink)
+                        .foregroundColor(MeloColors.Dark.accent)
                         .frame(maxWidth: .infinity)
                         .frame(height: 44)
                         .background(
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(Color.white)
+                                .fill(MeloColors.Dark.bgElevated)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                        .stroke(MeloColors.Brand.pink, lineWidth: 1)
+                                        .stroke(MeloColors.Dark.accent, lineWidth: 1)
                                 )
                         )
                 }
@@ -829,7 +947,11 @@ struct NewHomeView: View {
             .padding(24)
             .background(
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
+                    )
                     .shadow(color: .black.opacity(0.18), radius: 24, x: 0, y: 12)
             )
             .padding(.horizontal, 36)
@@ -845,22 +967,26 @@ struct NewHomeView: View {
             VStack(spacing: 20) {
                 ZStack {
                     Circle()
-                        .stroke(MeloColors.Brand.pinkDeep.opacity(0.2), lineWidth: 4)
+                        .stroke(MeloColors.Dark.track, lineWidth: 4)
                         .frame(width: 60, height: 60)
                     Circle()
                         .trim(from: 0, to: 0.7)
-                        .stroke(MeloColors.Gradient.pinkPrimary, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                        .stroke(MeloColors.Dark.accentGradient, style: StrokeStyle(lineWidth: 4, lineCap: .round))
                         .frame(width: 60, height: 60)
                         .rotationEffect(.degrees(-90))
                 }
                 Text(String(localized: "ファイルを読み込み中...", bundle: LanguageManager.appBundle))
                     .font(MeloTypography.bodyBold)
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
             }
             .padding(32)
             .background(
                 RoundedRectangle(cornerRadius: 24)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 24)
+                            .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
+                    )
                     .shadow(color: .black.opacity(0.15), radius: 20, x: 0, y: 10)
             )
         }
@@ -901,10 +1027,10 @@ struct NewHomeView: View {
                 VStack(spacing: 8) {
                     Text(String(localized: "本日の診断回数に達しました", bundle: LanguageManager.appBundle))
                         .font(.system(size: 18, weight: .bold))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                     Text(String(localized: "広告を見て診断回数を追加するか、\nPremiumで無制限に診断できます", bundle: LanguageManager.appBundle))
                         .font(.system(size: 13))
-                        .foregroundColor(MeloColors.Text.secondary)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                         .multilineTextAlignment(.center)
                         .lineSpacing(3)
                 }
@@ -981,7 +1107,7 @@ struct NewHomeView: View {
                     } label: {
                         Text(String(localized: "閉じる", bundle: LanguageManager.appBundle))
                             .font(.system(size: 13, weight: .medium))
-                            .foregroundColor(MeloColors.Text.secondary)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
                     }
                     .buttonStyle(.plain)
                     .padding(.top, 4)
@@ -990,7 +1116,11 @@ struct NewHomeView: View {
             .padding(24)
             .background(
                 RoundedRectangle(cornerRadius: 24)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 24)
+                            .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
+                    )
                     .shadow(color: .black.opacity(0.2), radius: 30, x: 0, y: 15)
             )
             .padding(.horizontal, 32)
@@ -1021,15 +1151,15 @@ struct MeromaruSpeechBubble: View {
             Text(text)
                 .font(MeloFonts.zenMaru(11))
                 .tracking(0.33)
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
                 .background(
                     ZStack {
                         BubbleShapeWithTail()
-                            .fill(Color.white)
+                            .fill(MeloColors.Dark.bgElevated)
                         BubbleShapeWithTail()
-                            .stroke(MeloColors.Brand.pink, lineWidth: 1)
+                            .stroke(MeloColors.Dark.accent, lineWidth: 1)
                     }
                 )
         }
@@ -1225,15 +1355,15 @@ private struct SparkleStar: View {
     private var tintColor: Color {
         switch spec.color {
         case .white: return .white
-        case .pink:  return MeloColors.Brand.pink
+        case .pink:  return MeloColors.Dark.accent
         }
     }
 
-    /// グロー (にじみ) の色。白星は白、ピンク星はピンクで光らせて存在感を出す
+    /// グロー (にじみ) の色。白星は白、ピンク星はライムで光らせて存在感を出す
     private var glowColor: Color {
         switch spec.color {
         case .white: return .white
-        case .pink:  return MeloColors.Brand.pink
+        case .pink:  return MeloColors.Dark.accent
         }
     }
 

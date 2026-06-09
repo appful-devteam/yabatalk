@@ -9,20 +9,20 @@ struct UsageGuideStep: Identifiable {
     let meromaruAsset: String
 }
 
-// MARK: - Usage Guide Design Tokens (NewHomeView に合わせる)
+// MARK: - Usage Guide Design Tokens (dark theme)
 private enum UsageGuideTokens {
-    static let pageBg = Color.white
-    static let headerBg = Color.white
-    static let softPinkTop = MeloColors.Surface.pinkPale
-    static let softPinkBottom = MeloColors.Surface.pinkPale
-    static let brandPink = MeloColors.Brand.pink
-    static let ctaPink = MeloColors.Brand.pink
-    static let softPink = MeloColors.Brand.pinkLight
-    static let textDark = MeloColors.Text.primary
-    static let textGrey = MeloColors.Text.secondary
-    static let textMuted = MeloColors.Text.secondary
-    static let cardStroke = MeloColors.Text.primary
-    static let divider = MeloColors.Gray.subButtonLight
+    static let pageBg = MeloColors.Dark.bg
+    static let headerBg = MeloColors.Dark.bgElevated
+    static let softPinkTop = MeloColors.Dark.bg
+    static let softPinkBottom = MeloColors.Dark.bg
+    static let brandPink = MeloColors.Dark.accent
+    static let ctaPink = MeloColors.Dark.accent
+    static let softPink = MeloColors.Dark.accentBright
+    static let textDark = MeloColors.Dark.textPrimary
+    static let textGrey = MeloColors.Dark.textSecondary
+    static let textMuted = MeloColors.Dark.textSecondary
+    static let cardStroke = MeloColors.Dark.cardStroke
+    static let divider = MeloColors.Dark.divider
 }
 
 // MARK: - Usage Guide View
@@ -160,7 +160,7 @@ struct UsageGuideView: View {
     private func circleIconButton(system: String, pointSize: CGFloat) -> some View {
         ZStack {
             Circle()
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
                 .overlay(
                     Circle()
                         .stroke(UsageGuideTokens.brandPink, lineWidth: 1)
@@ -181,7 +181,7 @@ struct UsageGuideView: View {
                         .fill(UsageGuideTokens.brandPink)
                     Text("\(step.id)")
                         .font(MeloFonts.zenMaruMedium(18))
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                 }
                 .frame(width: 34, height: 34)
 
@@ -206,7 +206,7 @@ struct UsageGuideView: View {
                     .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .fill(Color.white)
+                            .fill(MeloColors.Dark.card)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10, style: .continuous)
                                     .stroke(UsageGuideTokens.cardStroke, lineWidth: 1)
@@ -235,7 +235,7 @@ struct UsageGuideView: View {
                 .frame(maxWidth: .infinity)
                 .background(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.card)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 .stroke(UsageGuideTokens.brandPink, lineWidth: 1)
@@ -301,7 +301,7 @@ struct UsageGuideView: View {
                             .frame(height: 44)
                             .background(
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(Color.white)
+                                    .fill(MeloColors.Dark.card)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 12, style: .continuous)
                                             .stroke(UsageGuideTokens.ctaPink, lineWidth: 1)
@@ -361,7 +361,7 @@ struct UsageGuideView: View {
                 Image(systemName: systemIcon)
                     .font(.system(size: 13, weight: .semibold))
             }
-            .foregroundColor(.white)
+            .foregroundColor(MeloColors.Dark.onAccent)
             .frame(maxWidth: .infinity)
             .frame(height: 52)
             .background(

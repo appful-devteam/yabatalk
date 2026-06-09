@@ -8,19 +8,19 @@ struct CommercialTransactionsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                MeloGradientBackground(style: .subtle)
+                MeloColors.Dark.bg.ignoresSafeArea()
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         // 最終更新日
                         Text(String(localized: "最終更新日: 2026年5月18日", bundle: LanguageManager.appBundle))
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(MeloColors.Text.secondary)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
 
                         // イントロ
                         Text(String(localized: "本ページは、特定商取引に関する法律第11条に基づく表記です。", bundle: LanguageManager.appBundle))
                             .font(.system(size: 14, weight: .regular))
-                            .foregroundColor(MeloColors.Text.secondary)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
                             .lineSpacing(6)
 
                         section(
@@ -94,7 +94,7 @@ struct CommercialTransactionsView: View {
                         HapticManager.light()
                         dismiss()
                     }
-                    .foregroundColor(MeloColors.Brand.pinkDeep)
+                    .foregroundColor(MeloColors.Dark.accent)
                 }
             }
         }
@@ -104,11 +104,11 @@ struct CommercialTransactionsView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.system(size: 16, weight: .bold))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
 
             Text(content)
                 .font(.system(size: 14, weight: .regular))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .lineSpacing(6)
         }
     }

@@ -1,20 +1,20 @@
 import SwiftUI
 import StoreKit
 
-// MARK: - Subscription Colors (refreshed to match NewHomeView tokens)
+// MARK: - Subscription Colors (dark theme: 黒地 × ホットピンク accent)
 private enum SubColors {
-    // New-design palette
-    static let brandPink = MeloColors.Brand.pink     // primary pink (borders, accents, icons)
-    static let filledPink = MeloColors.Brand.pink    // filled CTA pink
-    static let softPink = MeloColors.Brand.pinkLight      // selection highlight
-    static let headerBg = MeloColors.Surface.pinkPale
-    static let bgGradientStart = MeloColors.Surface.pinkPale
-    static let bgGradientEnd = MeloColors.Surface.pinkPale
-    static let textDark = MeloColors.Text.primary
-    static let textGrey = MeloColors.Text.secondary
-    static let textMuted = MeloColors.Text.secondary
-    static let borderBrown = MeloColors.Text.primary
-    static let neutralDivider = MeloColors.Gray.subButtonLight
+    // Dark palette
+    static let brandPink = MeloColors.Dark.accent     // primary accent (borders, accents, icons)
+    static let filledPink = MeloColors.Dark.accent    // filled CTA accent
+    static let softPink = MeloColors.Dark.accentBright      // selection highlight
+    static let headerBg = MeloColors.Dark.bgElevated
+    static let bgGradientStart = MeloColors.Dark.bg
+    static let bgGradientEnd = MeloColors.Dark.bg
+    static let textDark = MeloColors.Dark.textPrimary
+    static let textGrey = MeloColors.Dark.textSecondary
+    static let textMuted = MeloColors.Dark.textSecondary
+    static let borderBrown = MeloColors.Dark.cardStroke
+    static let neutralDivider = MeloColors.Dark.divider
 
     // Backwards-compat aliases for callers that still reference these names
     static let accentPink = brandPink
@@ -39,10 +39,10 @@ struct SubscriptionView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            // やわらかいピンクの背景 (NewHomeView と同系統)
+            // 黒地の背景 (診断フローと同系統)
             LinearGradient(
                 colors: [
-                    Color.white,
+                    MeloColors.Dark.bg,
                     SubColors.headerBg,
                     SubColors.bgGradientStart,
                     SubColors.bgGradientEnd
@@ -125,7 +125,7 @@ struct SubscriptionView: View {
                             .frame(width: 36, height: 36)
                             .background(
                                 Circle()
-                                    .fill(Color.white)
+                                    .fill(MeloColors.Dark.card)
                                     .overlay(
                                         Circle()
                                             .stroke(SubColors.borderBrown.opacity(0.5), lineWidth: 1)
@@ -211,7 +211,7 @@ struct SubscriptionView: View {
         .padding(3)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.bgElevated)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(SubColors.neutralDivider, lineWidth: 1)
@@ -231,14 +231,14 @@ struct SubscriptionView: View {
         } label: {
             Text(label)
                 .font(MeloFonts.zenMaruMedium(14))
-                .foregroundColor(isSelected ? .white : SubColors.textGrey)
+                .foregroundColor(isSelected ? MeloColors.Dark.onAccent : SubColors.textGrey)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
                 .background(
                     Group {
                         if isSelected {
                             RoundedRectangle(cornerRadius: 10)
-                                .fill(MeloColors.Gradient.pinkPrimary)
+                                .fill(MeloColors.Dark.accentGradient)
                         }
                     }
                 )
@@ -250,8 +250,8 @@ struct SubscriptionView: View {
     private var headerText: some View {
         VStack(spacing: 4) {
             Text(selectedTier == .premiumPlus
-                 ? String(localized: "めろとーく Premium+", bundle: LanguageManager.appBundle)
-                 : String(localized: "めろとーく Premium", bundle: LanguageManager.appBundle))
+                 ? String(localized: "ハラスメントーク Premium+", bundle: LanguageManager.appBundle)
+                 : String(localized: "ハラスメントーク Premium", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaru(22))
                 .tracking(0.66)
                 .foregroundColor(SubColors.textDark)
@@ -308,12 +308,12 @@ struct SubscriptionView: View {
                     if isPurchased {
                         Text(String(localized: "契約中", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruMedium(10))
-                            .foregroundColor(.white)
+                            .foregroundColor(MeloColors.Dark.onAccent)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .background(
                                 Capsule()
-                                    .fill(MeloColors.Gradient.pinkPrimary)
+                                    .fill(MeloColors.Dark.accentGradient)
                             )
                     }
                 }
@@ -348,8 +348,8 @@ struct SubscriptionView: View {
         return ZStack {
             Circle()
                 .fill(filled
-                      ? AnyShapeStyle(MeloColors.Gradient.pinkPrimary)
-                      : AnyShapeStyle(Color.white))
+                      ? AnyShapeStyle(MeloColors.Dark.accentGradient)
+                      : AnyShapeStyle(MeloColors.Dark.card))
                 .frame(width: 26, height: 26)
                 .overlay(
                     Circle()
@@ -362,7 +362,7 @@ struct SubscriptionView: View {
             if filled {
                 Image(systemName: "checkmark")
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
             }
         }
     }
@@ -396,7 +396,7 @@ struct SubscriptionView: View {
         }
 
         return RoundedRectangle(cornerRadius: 10)
-            .fill(isSelected ? SubColors.headerBg : Color.white)
+            .fill(isSelected ? SubColors.headerBg : MeloColors.Dark.card)
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(borderColor, lineWidth: lineWidth)
@@ -410,12 +410,12 @@ struct SubscriptionView: View {
             Text(String(localized: "おすすめ", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruMedium(11))
         }
-        .foregroundColor(.white)
+        .foregroundColor(MeloColors.Dark.onAccent)
         .padding(.horizontal, 12)
         .padding(.vertical, 5)
         .background(
             Capsule()
-                .fill(MeloColors.Gradient.pinkPrimary)
+                .fill(MeloColors.Dark.accentGradient)
         )
         .offset(x: -12, y: -10)
     }
@@ -427,12 +427,12 @@ struct SubscriptionView: View {
             Text(String(localized: "購入済み", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruMedium(11))
         }
-        .foregroundColor(.white)
+        .foregroundColor(MeloColors.Dark.onAccent)
         .padding(.horizontal, 12)
         .padding(.vertical, 5)
         .background(
             Capsule()
-                .fill(MeloColors.Gradient.pinkPrimary)
+                .fill(MeloColors.Dark.accentGradient)
         )
         .offset(x: -12, y: -10)
     }
@@ -460,23 +460,14 @@ struct SubscriptionView: View {
                 freeValue: String(localized: "5通/日", bundle: LanguageManager.appBundle), premiumValue: String(localized: "30通/日", bundle: LanguageManager.appBundle), plusValue: String(localized: "200通/日", bundle: LanguageManager.appBundle)
             )
             comparisonDivider
-            comparisonTextRow(
-                label: String(localized: "トーク\nサマリー", bundle: LanguageManager.appBundle), icon: "doc.text.fill",
-                freeValue: String(localized: "3ヶ月分", bundle: LanguageManager.appBundle), premiumValue: "✓", plusValue: "✓"
-            )
-            comparisonDivider
-            comparisonCheckRowNew(label: String(localized: "愛情表現の\n分析", bundle: LanguageManager.appBundle), icon: "heart.text.square.fill", free: false, premium: true, plus: true)
-            comparisonDivider
             comparisonCheckRowNew(label: String(localized: "詳細データ", bundle: LanguageManager.appBundle), icon: "chart.bar.doc.horizontal", free: false, premium: true, plus: true)
-            comparisonDivider
-            comparisonCheckRowNew(label: String(localized: "相性分析", bundle: LanguageManager.appBundle), icon: "person.text.rectangle", free: false, premium: true, plus: true)
             comparisonDivider
             comparisonCheckRowNew(label: String(localized: "広告非表示", bundle: LanguageManager.appBundle), icon: "eye.slash.fill", free: false, premium: true, plus: true)
         }
         .background(comparisonColumnHighlight)
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10)
@@ -653,9 +644,9 @@ struct SubscriptionView: View {
         VStack(spacing: 0) {
             LinearGradient(
                 colors: [
-                    Color.white.opacity(0),
-                    Color.white.opacity(0.8),
-                    Color.white
+                    MeloColors.Dark.bg.opacity(0),
+                    MeloColors.Dark.bg.opacity(0.8),
+                    MeloColors.Dark.bg
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -672,21 +663,21 @@ struct SubscriptionView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "crown.fill")
                             .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(.white)
+                            .foregroundColor(MeloColors.Dark.onAccent)
 
                         Text(purchaseButtonText)
                             .font(MeloFonts.zenMaruMedium(14))
-                            .foregroundColor(.white)
+                            .foregroundColor(MeloColors.Dark.onAccent)
 
                         Image(systemName: "arrow.right")
                             .font(.system(size: 12, weight: .bold))
-                            .foregroundColor(.white)
+                            .foregroundColor(MeloColors.Dark.onAccent)
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
                     .background(
                         RoundedRectangle(cornerRadius: 14)
-                            .fill(MeloColors.Gradient.pinkPrimary)
+                            .fill(MeloColors.Dark.accentGradient)
                     )
                 }
                 .buttonStyle(.plain)
@@ -694,7 +685,7 @@ struct SubscriptionView: View {
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 24)
-            .background(Color.white)
+            .background(MeloColors.Dark.bg)
         }
     }
 
@@ -789,7 +780,7 @@ struct SubscriptionView: View {
             .padding(40)
             .background(
                 RoundedRectangle(cornerRadius: 14)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: 14)
                             .stroke(SubColors.brandPink, lineWidth: 1)

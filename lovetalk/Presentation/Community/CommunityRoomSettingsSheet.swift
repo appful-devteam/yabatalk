@@ -9,15 +9,15 @@ import SwiftUI
 //  - 破壊的アクション: 赤系
 
 private enum RoomSettingsPalette {
-    static let background = MeloColors.Surface.pinkPale
-    static let cardBg = Color.white
-    static let stroke = MeloColors.Text.primary
-    static let textMain = MeloColors.Text.primary
-    static let textSub = MeloColors.Gray.subButton
-    static let accent = MeloColors.Brand.pink
-    static let accentSoft = MeloColors.Surface.pinkPale
-    static let destructive = MeloColors.Status.error
-    static let destructiveSoft = MeloColors.Status.errorBg
+    static let background = MeloColors.Dark.bg
+    static let cardBg = MeloColors.Dark.card
+    static let stroke = MeloColors.Dark.cardStroke
+    static let textMain = MeloColors.Dark.textPrimary
+    static let textSub = MeloColors.Dark.textSecondary
+    static let accent = MeloColors.Dark.accent
+    static let accentSoft = MeloColors.Dark.bgElevated
+    static let destructive = MeloColors.Status.error      // 状態色（意味）: 変えない
+    static let destructiveSoft = MeloColors.Status.errorBg // 状態色（意味）: 変えない
 }
 
 // MARK: - Settings Sheet
@@ -157,7 +157,7 @@ struct CommunityRoomSettingsSheet: View {
                     .frame(height: 40)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.white)
+                            .fill(MeloColors.Dark.card)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(RoomSettingsPalette.stroke, lineWidth: 1)
@@ -184,7 +184,7 @@ struct CommunityRoomSettingsSheet: View {
                 }
                 .background(
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.card)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(RoomSettingsPalette.stroke, lineWidth: 1)
@@ -256,7 +256,7 @@ struct CommunityRoomSettingsSheet: View {
                      ? String(localized: "ブロック解除", bundle: LanguageManager.appBundle)
                      : String(localized: "ブロック", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruMedium(12))
-                    .foregroundColor(isBlocked ? RoomSettingsPalette.textMain : .white)
+                    .foregroundColor(isBlocked ? RoomSettingsPalette.textMain : MeloColors.Dark.onAccent)
                     .padding(.horizontal, 14)
                     .frame(height: 28)
                     .background(
@@ -381,7 +381,7 @@ struct CommunityRoomSettingsSheet: View {
             Text(title)
                 .font(MeloFonts.zenMaruOrFallback(14))
                 .tracking(0.42)
-                .foregroundColor(.white)
+                .foregroundColor(MeloColors.Dark.onAccent)
                 .padding(.horizontal, 22)
                 .frame(height: 34)
                 .background(

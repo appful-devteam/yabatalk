@@ -49,9 +49,9 @@ struct AnnouncementPopupView: View {
             dontShowAgainSection
         }
         .padding(.bottom, 20)
-        .background(Color.white)
+        .background(MeloColors.Dark.card)
         .cornerRadius(20)
-        .shadow(color: MeloColors.Brand.pinkLight.opacity(0.15), radius: 10, x: 0, y: 4)
+        .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 4)
         .padding(.horizontal, 32)
     }
 
@@ -65,7 +65,7 @@ struct AnnouncementPopupView: View {
             } label: {
                 Image(systemName: "xmark.circle.fill")
                     .font(.system(size: 24))
-                    .foregroundStyle(MeloColors.Text.secondary.opacity(0.6))
+                    .foregroundStyle(MeloColors.Dark.textSecondary.opacity(0.6))
             }
             .padding(.top, 12)
             .padding(.trailing, 12)
@@ -93,12 +93,12 @@ struct AnnouncementPopupView: View {
         VStack(spacing: 8) {
             Text(announcement.title)
                 .font(MeloFonts.zenMaruOrFallback(20))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .multilineTextAlignment(.center)
 
             Text(announcement.message)
                 .font(MeloFonts.zenMaruOrFallback(14))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .multilineTextAlignment(.center)
                 .lineSpacing(4)
         }
@@ -117,19 +117,10 @@ struct AnnouncementPopupView: View {
                 } label: {
                     Text(primaryTitle)
                         .font(MeloFonts.zenMaruOrFallback(16))
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(
-                            LinearGradient(
-                                colors: [
-                                    MeloColors.Brand.pinkDeep,
-                                    MeloColors.Brand.pinkLight
-                                ],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
+                        .background(MeloColors.Dark.accentGradient)
                         .clipShape(Capsule())
                 }
                 .padding(.horizontal, 24)
@@ -142,7 +133,7 @@ struct AnnouncementPopupView: View {
                 } label: {
                     Text(secondaryTitle)
                         .font(MeloFonts.zenMaruOrFallback(14))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                 }
             }
         }
@@ -161,12 +152,12 @@ struct AnnouncementPopupView: View {
                     Image(systemName: dontShowAgain ? "checkmark.square.fill" : "square")
                         .font(.system(size: 16))
                         .foregroundColor(
-                            dontShowAgain ? MeloColors.Brand.pinkLight : MeloColors.Text.secondary
+                            dontShowAgain ? MeloColors.Dark.accent : MeloColors.Dark.textSecondary
                         )
 
                     Text(String(localized: "今後は表示しない", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruOrFallback(12))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                 }
             }
             .padding(.top, 4)

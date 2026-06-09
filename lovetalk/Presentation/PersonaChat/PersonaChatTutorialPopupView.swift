@@ -8,11 +8,11 @@ struct PersonaChatTutorialPopupView: View {
     @State private var showContent = false
 
     // NewHome tokens
-    private let brandPink = MeloColors.Brand.pink
-    private let filledPink = MeloColors.Brand.pink
-    private let brownStroke = MeloColors.Text.primary
-    private let textDark = MeloColors.Text.primary
-    private let textSub = MeloColors.Text.secondary
+    private let brandPink = MeloColors.Dark.accent
+    private let filledPink = MeloColors.Dark.accent
+    private let brownStroke = MeloColors.Dark.cardStroke
+    private let textDark = MeloColors.Dark.textPrimary
+    private let textSub = MeloColors.Dark.textSecondary
 
     var body: some View {
         ZStack {
@@ -71,7 +71,7 @@ struct PersonaChatTutorialPopupView: View {
             } label: {
                 Text(String(localized: "はじめる", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruMedium(16))
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
                     .frame(maxWidth: .infinity)
                     .frame(height: 50)
                     .background(
@@ -86,7 +86,7 @@ struct PersonaChatTutorialPopupView: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(brownStroke, lineWidth: 1)
@@ -99,7 +99,7 @@ struct PersonaChatTutorialPopupView: View {
         HStack(spacing: 12) {
             Text(number)
                 .font(MeloFonts.zenMaruMedium(13))
-                .foregroundColor(.white)
+                .foregroundColor(MeloColors.Dark.onAccent)
                 .frame(width: 24, height: 24)
                 .background(
                     Circle()

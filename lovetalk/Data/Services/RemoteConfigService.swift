@@ -18,7 +18,9 @@ final class RemoteConfigService {
 
         remoteConfig.setDefaults([
             Constants.RemoteConfigKeys.inAppAnnouncements: "" as NSObject,
-            Constants.RemoteConfigKeys.forceUpdateConfig: "" as NSObject
+            Constants.RemoteConfigKeys.forceUpdateConfig: "" as NSObject,
+            // 広告の ON/OFF。公開前デフォルトは false（広告なし）。公開後に Console で true に切替。
+            Constants.RemoteConfigKeys.adsEnabled: false as NSObject
         ])
     }
 

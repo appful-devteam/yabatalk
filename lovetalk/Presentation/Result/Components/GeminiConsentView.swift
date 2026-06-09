@@ -70,7 +70,7 @@ struct GeminiConsentView: View {
                 .font(.system(size: 44))
                 .foregroundStyle(
                     LinearGradient(
-                        colors: [MeloColors.Brand.pinkDeep, .orange],
+                        colors: [MeloColors.Dark.accent, .orange],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -79,12 +79,12 @@ struct GeminiConsentView: View {
 
             Text(String(localized: "トーク履歴の外部送信に関する同意", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(18))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .multilineTextAlignment(.center)
 
             Text(String(localized: "本機能を利用する前に、以下の内容をよくお読みください。", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(13))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .multilineTextAlignment(.center)
         }
     }
@@ -134,6 +134,7 @@ struct GeminiConsentView: View {
         .padding(20)
         .frame(maxWidth: .infinity)
         .background(
+            // TODO(dark): 要確認（送信先バナーの独自インディゴ→紫グラデ。暗地でも白文字が読めるため据え置き）
             RoundedRectangle(cornerRadius: 16)
                 .fill(
                     LinearGradient(
@@ -142,7 +143,7 @@ struct GeminiConsentView: View {
                         endPoint: .bottomTrailing
                     )
                 )
-                .shadow(color: .black.opacity(0.12), radius: 10, x: 0, y: 4)
+                .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 4)
         )
     }
 
@@ -220,7 +221,7 @@ struct GeminiConsentView: View {
                         .padding(.top, 2)
                     Text(String(localized: "日本の個人情報保護法に基づき、第三者の個人情報を外部サービスに提供する際は、原則としてその方の同意が必要です。本機能のご利用にあたっては、お客様の責任において、トーク相手のプライバシーに十分ご配慮ください。", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruOrFallback(12))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                         .lineSpacing(5)
                 }
 
@@ -234,7 +235,7 @@ struct GeminiConsentView: View {
     private var disclaimerCard: some View {
         consentCard(
             icon: "info.circle.fill",
-            iconColor: MeloColors.Text.secondary,
+            iconColor: MeloColors.Dark.textSecondary,
             title: String(localized: "免責事項", bundle: LanguageManager.appBundle)
         ) {
             VStack(alignment: .leading, spacing: 10) {
@@ -256,11 +257,11 @@ struct GeminiConsentView: View {
             HStack(spacing: 12) {
                 Image(systemName: isAgreed ? "checkmark.square.fill" : "square")
                     .font(.system(size: 22))
-                    .foregroundColor(isAgreed ? MeloColors.Brand.pinkDeep : MeloColors.Text.secondary)
+                    .foregroundColor(isAgreed ? MeloColors.Dark.accent : MeloColors.Dark.textSecondary)
 
                 Text(String(localized: "上記の内容をすべて確認し、トーク履歴の一部がGoogle LLC（Gemini API）に送信されることに同意します", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruOrFallback(13))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .multilineTextAlignment(.leading)
 
                 Spacer()
@@ -268,10 +269,10 @@ struct GeminiConsentView: View {
             .padding(16)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(isAgreed ? MeloColors.Brand.pinkDeep.opacity(0.08) : Color.white)
+                    .fill(isAgreed ? MeloColors.Dark.accent.opacity(0.08) : MeloColors.Dark.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(isAgreed ? MeloColors.Brand.pinkDeep.opacity(0.3) : MeloColors.Gray.divider, lineWidth: 1.5)
+                            .stroke(isAgreed ? MeloColors.Dark.accent.opacity(0.3) : MeloColors.Dark.divider, lineWidth: 1.5)
                     )
             )
         }
@@ -290,12 +291,12 @@ struct GeminiConsentView: View {
             } label: {
                 Text(String(localized: "同意して開始", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruOrFallback(16))
-                    .foregroundColor(.white)
+                    .foregroundColor(isAgreed ? MeloColors.Dark.onAccent : MeloColors.Dark.textSecondary)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
                     .background(
                         RoundedRectangle(cornerRadius: 14)
-                            .fill(isAgreed ? AnyShapeStyle(MeloColors.Gradient.pinkPrimary) : AnyShapeStyle(Color.gray.opacity(0.3)))
+                            .fill(isAgreed ? AnyShapeStyle(MeloColors.Dark.accentGradient) : AnyShapeStyle(MeloColors.Dark.bgElevated))
                     )
             }
             .buttonStyle(.plain)
@@ -307,7 +308,7 @@ struct GeminiConsentView: View {
             } label: {
                 Text(String(localized: "キャンセル", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruOrFallback(14))
-                    .foregroundColor(MeloColors.Text.secondary)
+                    .foregroundColor(MeloColors.Dark.textSecondary)
             }
             .buttonStyle(.plain)
         }
@@ -329,7 +330,7 @@ struct GeminiConsentView: View {
                     .foregroundColor(iconColor)
                 Text(title)
                     .font(MeloFonts.zenMaruOrFallback(15))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
             }
 
             content()
@@ -338,22 +339,22 @@ struct GeminiConsentView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 14)
-                .fill(Color.white)
-                .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 2)
+                .fill(MeloColors.Dark.card)
+                .shadow(color: .black.opacity(0.3), radius: 8, x: 0, y: 2)
         )
     }
 
     private func consentText(_ text: String) -> some View {
         Text(text)
             .font(MeloFonts.zenMaruOrFallback(12))
-            .foregroundColor(MeloColors.Text.secondary)
+            .foregroundColor(MeloColors.Dark.textSecondary)
             .lineSpacing(5)
     }
 
     private func consentSubheading(_ text: String) -> some View {
         Text(text)
             .font(MeloFonts.zenMaruOrFallback(13))
-            .foregroundColor(MeloColors.Text.primary)
+            .foregroundColor(MeloColors.Dark.textPrimary)
             .padding(.top, 4)
     }
 
@@ -361,11 +362,11 @@ struct GeminiConsentView: View {
         HStack(alignment: .top, spacing: 8) {
             Text("•")
                 .font(.system(size: 12))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .padding(.top, 1)
             Text(text)
                 .font(MeloFonts.zenMaruOrFallback(12))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .lineSpacing(5)
         }
     }
@@ -379,7 +380,7 @@ struct GeminiConsentView: View {
                     .font(MeloFonts.zenMaruOrFallback(12))
                     .underline()
             }
-            .foregroundColor(MeloColors.Brand.pinkDeep)
+            .foregroundColor(MeloColors.Dark.accent)
         }
         .padding(.top, 4)
     }

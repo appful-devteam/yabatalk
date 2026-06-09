@@ -48,10 +48,14 @@ struct MainTabBar: View {
         }
         .frame(height: Self.barHeight)
         .background(
-            // ピル形状の白カード + Figma ピンクシャドウ (#FFA9E1 / radius 3.2 / y:1)
+            // ピル形状のダークカード + アクセントの淡いグロー
             RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous)
-                .fill(Color.white)
-                .shadow(color: MeloColors.Brand.pinkLight.opacity(0.6), radius: 4, x: 0, y: 1)
+                .fill(MeloColors.Dark.bgElevated)
+                .overlay(
+                    RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous)
+                        .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
+                )
+                .shadow(color: MeloColors.Dark.accent.opacity(0.18), radius: 8, x: 0, y: 2)
                 .padding(.horizontal, Self.horizontalMargin)
         )
     }
@@ -78,8 +82,8 @@ struct MainTabBar: View {
                         .font(MeloFonts.zenMaruMedium(9))
                         .foregroundColor(
                             isSelected
-                            ? MeloColors.Text.primary
-                            : MeloColors.Text.primary.opacity(isCenter ? 1.0 : 0.9)
+                            ? MeloColors.Dark.accent
+                            : MeloColors.Dark.textSecondary
                         )
                         .tracking(0.27)
                         .fixedSize(horizontal: true, vertical: false)
@@ -138,5 +142,5 @@ struct MainTabBar: View {
         Spacer()
         MainTabBar(selectedTab: .constant(.diagnose))
     }
-    .background(MeloColors.Surface.pinkPale)
+    .background(MeloColors.Dark.bg)
 }

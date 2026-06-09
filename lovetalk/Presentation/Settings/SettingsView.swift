@@ -3,18 +3,18 @@ import SwiftData
 import UIKit
 import AuthenticationServices
 
-// MARK: - Settings Design Tokens (match NewHomeView)
+// MARK: - Settings Design Tokens (dark theme)
 private enum SettingsTokens {
-    static let pageBg = Color.white
-    static let headerBg = MeloColors.Surface.pinkPale
-    static let brandPink = MeloColors.Brand.pink
-    static let filledPink = MeloColors.Brand.pink
-    static let softPink = MeloColors.Brand.pinkLight
-    static let textDark = MeloColors.Text.primary
-    static let textGrey = MeloColors.Text.secondary
-    static let textMuted = MeloColors.Text.secondary
-    static let strokeBrown = MeloColors.Text.primary
-    static let divider = MeloColors.Gray.subButtonLight
+    static let pageBg = MeloColors.Dark.bg
+    static let headerBg = MeloColors.Dark.bgElevated
+    static let brandPink = MeloColors.Dark.accent
+    static let filledPink = MeloColors.Dark.accent
+    static let softPink = MeloColors.Dark.accentBright
+    static let textDark = MeloColors.Dark.textPrimary
+    static let textGrey = MeloColors.Dark.textSecondary
+    static let textMuted = MeloColors.Dark.textSecondary
+    static let strokeBrown = MeloColors.Dark.cardStroke
+    static let divider = MeloColors.Dark.divider
     static let destructive = MeloColors.Status.error
 }
 
@@ -248,7 +248,7 @@ struct SettingsView: View {
             }
             .navigationTitle(String(localized: "設定", bundle: LanguageManager.appBundle))
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color.white, for: .navigationBar)
+            .toolbarBackground(MeloColors.Dark.bgElevated, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -371,7 +371,7 @@ struct SettingsView: View {
             content()
                 .background(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.card)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -618,7 +618,7 @@ struct SettingsView: View {
                             print("[Settings] Apple re-auth cancelled: \(error)")
                         }
                     }
-                    .signInWithAppleButtonStyle(.black)
+                    .signInWithAppleButtonStyle(.white) // ダーク背景: HIG 推奨の白ボタン
                     .frame(height: 50)
                     .clipShape(RoundedRectangle(cornerRadius: 25))
                     .padding(.horizontal, 32)
@@ -649,7 +649,7 @@ struct SettingsView: View {
                     .padding(32)
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(Color.white)
+                            .fill(MeloColors.Dark.card)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                                     .stroke(SettingsTokens.strokeBrown, lineWidth: 1)
@@ -850,7 +850,7 @@ struct SettingsView: View {
             .padding(32)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .stroke(SettingsTokens.strokeBrown, lineWidth: 1)
@@ -862,7 +862,7 @@ struct SettingsView: View {
     // MARK: - Contact Mail
 
     private var contactMailURL: URL {
-        let subject = String(localized: "【めろとーく】お問い合わせ", bundle: LanguageManager.appBundle)
+        let subject = String(localized: "【ハラスメントーク】お問い合わせ", bundle: LanguageManager.appBundle)
         let appVersionLabel = String(localized: "アプリバージョン", bundle: LanguageManager.appBundle)
         let iosVersionLabel = String(localized: "iOSバージョン", bundle: LanguageManager.appBundle)
         let deviceLabel = String(localized: "端末", bundle: LanguageManager.appBundle)

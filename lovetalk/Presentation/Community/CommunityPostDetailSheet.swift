@@ -90,12 +90,12 @@ struct CommunityPostDetailSheet: View {
                     }
                     .padding(.vertical, 16)
                 }
-                .background(Color.white)
+                .background(MeloColors.Dark.bg)
                 .scrollDismissesKeyboard(.interactively)
 
                 replyComposer
             }
-            .background(Color.white.ignoresSafeArea())
+            .background(MeloColors.Dark.bg.ignoresSafeArea())
             .navigationTitle(String(localized: "投稿", bundle: LanguageManager.appBundle))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -105,7 +105,7 @@ struct CommunityPostDetailSheet: View {
                     } label: {
                         Image(systemName: "xmark")
                             .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                     }
                 }
             }
@@ -159,23 +159,23 @@ struct CommunityPostDetailSheet: View {
             HStack(spacing: 6) {
                 Text(String(localized: "返信", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruMedium(13))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                 Text(verbatim: "\(replies.count)")
                     .font(MeloFonts.zenMaruMedium(12))
-                    .foregroundColor(MeloColors.Text.secondary)
+                    .foregroundColor(MeloColors.Dark.textSecondary)
             }
 
             if isLoadingReplies {
                 HStack {
                     Spacer()
-                    ProgressView().tint(MeloColors.Brand.pink)
+                    ProgressView().tint(MeloColors.Dark.accent)
                     Spacer()
                 }
                 .padding(.vertical, 16)
             } else if replies.isEmpty {
                 Text(String(localized: "まだ返信がありません", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruRegular(12))
-                    .foregroundColor(MeloColors.Text.secondary)
+                    .foregroundColor(MeloColors.Dark.textSecondary)
                     .padding(.vertical, 12)
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
@@ -200,15 +200,15 @@ struct CommunityPostDetailSheet: View {
                     Image(AnonymousAvatarPicker.imageName(forSeed: reply.id))
                         .resizable()
                         .scaledToFit()
-                        .background(Circle().fill(MeloColors.Surface.pinkPale))
+                        .background(Circle().fill(MeloColors.Dark.bgElevated))
                         .clipShape(Circle())
                 } else {
                     Circle()
-                        .fill(MeloColors.Surface.pinkPale)
+                        .fill(MeloColors.Dark.bgElevated)
                         .overlay(
                             Text(String(reply.authorDisplayName.prefix(1)))
                                 .font(MeloFonts.zenMaruOrFallback(12))
-                                .foregroundColor(MeloColors.Brand.pink)
+                                .foregroundColor(MeloColors.Dark.accent)
                         )
                 }
             }
@@ -219,22 +219,22 @@ struct CommunityPostDetailSheet: View {
                     HStack(spacing: 6) {
                         Text(reply.authorDisplayName)
                             .font(MeloFonts.zenMaruMedium(13))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
 
                         // 投稿者本人による返信に「投稿者」ピル
                         if let pid = post.authorId, reply.authorId == pid {
                             Text(String(localized: "投稿者", bundle: LanguageManager.appBundle))
                                 .font(MeloFonts.zenMaruMedium(9))
-                                .foregroundColor(.white)
+                                .foregroundColor(MeloColors.Dark.onAccent)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)
-                                .background(Capsule().fill(MeloColors.Gradient.pinkPrimary))
+                                .background(Capsule().fill(MeloColors.Dark.accentGradient))
                         }
 
                         if let badge = reply.authorBadge {
                             Text(badge.typeCode)
                                 .font(MeloFonts.zenMaruMedium(8))
-                                .foregroundColor(MeloColors.Text.primary)
+                                .foregroundColor(MeloColors.Dark.textPrimary)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 1)
                                 .background(
@@ -247,7 +247,7 @@ struct CommunityPostDetailSheet: View {
 
                     Text(BoardTimeFormatter.timeAgo(reply.createdAt))
                         .font(MeloFonts.zenMaruRegular(11))
-                        .foregroundColor(MeloColors.Text.secondary)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                 }
 
                 // メンション先の表示 (掲示板と同じ位置: 名前行直下)
@@ -258,7 +258,7 @@ struct CommunityPostDetailSheet: View {
                         Text(verbatim: "@\(mentionedName)")
                             .font(MeloFonts.zenMaruRegular(12))
                     }
-                    .foregroundColor(MeloColors.Brand.pink)
+                    .foregroundColor(MeloColors.Dark.accent)
                     .padding(.top, 1)
                 }
 
@@ -266,8 +266,8 @@ struct CommunityPostDetailSheet: View {
                 if !reply.content.isEmpty {
                     Text(HashtagAttributedString.make(
                         text: reply.content,
-                        bodyColor: MeloColors.Text.primary,
-                        hashtagColor: MeloColors.Brand.pink
+                        bodyColor: MeloColors.Dark.textPrimary,
+                        hashtagColor: MeloColors.Dark.accent
                     ))
                     .font(MeloFonts.zenMaruRegular(14))
                     .lineSpacing(4)
@@ -285,11 +285,11 @@ struct CommunityPostDetailSheet: View {
                         HStack(spacing: 3) {
                             Image(systemName: liked ? "heart.fill" : "heart")
                                 .font(.system(size: 13))
-                                .foregroundColor(liked ? MeloColors.Brand.pink : MeloColors.Text.secondary)
+                                .foregroundColor(liked ? MeloColors.Dark.accent : MeloColors.Dark.textSecondary)
                             if reply.likeCount > 0 {
                                 Text(verbatim: "\(reply.likeCount)")
                                     .font(MeloFonts.zenMaruRegular(11))
-                                    .foregroundColor(liked ? MeloColors.Brand.pink : MeloColors.Text.secondary)
+                                    .foregroundColor(liked ? MeloColors.Dark.accent : MeloColors.Dark.textSecondary)
                             }
                         }
                     }
@@ -305,7 +305,7 @@ struct CommunityPostDetailSheet: View {
                             Text(String(localized: "返信", bundle: LanguageManager.appBundle))
                                 .font(MeloFonts.zenMaruRegular(11))
                         }
-                        .foregroundColor(MeloColors.Text.secondary)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                     }
                     .buttonStyle(.plain)
 
@@ -338,10 +338,10 @@ struct CommunityPostDetailSheet: View {
                 HStack(spacing: 6) {
                     Image(systemName: "arrowshape.turn.up.left.fill")
                         .font(.system(size: 10))
-                        .foregroundColor(MeloColors.Brand.pink)
+                        .foregroundColor(MeloColors.Dark.accent)
                     Text(String(format: String(localized: "%@さんへの返信", bundle: LanguageManager.appBundle), m.userName))
                         .font(MeloFonts.zenMaruMedium(11))
-                        .foregroundColor(MeloColors.Brand.pink)
+                        .foregroundColor(MeloColors.Dark.accent)
                     Spacer(minLength: 0)
                     Button {
                         HapticManager.light()
@@ -349,24 +349,24 @@ struct CommunityPostDetailSheet: View {
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 14))
-                            .foregroundColor(MeloColors.Brand.pink.opacity(0.6))
+                            .foregroundColor(MeloColors.Dark.accent.opacity(0.6))
                     }
                     .buttonStyle(.plain)
                 }
                 .padding(.horizontal, 14)
                 .padding(.vertical, 6)
-                .background(MeloColors.Surface.pinkPale)
+                .background(MeloColors.Dark.bgElevated)
             }
 
             HStack(spacing: 8) {
                 // 自分のアバタープレースホルダー (掲示板と同じ 30×30)
                 Circle()
-                    .fill(MeloColors.Surface.pinkPale)
+                    .fill(MeloColors.Dark.bgElevated)
                     .frame(width: 30, height: 30)
                     .overlay(
                         Image(systemName: "person.fill")
                             .font(.system(size: 14))
-                            .foregroundColor(MeloColors.Brand.pink)
+                            .foregroundColor(MeloColors.Dark.accent)
                     )
 
                 // pill 形状: スタンプ + 画像 + テキスト入力
@@ -389,7 +389,7 @@ struct CommunityPostDetailSheet: View {
                     } label: {
                         Image(systemName: "photo")
                             .font(.system(size: 16))
-                            .foregroundColor(MeloColors.Text.secondary)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
                     }
                     .buttonStyle(.plain)
 
@@ -398,7 +398,7 @@ struct CommunityPostDetailSheet: View {
                         text: $replyText
                     )
                     .font(MeloFonts.zenMaruRegular(14))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .textFieldStyle(.plain)
                     .focused($replyFocused)
                 }
@@ -406,14 +406,14 @@ struct CommunityPostDetailSheet: View {
                 .padding(.vertical, 8)
                 .background(
                     Capsule()
-                        .fill(MeloColors.Surface.pinkPale)
+                        .fill(MeloColors.Dark.bgElevated)
                 )
 
                 // 送信ボタン (掲示板と同じ 30×30 円)
                 if isSendingReply {
                     ProgressView()
                         .scaleEffect(0.8)
-                        .tint(MeloColors.Brand.pink)
+                        .tint(MeloColors.Dark.accent)
                 } else {
                     Button {
                         HapticManager.medium()
@@ -422,11 +422,11 @@ struct CommunityPostDetailSheet: View {
                         ZStack {
                             Circle()
                                 .fill(canSend
-                                      ? AnyShapeStyle(MeloColors.Gradient.pinkPrimary)
-                                      : AnyShapeStyle(MeloColors.Surface.pinkPale))
+                                      ? AnyShapeStyle(MeloColors.Dark.accentGradient)
+                                      : AnyShapeStyle(MeloColors.Dark.bgElevated))
                             Image(systemName: "paperplane.fill")
                                 .font(.system(size: 14))
-                                .foregroundColor(canSend ? .white : MeloColors.Text.secondary)
+                                .foregroundColor(canSend ? MeloColors.Dark.onAccent : MeloColors.Dark.textSecondary)
                                 .offset(x: -1)
                         }
                         .frame(width: 30, height: 30)
@@ -437,10 +437,10 @@ struct CommunityPostDetailSheet: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
-            .background(Color.white)
+            .background(MeloColors.Dark.bgElevated)
             .overlay(
                 Rectangle()
-                    .fill(MeloColors.Gray.subButtonLight)
+                    .fill(MeloColors.Dark.divider)
                     .frame(height: 0.5),
                 alignment: .top
             )

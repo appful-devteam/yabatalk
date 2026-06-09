@@ -94,13 +94,13 @@ struct BoardMyProfileView: View {
 
     private let firestoreService = BoardFirestoreService.shared
 
-    // MARK: - Figma Colors
-    private let pinkAccent = MeloColors.Brand.pink
-    private let pinkSoft = MeloColors.Surface.pinkPale
-    private let pinkBG = Color.white   // 全ページで白ヘッダー統一
-    private let brown = MeloColors.Text.primary
-    private let brownLight = MeloColors.Gray.subButton
-    private let borderLight = MeloColors.Gray.subButtonLight
+    // MARK: - Figma Colors（ダーク化: 黒地 × ホットピンク accent）
+    private let pinkAccent = MeloColors.Dark.accent
+    private let pinkSoft = MeloColors.Dark.bgElevated
+    private let pinkBG = MeloColors.Dark.bgElevated   // ヘッダー背景（一段上の面）
+    private let brown = MeloColors.Dark.textPrimary
+    private let brownLight = MeloColors.Dark.textSecondary
+    private let borderLight = MeloColors.Dark.divider
 
     private var isSignedIn: Bool {
         authService.isSignedIn && !(authService.currentUser?.isAnonymous ?? true)
@@ -117,7 +117,7 @@ struct BoardMyProfileView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .top) {
-                Color.white.ignoresSafeArea()
+                MeloColors.Dark.bg.ignoresSafeArea()
 
                 VStack(spacing: 0) {
                     header
@@ -147,9 +147,9 @@ struct BoardMyProfileView: View {
                                 // 投稿エリアとプロフィール領域の境目:
                                 // 線自体は透明 (= 白背景に溶ける)。下方向にピンクシャドウだけ落とす。
                                 Rectangle()
-                                    .fill(Color.white)
+                                    .fill(MeloColors.Dark.bg)
                                     .frame(height: 1)
-                                    .shadow(color: MeloColors.Brand.pink.opacity(0.45), radius: 5, x: 0, y: 3)
+                                    .shadow(color: MeloColors.Dark.accent.opacity(0.15), radius: 5, x: 0, y: 3)
                                     .padding(.top, 14)
 
                                 contentTabSelector
@@ -246,7 +246,7 @@ struct BoardMyProfileView: View {
                 Text(String(localized: "マイページ", bundle: LanguageManager.appBundle))
                     .font(zenMaruBold(22))
                     .tracking(0.66)
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
 
                 Spacer()
 
@@ -257,14 +257,14 @@ struct BoardMyProfileView: View {
                     coordinator.showSettings()
                 } label: {
                     Circle()
-                        .fill(MeloColors.Gradient.pinkPrimary)
+                        .fill(MeloColors.Dark.accentGradient)
                         .frame(width: PremiumBadgeButton.height, height: PremiumBadgeButton.height)
                         .overlay(
                             Image(systemName: "gearshape.fill")
                                 .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(.white)
+                                .foregroundColor(MeloColors.Dark.onAccent)
                         )
-                        .shadow(color: MeloColors.Brand.pink.opacity(0.4), radius: 6, x: 0, y: 2)
+                        .shadow(color: MeloColors.Dark.accent.opacity(0.15), radius: 6, x: 0, y: 2)
                 }
                 .buttonStyle(.plain)
 
@@ -278,9 +278,9 @@ struct BoardMyProfileView: View {
             .padding(.top, 6)
             .padding(.bottom, 6)
 
-            // ヘッダー下端の区切り線 (薄ピンクの 3pt フラット線)。
+            // ヘッダー下端の区切り線 (3pt フラット線)。
             Rectangle()
-                .fill(MeloColors.Surface.pinkPale)
+                .fill(MeloColors.Dark.divider)
                 .frame(height: 3)
         }
         .background(
@@ -302,13 +302,13 @@ struct BoardMyProfileView: View {
                          : profile.displayName)
                         .font(zenMaruBold(24))
                         .tracking(0.72)
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                         .lineLimit(1)
 
                     if profile.isPrivate {
                         Image(systemName: "lock.fill")
                             .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(MeloColors.Text.primary.opacity(0.85))
+                            .foregroundColor(MeloColors.Dark.textPrimary.opacity(0.85))
                     }
 
                     if subscriptionManager.isSubscribed {
@@ -330,9 +330,9 @@ struct BoardMyProfileView: View {
         ZStack {
             Image(systemName: "crown.fill")
                 .font(.system(size: 16, weight: .bold))
-                .foregroundStyle(MeloColors.Gradient.pinkPrimary)
-                .shadow(color: MeloColors.Brand.pinkLight.opacity(0.85), radius: 6, x: 0, y: 0)
-                .shadow(color: MeloColors.Brand.pink.opacity(0.6), radius: 3, x: 0, y: 0)
+                .foregroundStyle(MeloColors.Dark.accentGradient)
+                .shadow(color: MeloColors.Dark.accentBright.opacity(0.85), radius: 6, x: 0, y: 0)
+                .shadow(color: MeloColors.Dark.accent.opacity(0.6), radius: 3, x: 0, y: 0)
         }
         .accessibilityLabel(Text(String(localized: "プレミアム会員", bundle: LanguageManager.appBundle)))
     }
@@ -356,11 +356,11 @@ struct BoardMyProfileView: View {
                 ForEach(selectedHobbyTags, id: \.self) { tag in
                     Text(tag)
                         .font(MeloFonts.zenMaruMedium(11))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 4)
                         .background(
-                            Capsule().fill(MeloColors.Surface.pinkPale)
+                            Capsule().fill(MeloColors.Dark.bgElevated)
                         )
                         .overlay(
                             Capsule().stroke(pinkAccent.opacity(0.4), lineWidth: 0.5)
@@ -387,9 +387,9 @@ struct BoardMyProfileView: View {
                     .overlay(
                         Image(systemName: "pencil")
                             .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                     )
-                    .shadow(color: .black.opacity(0.05), radius: 1, x: 0, y: 1)
+                    .shadow(color: .black.opacity(0.3), radius: 1, x: 0, y: 1)
             }
             .buttonStyle(.plain)
             .offset(x: 4, y: -4)
@@ -430,7 +430,7 @@ struct BoardMyProfileView: View {
         let label = isPremium
             ? String(localized: "プレミアムプラン", bundle: LanguageManager.appBundle)
             : String(localized: "無料プラン", bundle: LanguageManager.appBundle)
-        let color = isPremium ? pinkAccent : Color.gray
+        let color = isPremium ? pinkAccent : MeloColors.Dark.textSecondary
 
         return Text(label)
             .font(zenMaruBold(12))
@@ -451,7 +451,7 @@ struct BoardMyProfileView: View {
                     .font(zenMaruMedium(13))
                     .tracking(0.91)
                     .lineSpacing(13 * 0.45) // line-height 1.45
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .padding(.leading, 25)
                     .padding(.trailing, 20)
             } else {
@@ -506,7 +506,7 @@ struct BoardMyProfileView: View {
         VStack(spacing: 2) {
             Text("\(count)")
                 .font(zenMaruMedium(20))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
             Text(label)
                 .font(zenMaruMedium(10))
                 .foregroundColor(brownLight)
@@ -543,32 +543,32 @@ struct BoardMyProfileView: View {
                 if filter == .brokenHeart {
                     Image(systemName: "drop.fill")
                         .font(.system(size: 10, weight: .semibold))
-                        .foregroundColor(isSelected ? .white : MeloColors.Text.primary)
+                        .foregroundColor(isSelected ? MeloColors.Dark.onAccent : MeloColors.Dark.textPrimary)
                         .frame(width: 13, height: 13)
                 } else if filter != .all {
                     Image(systemName: "heart.fill")
                         .font(.system(size: 10, weight: .semibold))
-                        .foregroundColor(isSelected ? .white : MeloColors.Text.primary)
+                        .foregroundColor(isSelected ? MeloColors.Dark.onAccent : MeloColors.Dark.textPrimary)
                         .frame(width: 13, height: 13)
                 }
 
                 Text(filter.localizedName)
                     .font(isSelected ? zenMaruBlack(12) : zenMaruMedium(12))
-                    .foregroundColor(isSelected ? .white : MeloColors.Text.primary)
+                    .foregroundColor(isSelected ? MeloColors.Dark.onAccent : MeloColors.Dark.textPrimary)
             }
             .padding(.horizontal, 14)
             .frame(height: 32)
             .background(
                 ZStack {
                     if isSelected {
-                        Capsule().fill(MeloColors.Gradient.pinkPrimary)
+                        Capsule().fill(MeloColors.Dark.accentGradient)
                     } else {
-                        Capsule().fill(Color.white)
-                        Capsule().stroke(pinkSoft, lineWidth: 1)
+                        Capsule().fill(MeloColors.Dark.card)
+                        Capsule().stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
                     }
                 }
             )
-            .shadow(color: isSelected ? MeloColors.Brand.pink.opacity(0.4) : pinkSoft.opacity(0.8),
+            .shadow(color: isSelected ? MeloColors.Dark.accent.opacity(0.15) : Color.black.opacity(0.3),
                     radius: isSelected ? 6 : 1.9, x: 0, y: isSelected ? 2 : 1)
         }
         .buttonStyle(.plain)
@@ -644,14 +644,14 @@ struct BoardMyProfileView: View {
                     .font(isSelected ? MeloFonts.zenMaruOrFallback(14) : MeloFonts.zenMaruMedium(14))
                     .tracking(0.42)
                     .foregroundStyle(isSelected
-                                     ? AnyShapeStyle(MeloColors.Gradient.pinkPrimary)
-                                     : AnyShapeStyle(MeloColors.Text.primary.opacity(0.55)))
+                                     ? AnyShapeStyle(MeloColors.Dark.accentGradient)
+                                     : AnyShapeStyle(MeloColors.Dark.textSecondary))
                     .frame(height: 22)
 
                 // 選択中だけピンクのインジケータ線。非選択は透明線で高さを揃える。
                 Rectangle()
                     .fill(isSelected
-                          ? AnyShapeStyle(MeloColors.Gradient.pinkPrimary)
+                          ? AnyShapeStyle(MeloColors.Dark.accentGradient)
                           : AnyShapeStyle(Color.clear))
                     .frame(height: 2.5)
                     .padding(.horizontal, 12)
@@ -712,10 +712,10 @@ struct BoardMyProfileView: View {
         HStack(spacing: 4) {
             Image(systemName: "arrow.2.squarepath")
                 .font(.system(size: 10, weight: .medium))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
             Text(String(format: String(localized: "%@さんがリポスト", bundle: LanguageManager.appBundle), displayName))
                 .font(MeloFonts.zenMaruMedium(11))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
             Spacer()
         }
         .padding(.leading, 8)
@@ -796,7 +796,7 @@ struct BoardMyProfileView: View {
 
             Text(String(localized: "読み込みに失敗しました", bundle: LanguageManager.appBundle))
                 .font(zenMaruMedium(15))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
 
             Button {
                 loadFailed = false
@@ -804,7 +804,7 @@ struct BoardMyProfileView: View {
             } label: {
                 Text(String(localized: "再読み込み", bundle: LanguageManager.appBundle))
                     .font(zenMaruBold(14))
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
                     .padding(.horizontal, 24)
                     .padding(.vertical, 10)
                     .background(Capsule().fill(pinkAccent))
@@ -828,7 +828,7 @@ struct BoardMyProfileView: View {
 
             Text(String(localized: "マイページを使うには\nサインインが必要です", bundle: LanguageManager.appBundle))
                 .font(zenMaruMedium(16))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .multilineTextAlignment(.center)
 
             Button {
@@ -836,7 +836,7 @@ struct BoardMyProfileView: View {
             } label: {
                 Text(String(localized: "サインイン", bundle: LanguageManager.appBundle))
                     .font(zenMaruBold(14))
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
                     .padding(.horizontal, 32)
                     .padding(.vertical, 12)
                     .background(Capsule().fill(pinkAccent))

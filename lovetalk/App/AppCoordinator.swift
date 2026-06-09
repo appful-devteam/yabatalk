@@ -482,6 +482,12 @@ struct RootView: View {
                 await AppDataFirestoreService.shared.bootstrap()
             }
             WeeklyReminderService.shared.rescheduleIfAuthorized()
+            #if DEBUG
+            // 起動引数 -yt_seed_diagnosis YES でサンプル診断を流し込み結果画面へ直行（動作確認用）。
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                YabatalkDebug.seedIfNeeded(coordinator)
+            }
+            #endif
         }
         .onReceive(NotificationCenter.default.publisher(for: .triggerAnnouncement)) { notification in
             if let triggerName = notification.userInfo?["trigger"] as? String {
@@ -491,6 +497,10 @@ struct RootView: View {
     }
 
     private func checkFirstLaunch() {
+        #if DEBUG
+        // seed 動作確認時 / ASC スクショ撮影時は初回起動ゲート（アンケート/規約/ペイウォール）を出さない。
+        if YabatalkDebug.isSeedingDiagnosis || YabatalkDebug.isScreenshotMode { return }
+        #endif
         let defaults = UserDefaults.standard
         let hasLaunchedBefore = defaults.bool(forKey: hasLaunchedBeforeKey)
         let surveyCompleted = defaults.string(forKey: Constants.StorageKeys.surveyCompletedVersion) != nil
@@ -525,6 +535,74 @@ struct RootView: View {
 extension Notification.Name {
     static let scrollToTop = Notification.Name("scrollToTop")
 }
+
+#if DEBUG
+// MARK: - Debug Seed（診断フロー動作確認用ハーネス）
+/// シミュレータにタップ操作ツールが無い環境でも、サンプル LINE トークから
+/// 診断パイプライン（FactorDetector→…→OutputBuilder）を実走させ、結果画面まで
+/// 自動遷移して目視確認するための DEBUG 限定ハーネス。本番ビルドには含まれない。
+///
+/// 使い方（XcodeBuildMCP の launchArgs / Xcode の Scheme 引数）:
+///   -yt_seed_diagnosis YES                 サンプル診断を実行して結果画面へ直行
+///   -yt_seed_relationship bossOverMe       関係性を指定（既定: bossOverMe）
+///     指定可: romantic / exRomantic / family / friend / bossOverMe / subToMe / colleague
+enum YabatalkDebug {
+    static var isSeedingDiagnosis: Bool {
+        UserDefaults.standard.bool(forKey: "yt_seed_diagnosis")
+    }
+
+    /// ASC スクショ撮影用。-yt_no_ads YES で App Open 広告を抑止し、クリーンなホーム等を撮る。
+    static var isScreenshotMode: Bool {
+        UserDefaults.standard.bool(forKey: "yt_no_ads")
+    }
+
+    static var seedRelationship: RelationshipContext {
+        let raw = UserDefaults.standard.string(forKey: "yt_seed_relationship") ?? "bossOverMe"
+        return RelationshipContext(rawValue: raw) ?? .bossOverMe
+    }
+
+    /// 結果画面の初期タブ（動作確認/スクショ用）。-yt_seed_tab score|type|data|summary
+    static var seedInitialTab: DiagnosisTab? {
+        guard let raw = UserDefaults.standard.string(forKey: "yt_seed_tab") else { return nil }
+        return DiagnosisTab(rawValue: raw)
+    }
+
+    /// 上司→自分のパワハラ＋示唆を含むサンプル。タブ区切り LINE エクスポート形式。
+    static let sampleChat: String = [
+        "[LINE] 田中課長とのトーク履歴",
+        "2024/1/15(月)",
+        "21:30\t田中課長\t明日の資料、まだできてないの？こんなこともできないなんて使えないな",
+        "21:31\t田中課長\tお前みたいなやつ、ほんと頭悪いよな",
+        "21:35\t自分\tすみません、明日の朝までに必ず仕上げます",
+        "21:36\t田中課長\tは？今日中に決まってるだろ。常識ないの？",
+        "21:40\t田中課長\tできないなら評価下げるから。来期のシフトも減らすぞ",
+        "22:50\t田中課長\tおい、まだ返事ないけど無視してんの？",
+        "23:30\t田中課長\t深夜だろうが関係ない。今すぐ電話しろ",
+        "23:31\t田中課長\t断るとかありえないから。嫌なら辞めれば？代わりはいくらでもいる",
+        "2024/1/16(火)",
+        "0:15\t田中課長\t返信遅いんだよ。お前みたいな価値ないやつ、ほんと存在が邪魔",
+        "0:20\t自分\t申し訳ありません、すぐ対応します",
+        "0:21\t田中課長\tこのこと誰にも言うなよ。言ったらどうなるか分かってるよな",
+        "7:00\t田中課長\tあと、この前の飲み会の写真、SNSに晒してやろうか笑"
+    ].joined(separator: "\n")
+
+    @MainActor
+    static func seedIfNeeded(_ coordinator: AppCoordinator) {
+        guard isSeedingDiagnosis else { return }
+        guard coordinator.path.isEmpty else { return }  // 二重投入を防ぐ
+        do {
+            var session = try LineChatParser().parse(sampleChat, title: "田中課長")
+            session.relationship = seedRelationship
+            session.estimatedSelfName = "自分"
+            let result = DiagnoseHarassmentUseCase().execute(session: session)
+            coordinator.selectedTab = .diagnose
+            coordinator.navigateToDiagnosis(result: result, session: session)
+        } catch {
+            print("[YabatalkDebug] seed failed: \(error)")
+        }
+    }
+}
+#endif
 
 // MARK: - Preview
 #Preview {

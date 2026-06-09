@@ -46,4 +46,30 @@ enum MeloFonts {
         }
         return .system(size: size, weight: .medium, design: .rounded)
     }
+
+    // MARK: - 毒性鑑定書（ラボ）専用フォント
+
+    /// Anton — 計器の大数字・見出し用の極太コンデンス（毒性スコア等）。
+    static func anton(_ size: CGFloat) -> Font {
+        if UIFont(name: "Anton-Regular", size: size) != nil {
+            return .custom("Anton-Regular", size: size)
+        }
+        return .system(size: size, weight: .black, design: .default)
+    }
+
+    /// Roboto Mono Regular — 検体コード・ラベル・統計の等幅。
+    static func mono(_ size: CGFloat) -> Font {
+        if UIFont(name: "RobotoMono-Regular", size: size) != nil {
+            return .custom("RobotoMono-Regular", size: size)
+        }
+        return .system(size: size, weight: .regular, design: .monospaced)
+    }
+
+    /// Roboto Mono Medium — 等幅の強調（%・コード）。
+    static func monoMedium(_ size: CGFloat) -> Font {
+        if UIFont(name: "RobotoMono-Medium", size: size) != nil {
+            return .custom("RobotoMono-Medium", size: size)
+        }
+        return .system(size: size, weight: .medium, design: .monospaced)
+    }
 }

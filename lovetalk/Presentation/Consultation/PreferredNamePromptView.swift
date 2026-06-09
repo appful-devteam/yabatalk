@@ -25,12 +25,12 @@ struct PreferredNamePromptView: View {
 
             Text(String(localized: "なんて呼べばいい？", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(20))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .padding(.top, 8)
 
             Text(String(localized: "めろまるがあなたを呼ぶときの名前を教えてね 💕", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruRegular(13))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
                 .padding(.top, 6)
@@ -40,7 +40,7 @@ struct PreferredNamePromptView: View {
                 text: $nameInput
             )
             .font(MeloFonts.zenMaruMedium(16))
-            .foregroundColor(MeloColors.Text.primary)
+            .foregroundColor(MeloColors.Dark.textPrimary)
             .multilineTextAlignment(.center)
             .submitLabel(.done)
             .focused($isFocused)
@@ -48,7 +48,7 @@ struct PreferredNamePromptView: View {
             .padding(.horizontal, 18)
             .background(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(MeloColors.Surface.pinkPale)
+                    .fill(MeloColors.Dark.bgElevated)
             )
             .padding(.horizontal, 32)
             .padding(.top, 20)
@@ -56,7 +56,7 @@ struct PreferredNamePromptView: View {
 
             Text(String(localized: "あとから設定画面でいつでも変更できるよ", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruRegular(11))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
                 .padding(.top, 12)
@@ -70,12 +70,12 @@ struct PreferredNamePromptView: View {
                 } label: {
                     Text(String(localized: "決定", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruMedium(15))
-                        .foregroundColor(.white)
+                        .foregroundColor(canSubmit ? MeloColors.Dark.onAccent : MeloColors.Dark.textSecondary)
                         .frame(maxWidth: .infinity)
                         .frame(height: 50)
                         .background(
                             RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .fill(canSubmit ? AnyShapeStyle(MeloColors.Gradient.pinkPrimary) : AnyShapeStyle(MeloColors.Gray.subButton))
+                                .fill(canSubmit ? AnyShapeStyle(MeloColors.Dark.accentGradient) : AnyShapeStyle(MeloColors.Dark.bgElevated))
                         )
                 }
                 .buttonStyle(.plain)
@@ -87,7 +87,7 @@ struct PreferredNamePromptView: View {
                 } label: {
                     Text(String(localized: "あとで", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruMedium(13))
-                        .foregroundColor(MeloColors.Text.secondary)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                         .frame(maxWidth: .infinity)
                         .frame(height: 36)
                 }
@@ -96,7 +96,7 @@ struct PreferredNamePromptView: View {
             .padding(.horizontal, 32)
             .padding(.bottom, 24)
         }
-        .background(Color.white.ignoresSafeArea())
+        .background(MeloColors.Dark.bg.ignoresSafeArea())
         // スワイプで閉じてもよい。閉じても名前未入力なら次回開いた時に再表示される
         // (フラグの管理は呼び出し側 NewHomeView の onDismiss で行う)。
         .onAppear {

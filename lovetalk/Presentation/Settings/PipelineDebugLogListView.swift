@@ -27,6 +27,10 @@ struct PipelineDebugLogListView: View {
         }
         .navigationTitle("パイプラインログ")
         .navigationBarTitleDisplayMode(.inline)
+        // 開発者専用デバッグ画面。List + システムセマンティック色を使うため、
+        // ルートの forced .light を打ち消して Apple 標準のダーク色に揃える。
+        // TODO(dark): 要確認 — MeloColors.Dark トークンへの厳密置換ではなくシステムダーク配色を採用
+        .preferredColorScheme(.dark)
         .toolbar {
             if !entries.isEmpty {
                 ToolbarItem(placement: .topBarTrailing) {

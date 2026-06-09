@@ -4,16 +4,14 @@ import PhotosUI
 // MARK: - Palette
 
 private enum CreateSheetPalette {
-    static let headerBg = MeloColors.Surface.pinkPale
-    static let headerBorder = MeloColors.Surface.pinkPale
-    static let koiPink = MeloColors.Brand.pink
-    static let fieldBorder = MeloColors.Text.primary
-    static let fieldBg = Color.white
-    // 旧 716463 茶 → 黒系 1E1E1E (テキスト用)
-    static let textMain = MeloColors.Text.primary
-    // 薄茶 DACDC4 → 薄灰 B6B6B6
-    static let textPlaceholder = MeloColors.Text.secondary
-    static let labelGray = MeloColors.Text.primary
+    static let headerBg = MeloColors.Dark.bgElevated
+    static let headerBorder = MeloColors.Dark.cardStroke
+    static let koiPink = MeloColors.Dark.accent
+    static let fieldBorder = MeloColors.Dark.cardStroke
+    static let fieldBg = MeloColors.Dark.card
+    static let textMain = MeloColors.Dark.textPrimary
+    static let textPlaceholder = MeloColors.Dark.textSecondary
+    static let labelGray = MeloColors.Dark.textPrimary
 }
 
 // MARK: - Create Sheet
@@ -104,7 +102,7 @@ struct CommunityRoomCreateSheet: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
             }
-            .background(Color.white.ignoresSafeArea())
+            .background(MeloColors.Dark.bg.ignoresSafeArea())
             .navigationTitle("相談部屋を作成")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -124,7 +122,7 @@ struct CommunityRoomCreateSheet: View {
                     } label: {
                         Text("作成")
                             .font(MeloFonts.zenMaruOrFallback(16))
-                            .foregroundColor(.white)
+                            .foregroundColor(MeloColors.Dark.onAccent)
                             .tracking(0.48)
                             .padding(.horizontal, 20)
                             .frame(height: 32)

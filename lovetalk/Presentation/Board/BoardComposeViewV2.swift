@@ -7,27 +7,23 @@ import PhotosUI
 /// フィードのテーマタブ (`BoardFeedCategory`) のマッチング/カードのピル表示にも使われる。
 /// label を変更する場合は既存投稿との整合性に注意 (Firestore に保存済みの文字列とずれると分類不可になる)。
 enum PostTheme: String, CaseIterable, Identifiable {
-    case oneSided    // 片思い
-    case mutual      // 両思い
-    case breakup     // 失恋
-    case reunite     // 復縁
-    case ex          // 元カレ・元カノ
-    case confession  // 告白
-    case dateLine    // デート・LINE
-    case fight       // 喧嘩・倦怠期
+    case power     // パワハラ
+    case sexual    // セクハラ
+    case moral     // モラハラ
+    case customer  // カスハラ
+    case other     // その他
+    case consult   // ぶっちゃけ相談
 
     var id: String { rawValue }
 
     var label: String {
         switch self {
-        case .oneSided:   return "片思い"
-        case .mutual:     return "両思い"
-        case .breakup:    return "失恋"
-        case .reunite:    return "復縁"
-        case .ex:         return "元カレ・元カノ"
-        case .confession: return "告白"
-        case .dateLine:   return "デート・LINE"
-        case .fight:      return "喧嘩・倦怠期"
+        case .power:    return "パワハラ"
+        case .sexual:   return "セクハラ"
+        case .moral:    return "モラハラ"
+        case .customer: return "カスハラ"
+        case .other:    return "その他"
+        case .consult:  return "ぶっちゃけ相談"
         }
     }
 
@@ -169,17 +165,17 @@ struct BoardComposeViewV2: View {
         _selectedCommunityRoom = State(initialValue: preselectedCommunityRoom)
     }
 
-    // Figma colors
-    private let koiPink = MeloColors.Brand.pink          // こいピンク確定
-    private let textBrown = MeloColors.Text.primary        // 確焦茶
-    private let lightBrown = MeloColors.Gray.subButton       // 確定薄茶
-    private let softBrown = MeloColors.Gray.subButtonLight  // 添付ピル等のグレー背景
-    private let softPinkLite = MeloColors.Surface.pinkPale     // 薄ピンク確定
-    private let mbtiGreen = MeloColors.Status.successBg        // INFP fallback color
-    private let chipBorder = MeloColors.Gray.subButton
-    private let placeholderGray = MeloColors.Gray.subButton
-    private let softGray = MeloColors.Gray.subButtonLight
-    private let lineGray = MeloColors.Gray.subButtonLight
+    // Figma colors（ダーク化: 黒地 × ホットピンク accent）
+    private let koiPink = MeloColors.Dark.accent          // こいピンク確定 → accent
+    private let textBrown = MeloColors.Dark.textPrimary        // 確焦茶 → 明文字
+    private let lightBrown = MeloColors.Dark.textSecondary       // 確定薄茶 → 副文字
+    private let softBrown = MeloColors.Dark.bgElevated  // 添付ピル等の背景 → 一段上の面
+    private let softPinkLite = MeloColors.Dark.bgElevated     // 薄ピンク確定 → 一段上の面
+    private let mbtiGreen = MeloColors.Dark.bgElevated        // INFP fallback bg // TODO(dark): 要確認（元 Status.successBg の薄緑。意味色ではなく placeholder 用途のため面色に置換）
+    private let chipBorder = MeloColors.Dark.cardStroke
+    private let placeholderGray = MeloColors.Dark.textSecondary
+    private let softGray = MeloColors.Dark.bgElevated
+    private let lineGray = MeloColors.Dark.divider
     // Fix #5: top strip transparent (was FFF1F4 激薄ピンク — made clear)
     private let headerBg = Color.clear
 
@@ -295,7 +291,7 @@ struct BoardComposeViewV2: View {
         }
         .padding(.horizontal, 20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Color.white)
+        .background(MeloColors.Dark.card)
     }
 
     // MARK: - Top bar (Cancel / Draft Menu / Title / Submit)
@@ -308,7 +304,7 @@ struct BoardComposeViewV2: View {
                 } label: {
                     Text(String(localized: "キャンセル", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruMedium(15))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                         .tracking(0.45)
                         .padding(.horizontal, 6)
                         .frame(minHeight: 32)
@@ -324,7 +320,7 @@ struct BoardComposeViewV2: View {
                 } label: {
                     Text(String(localized: "投稿", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruMedium(15))
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                         .tracking(0.48)
                         .padding(.horizontal, 20)
                         .frame(height: 40)
@@ -336,7 +332,7 @@ struct BoardComposeViewV2: View {
 
             Text(String(localized: "相談する", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(18))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .tracking(0.54)
         }
         .frame(height: 40)
@@ -370,7 +366,7 @@ struct BoardComposeViewV2: View {
             ZStack {
                 Image(systemName: hasSavedDraft ? "tray.full.fill" : "tray")
                     .font(.system(size: 16, weight: .regular))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .frame(width: 36, height: 36)
             }
         }
@@ -507,7 +503,7 @@ struct BoardComposeViewV2: View {
                 Image(systemName: "chevron.down")
                     .font(.system(size: 9, weight: .bold))
             }
-            .foregroundColor(MeloColors.Text.primary)
+            .foregroundColor(MeloColors.Dark.textPrimary)
             .padding(.horizontal, 10)
             .frame(height: 32)
             .background(Capsule().fill(softPinkLite))
@@ -720,7 +716,7 @@ struct BoardComposeViewV2: View {
                 HStack(spacing: 8) {
                     Text(resolvedDisplayName)
                         .font(MeloFonts.zenMaruMedium(14))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                         .tracking(0.42)
                         .lineLimit(1)
                     anonymousToggle
@@ -816,7 +812,7 @@ struct BoardComposeViewV2: View {
             HStack(spacing: 4) {
                 Text(String(localized: "匿名で相談", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruMedium(12))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .tracking(0.36)
 
                 ZStack(alignment: draft.isAnonymous ? .trailing : .leading) {
@@ -849,7 +845,7 @@ struct BoardComposeViewV2: View {
         } label: {
             Text(code)
                 .font(MeloFonts.zenMaruMedium(13))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .tracking(0.39)
                 .padding(.horizontal, 14)
                 .frame(height: 32)
@@ -862,7 +858,7 @@ struct BoardComposeViewV2: View {
     private func themeChip(_ text: String, filled: Bool) -> some View {
         Text(text)
             .font(MeloFonts.zenMaruMedium(13))
-            .foregroundColor(MeloColors.Text.primary)
+            .foregroundColor(MeloColors.Dark.textPrimary)
             .tracking(0.39)
             .padding(.horizontal, 14)
             .frame(height: 32)
@@ -874,7 +870,7 @@ struct BoardComposeViewV2: View {
         Button(action: action) {
             Image(systemName: systemName)
                 .font(.system(size: 20, weight: .semibold))
-                .foregroundColor(MeloColors.Text.primary.opacity(0.7))
+                .foregroundColor(MeloColors.Dark.textPrimary.opacity(0.7))
                 .frame(width: 24, height: 24)
         }
         .buttonStyle(.plain)
@@ -905,7 +901,7 @@ struct BoardComposeViewV2: View {
 
                 TextEditor(text: $draft.text)
                     .font(MeloFonts.zenMaruMedium(15))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .tracking(0.45)
                     .focused($isBodyFocused)
                     .scrollContentBackground(.hidden)
@@ -979,7 +975,7 @@ struct BoardComposeViewV2: View {
                 text: $pollQuestion
             )
             .font(MeloFonts.zenMaruMedium(14))
-            .foregroundColor(MeloColors.Text.primary)
+            .foregroundColor(MeloColors.Dark.textPrimary)
             .padding(10)
             .background(
                 RoundedRectangle(cornerRadius: 8).fill(softBrown.opacity(0.5))
@@ -1006,7 +1002,7 @@ struct BoardComposeViewV2: View {
                         )
                     )
                     .font(MeloFonts.zenMaruMedium(14))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
 
                     if pollOptionTexts.count > 2 {
                         Button {
@@ -1052,7 +1048,7 @@ struct BoardComposeViewV2: View {
         }
         .padding(12)
         .background(
-            RoundedRectangle(cornerRadius: 10).fill(Color.white)
+            RoundedRectangle(cornerRadius: 10).fill(MeloColors.Dark.card)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10)
@@ -1073,13 +1069,13 @@ struct BoardComposeViewV2: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text("@\(quote.authorDisplayName)")
                     .font(MeloFonts.zenMaruMedium(10))
-                    .foregroundColor(MeloColors.Text.primary.opacity(0.85))
+                    .foregroundColor(MeloColors.Dark.textPrimary.opacity(0.85))
                     .tracking(0.3)
                     .lineLimit(1)
 
                 Text(quote.content)
                     .font(MeloFonts.zenMaruMedium(12))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .tracking(0.36)
                     .lineLimit(2)
             }
@@ -1106,7 +1102,7 @@ struct BoardComposeViewV2: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(MeloColors.Surface.pinkPale, lineWidth: 1)
+                .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
         )
         .padding(.horizontal, 16)
     }
@@ -1164,7 +1160,7 @@ struct BoardComposeViewV2: View {
                                 .font(MeloFonts.zenMaruMedium(12))
                         }
                     }
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .fixedSize(horizontal: true, vertical: false)
                     .padding(.horizontal, 14)
                     .frame(height: 36)
@@ -1199,7 +1195,7 @@ struct BoardComposeViewV2: View {
                             .font(MeloFonts.zenMaruMedium(13))
                             .tracking(0.39)
                     }
-                    .foregroundColor(showHashtagEditor ? koiPink : MeloColors.Text.primary)
+                    .foregroundColor(showHashtagEditor ? koiPink : MeloColors.Dark.textPrimary)
                     .fixedSize(horizontal: true, vertical: false)
                     .padding(.horizontal, 14)
                     .frame(height: 36)
@@ -1218,7 +1214,7 @@ struct BoardComposeViewV2: View {
         Button(action: action) {
             Text(text)
                 .font(MeloFonts.zenMaruMedium(13))
-                .foregroundColor(selected ? .white : MeloColors.Text.primary)
+                .foregroundColor(selected ? MeloColors.Dark.onAccent : MeloColors.Dark.textPrimary)
                 .tracking(0.39)
                 .lineLimit(1)
                 .fixedSize(horizontal: true, vertical: false)
@@ -1253,7 +1249,7 @@ struct BoardComposeViewV2: View {
                         text: $hashtagInput
                     )
                     .font(MeloFonts.zenMaruMedium(14))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .focused($isHashtagFocused)
                     .submitLabel(.done)
                     .onSubmit { commitHashtag() }
@@ -1263,7 +1259,7 @@ struct BoardComposeViewV2: View {
                         } label: {
                             Text(String(localized: "追加", bundle: LanguageManager.appBundle))
                                 .font(MeloFonts.zenMaruMedium(13))
-                                .foregroundColor(.white)
+                                .foregroundColor(MeloColors.Dark.onAccent)
                                 .padding(.horizontal, 14)
                                 .frame(height: 32)
                                 .background(Capsule().fill(koiPink))
@@ -1334,7 +1330,7 @@ struct BoardComposeViewV2: View {
             VStack(alignment: .leading, spacing: 16) {
                 Text(String(localized: "テーマを選ぶ（最大\(maxThemes)つ）", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruOrFallback(16))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .padding(.horizontal, 20)
                     .padding(.top, 8)
 
@@ -1351,11 +1347,11 @@ struct BoardComposeViewV2: View {
                             } label: {
                                 Text(theme.label)
                                     .font(MeloFonts.zenMaruMedium(14))
-                                    .foregroundColor(isSelected ? .white : MeloColors.Text.primary)
+                                    .foregroundColor(isSelected ? MeloColors.Dark.onAccent : MeloColors.Dark.textPrimary)
                                     .padding(.horizontal, 16)
                                     .frame(height: 36)
                                     .background(
-                                        Capsule().fill(isSelected ? koiPink : MeloColors.Gray.subButtonLight)
+                                        Capsule().fill(isSelected ? koiPink : MeloColors.Dark.bgElevated)
                                     )
                                     .overlay(
                                         Capsule().stroke(isSelected ? Color.clear : chipBorder, lineWidth: 0.5)
@@ -1394,7 +1390,7 @@ struct BoardComposeViewV2: View {
                 VStack(alignment: .leading, spacing: 16) {
                     Text(String(localized: "MBTIを選択", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruOrFallback(16))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
 
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 8) {
                         ForEach(mbtiTypes, id: \.self) { mbti in
@@ -1417,7 +1413,7 @@ struct BoardComposeViewV2: View {
 
     private func mbtiGridCell(_ mbti: String) -> some View {
         let isSelected = (resolvedMbtiCode == mbti)
-        let fillColor: Color = isSelected ? MeloColors.mbtiColor(for: mbti) : MeloColors.Gray.subButtonLight
+        let fillColor: Color = isSelected ? MeloColors.mbtiColor(for: mbti) : MeloColors.Dark.bgElevated
         return Button {
             manualMbtiCode = mbti
             draft.showsMbti = true
@@ -1425,7 +1421,7 @@ struct BoardComposeViewV2: View {
         } label: {
             Text(mbti)
                 .font(MeloFonts.zenMaruMedium(13))
-                .foregroundColor(isSelected ? .white : MeloColors.Text.primary)
+                .foregroundColor(isSelected ? .white : MeloColors.Dark.textPrimary)
                 .frame(maxWidth: .infinity)
                 .frame(height: 36)
                 .background(

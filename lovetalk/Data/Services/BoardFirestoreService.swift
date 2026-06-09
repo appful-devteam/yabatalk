@@ -1333,6 +1333,14 @@ final class BoardFirestoreService: ObservableObject {
         }
         card.selfLoveTotal = dict["selfLoveTotal"] as? Int
         card.partnerLoveTotal = dict["partnerLoveTotal"] as? Int
+        // yabatalk: 毒性鑑定フィールド
+        card.toxicityScore = dict["toxicityScore"] as? Int
+        card.toxicityLevel = dict["toxicityLevel"] as? String
+        card.toxicityDangerLabel = dict["toxicityDangerLabel"] as? String
+        card.toxicityCatchCopy = dict["toxicityCatchCopy"] as? String
+        card.toxicityCategoryCode = dict["toxicityCategoryCode"] as? String
+        card.toxicitySpecimenNo = dict["toxicitySpecimenNo"] as? String
+        card.toxicityTitle = dict["toxicityTitle"] as? String
         return card
     }
 
@@ -1362,6 +1370,14 @@ final class BoardFirestoreService: ObservableObject {
         }
         if let v = card.selfLoveTotal { dict["selfLoveTotal"] = v }
         if let v = card.partnerLoveTotal { dict["partnerLoveTotal"] = v }
+        // yabatalk: 毒性鑑定フィールド
+        if let v = card.toxicityScore { dict["toxicityScore"] = v }
+        if let v = card.toxicityLevel { dict["toxicityLevel"] = v }
+        if let v = card.toxicityDangerLabel { dict["toxicityDangerLabel"] = v }
+        if let v = card.toxicityCatchCopy { dict["toxicityCatchCopy"] = v }
+        if let v = card.toxicityCategoryCode { dict["toxicityCategoryCode"] = v }
+        if let v = card.toxicitySpecimenNo { dict["toxicitySpecimenNo"] = v }
+        if let v = card.toxicityTitle { dict["toxicityTitle"] = v }
         return dict
     }
 

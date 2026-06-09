@@ -2,16 +2,16 @@ import SwiftUI
 
 // MARK: - Import Confirm Tokens (NewHomeView 準拠)
 private enum ImportConfirmTokens {
-    static let pageBg = Color.white
-    static let headerBg = MeloColors.Surface.pinkPale
-    static let softBg = MeloColors.Surface.pinkPale
-    static let softBgAlt = MeloColors.Surface.pinkPale
-    static let brandPink = MeloColors.Brand.pink
-    static let filledPink = MeloColors.Brand.pink
-    static let softPink = MeloColors.Brand.pinkLight
-    static let textDark = MeloColors.Text.primary
-    static let textGrey = MeloColors.Text.secondary
-    static let brownBorder = MeloColors.Text.primary
+    static let pageBg = MeloColors.Dark.bg
+    static let headerBg = MeloColors.Dark.bgElevated
+    static let softBg = MeloColors.Dark.bgElevated
+    static let softBgAlt = MeloColors.Dark.bg
+    static let brandPink = MeloColors.Dark.accent
+    static let filledPink = MeloColors.Dark.accent
+    static let softPink = MeloColors.Dark.accent
+    static let textDark = MeloColors.Dark.textPrimary
+    static let textGrey = MeloColors.Dark.textSecondary
+    static let brownBorder = MeloColors.Dark.cardStroke
 }
 
 // MARK: - Import Confirm View
@@ -118,7 +118,7 @@ struct ImportConfirmView: View {
         .padding(.horizontal, 32)
         .padding(.top, 23)
         .padding(.bottom, 10)
-        .background(Color.white)
+        .background(MeloColors.Dark.bgElevated)
     }
 
     // MARK: - Subviews
@@ -128,7 +128,7 @@ struct ImportConfirmView: View {
             // 成功アイコン (薄ピンク円 + ブランドピンクの枠)
             ZStack {
                 Circle()
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         Circle()
                             .stroke(ImportConfirmTokens.brandPink, lineWidth: 1)
@@ -204,7 +204,7 @@ struct ImportConfirmView: View {
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .stroke(ImportConfirmTokens.brownBorder, lineWidth: 1)
@@ -225,7 +225,7 @@ struct ImportConfirmView: View {
                 // アイコン: 白地 + ブランドピンクの枠
                 ZStack {
                     Circle()
-                        .fill(isSelected ? ImportConfirmTokens.softBg : Color.white)
+                        .fill(isSelected ? ImportConfirmTokens.softBg : MeloColors.Dark.card)
                         .overlay(
                             Circle()
                                 .stroke(
@@ -275,7 +275,7 @@ struct ImportConfirmView: View {
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(isSelected ? ImportConfirmTokens.softBg : Color.white)
+                    .fill(isSelected ? ImportConfirmTokens.softBg : MeloColors.Dark.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10, style: .continuous)
                             .stroke(
@@ -305,7 +305,7 @@ struct ImportConfirmView: View {
                 Text(String(localized: "必須", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruRegular(10))
                     .tracking(0.3)
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
                     .background(
@@ -345,7 +345,7 @@ struct ImportConfirmView: View {
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .stroke(ImportConfirmTokens.brownBorder, lineWidth: 1)
@@ -369,7 +369,7 @@ struct ImportConfirmView: View {
                 Text(relationship.displayName)
                     .font(MeloFonts.zenMaru(13))
                     .tracking(0.3)
-                    .foregroundColor(isSelected ? .white : ImportConfirmTokens.textDark)
+                    .foregroundColor(isSelected ? MeloColors.Dark.onAccent : ImportConfirmTokens.textDark)
                     .lineLimit(1)
                     .minimumScaleFactor(0.85)
 
@@ -446,7 +446,7 @@ struct ImportConfirmView: View {
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .stroke(ImportConfirmTokens.brownBorder, lineWidth: 1)
@@ -458,7 +458,7 @@ struct ImportConfirmView: View {
         VStack(spacing: 10) {
             ZStack {
                 Circle()
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         Circle()
                             .stroke(ImportConfirmTokens.brandPink, lineWidth: 1)
@@ -531,7 +531,7 @@ struct ImportConfirmView: View {
                             .font(.system(size: 13, weight: .bold))
                     }
                 }
-                .foregroundColor(.white)
+                .foregroundColor(MeloColors.Dark.onAccent)
                 .frame(maxWidth: .infinity)
                 .frame(height: 56)
                 .background(

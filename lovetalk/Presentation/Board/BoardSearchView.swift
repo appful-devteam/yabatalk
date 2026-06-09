@@ -5,17 +5,17 @@ import SwiftUI
 // MARK: - Search Palette (NewHome / NewFeed tokens)
 
 private enum BoardSearchPalette {
-    static let accentPink = MeloColors.Brand.pink          // メインピンク（アクセント / ストローク）
-    static let accentPinkSoft = MeloColors.Brand.pink      // チップ選択塗り
-    static let highlightPink = MeloColors.Brand.pinkLight       // ハイライト
-    static let headerBg = MeloColors.Surface.pinkPale            // ヘッダー背景
-    static let softBg = MeloColors.Surface.pinkPale              // チップ未選択背景 / エンプティ背景
-    static let softBgAlt = MeloColors.Surface.pinkPale           // ソフトピンク代替
-    static let textPrimary = MeloColors.Text.primary         // 本文
-    static let textMuted = MeloColors.Text.secondary           // ミュート
-    static let placeholder = MeloColors.Text.secondary         // プレースホルダ
-    static let strokeBrown = MeloColors.Text.primary         // ブラウンストローク
-    static let divider = MeloColors.Gray.subButtonLight             // ディバイダ
+    static let accentPink = MeloColors.Dark.accent          // メインピンク（アクセント / ストローク）
+    static let accentPinkSoft = MeloColors.Dark.accent      // チップ選択塗り
+    static let highlightPink = MeloColors.Dark.accent       // ハイライト
+    static let headerBg = MeloColors.Dark.bgElevated            // ヘッダー背景
+    static let softBg = MeloColors.Dark.card              // チップ未選択背景 / エンプティ背景
+    static let softBgAlt = MeloColors.Dark.card           // ソフトピンク代替
+    static let textPrimary = MeloColors.Dark.textPrimary         // 本文
+    static let textMuted = MeloColors.Dark.textSecondary           // ミュート
+    static let placeholder = MeloColors.Dark.textSecondary         // プレースホルダ
+    static let strokeBrown = MeloColors.Dark.textPrimary         // ブラウンストローク
+    static let divider = MeloColors.Dark.divider             // ディバイダ
 }
 
 // MARK: - Board Search View
@@ -59,7 +59,7 @@ struct BoardSearchView: View {
                     resultsList
                 }
             }
-            .background(Color.white.ignoresSafeArea())
+            .background(MeloColors.Dark.bg.ignoresSafeArea())
             .navigationBarHidden(true)
             .sheet(item: $selectedPost) { post in
                 BoardPostDetailView(post: post)
@@ -88,7 +88,7 @@ struct BoardSearchView: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.card)
                         .frame(width: 37, height: 37)
                         .overlay(
                             Circle().stroke(BoardSearchPalette.accentPink, lineWidth: 1)
@@ -142,7 +142,7 @@ struct BoardSearchView: View {
             .padding(.vertical, 10)
             .background(
                 Capsule()
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         Capsule().stroke(BoardSearchPalette.accentPink, lineWidth: 1)
                     )

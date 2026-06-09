@@ -7,19 +7,19 @@ struct TermsOfServiceView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                MeloGradientBackground(style: .subtle)
+                MeloColors.Dark.bg.ignoresSafeArea()
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         // 最終更新日
                         Text(String(localized: "最終更新日: 2026年5月18日", bundle: LanguageManager.appBundle))
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(MeloColors.Text.secondary)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
 
                         // イントロ
-                        Text(String(localized: "この利用規約（以下「本規約」）は、めろとーく（以下「本アプリ」）の利用条件を定めるものです。ユーザーの皆様には、本規約に同意いただいた上で、本アプリをご利用いただきます。本アプリをダウンロード、インストール、または使用することにより、本規約に同意したものとみなされます。", bundle: LanguageManager.appBundle))
+                        Text(String(localized: "この利用規約（以下「本規約」）は、ハラスメントーク（以下「本アプリ」）の利用条件を定めるものです。ユーザーの皆様には、本規約に同意いただいた上で、本アプリをご利用いただきます。本アプリをダウンロード、インストール、または使用することにより、本規約に同意したものとみなされます。", bundle: LanguageManager.appBundle))
                             .font(.system(size: 14, weight: .regular))
-                            .foregroundColor(MeloColors.Text.secondary)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
                             .lineSpacing(6)
 
                         termsSection(
@@ -29,7 +29,7 @@ struct TermsOfServiceView: View {
 
                         termsSection(
                             title: String(localized: "第2条（サービスの内容）", bundle: LanguageManager.appBundle),
-                            content: String(localized: "1. 本アプリは、LINEのトーク履歴（テキスト形式）を解析し、4軸スコアリング、コミュニケーションパターン分析、性格タイプ分類、およびAI要約を提供するサービスです。\n2. 本アプリが提供する診断結果、スコア、性格分類、およびAI生成サマリーは、すべて参考情報であり、科学的・医学的・心理学的な根拠に基づくものではありません。\n3. 本アプリの利用にはiOS端末およびインターネット接続環境が必要です。\n4. ユーザーは、自己の責任において本アプリを利用するものとします。", bundle: LanguageManager.appBundle)
+                            content: String(localized: "1. 本アプリは、LINEのトーク履歴（テキスト形式）を解析し、ハラスメント傾向スコアリング、ハラスメント分類、コミュニケーションパターン分析、およびAI要約を提供するサービスです。\n2. 本アプリが提供する診断結果、スコア、ハラスメント分類、およびAI生成サマリーは、すべて参考情報であり、科学的・医学的・心理学的な根拠に基づくものではありません。\n3. 本アプリの利用にはiOS端末およびインターネット接続環境が必要です。\n4. ユーザーは、自己の責任において本アプリを利用するものとします。", bundle: LanguageManager.appBundle)
                         )
 
                         termsSection(
@@ -59,7 +59,7 @@ struct TermsOfServiceView: View {
 
                         termsSection(
                             title: String(localized: "第8条（免責事項）", bundle: LanguageManager.appBundle),
-                            content: String(localized: "1. 本アプリが提供する診断結果、スコア、性格分類、AI生成サマリー、および返信提案は、すべて参考情報であり、その正確性、完全性、有用性、特定目的への適合性を保証するものではありません。\n2. 診断結果やAI生成コンテンツに基づくユーザーの判断や行動（人間関係に関する意思決定を含む）について、運営者は一切の責任を負いません。\n3. Google Gemini API に送信されたデータの取り扱いについて、運営者は責任を負いません。データ送信後の取り扱いは Google LLC のプライバシーポリシーおよび利用規約に従います。\n4. 本アプリの利用により生じたいかなる損害（直接損害、間接損害、偶発的損害、特別損害、懲罰的損害、逸失利益を含むがこれらに限定されない）についても、運営者は法令上許容される最大限の範囲で責任を負いません。\n5. 本アプリは現状有姿（AS IS）で提供されます。\n6. 通信環境、デバイスの状態、外部サービスの障害等に起因する本アプリの動作不良について、運営者は責任を負いません。", bundle: LanguageManager.appBundle)
+                            content: String(localized: "1. 本アプリが提供する診断結果、スコア、ハラスメント分類、AI生成サマリー、および返信提案は、すべて参考情報であり、その正確性、完全性、有用性、特定目的への適合性を保証するものではありません。\n2. 診断結果やAI生成コンテンツに基づくユーザーの判断や行動（人間関係に関する意思決定を含む）について、運営者は一切の責任を負いません。\n3. Google Gemini API に送信されたデータの取り扱いについて、運営者は責任を負いません。データ送信後の取り扱いは Google LLC のプライバシーポリシーおよび利用規約に従います。\n4. 本アプリの利用により生じたいかなる損害（直接損害、間接損害、偶発的損害、特別損害、懲罰的損害、逸失利益を含むがこれらに限定されない）についても、運営者は法令上許容される最大限の範囲で責任を負いません。\n5. 本アプリは現状有姿（AS IS）で提供されます。\n6. 通信環境、デバイスの状態、外部サービスの障害等に起因する本アプリの動作不良について、運営者は責任を負いません。", bundle: LanguageManager.appBundle)
                         )
 
                         termsSection(
@@ -103,7 +103,7 @@ struct TermsOfServiceView: View {
                         HapticManager.light()
                         dismiss()
                     }
-                    .foregroundColor(MeloColors.Brand.pinkDeep)
+                    .foregroundColor(MeloColors.Dark.accent)
                 }
             }
         }
@@ -113,11 +113,11 @@ struct TermsOfServiceView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.system(size: 16, weight: .bold))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
 
             Text(content)
                 .font(.system(size: 14, weight: .regular))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .lineSpacing(6)
         }
     }

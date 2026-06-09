@@ -71,7 +71,7 @@ struct ProfileSetupView: View {
 
     var body: some View {
         ZStack {
-            Color.white
+            MeloColors.Dark.bg
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
@@ -84,9 +84,9 @@ struct ProfileSetupView: View {
                     } label: {
                         Image(systemName: "xmark")
                             .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(MeloColors.Gray.subButton)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
                             .frame(width: 28, height: 28)
-                            .background(Circle().fill(MeloColors.Gray.subButtonLight))
+                            .background(Circle().fill(MeloColors.Dark.bgElevated))
                     }
                     .buttonStyle(.plain)
                 }
@@ -97,11 +97,11 @@ struct ProfileSetupView: View {
                 VStack(spacing: 6) {
                     Text(currentStep.title)
                         .font(MeloFonts.zenMaruOrFallback(20))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
 
                     Text(currentStep.subtitle)
                         .font(MeloFonts.zenMaruOrFallback(13))
-                        .foregroundColor(MeloColors.Text.secondary)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                 }
                 .padding(.top, 24)
 
@@ -139,26 +139,20 @@ struct ProfileSetupView: View {
                         Group {
                             if isSaving {
                                 ProgressView()
-                                    .tint(.white)
+                                    .tint(MeloColors.Dark.onAccent)
                             } else {
                                 Text(currentStep == .privacy
                                      ? String(localized: "はじめる", bundle: LanguageManager.appBundle)
                                      : String(localized: "次へ", bundle: LanguageManager.appBundle))
                                     .font(MeloFonts.zenMaruOrFallback(15))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(MeloColors.Dark.onAccent)
                             }
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
                         .background(
                             Capsule()
-                                .fill(
-                                    LinearGradient(
-                                        colors: [MeloColors.Brand.pinkDeep, MeloColors.Brand.pinkLight],
-                                        startPoint: .leading,
-                                        endPoint: .trailing
-                                    )
-                                )
+                                .fill(MeloColors.Dark.accentGradient)
                         )
                     }
                     .buttonStyle(.plain)
@@ -179,7 +173,7 @@ struct ProfileSetupView: View {
                         } label: {
                             Text(String(localized: "スキップ", bundle: LanguageManager.appBundle))
                                 .font(MeloFonts.zenMaruOrFallback(13))
-                                .foregroundColor(MeloColors.Gray.subButton)
+                                .foregroundColor(MeloColors.Dark.textSecondary)
                         }
                         .buttonStyle(.plain)
                     }
@@ -229,8 +223,8 @@ struct ProfileSetupView: View {
             ForEach(0..<total, id: \.self) { i in
                 Capsule()
                     .fill(i < current
-                          ? MeloColors.Brand.pinkLight
-                          : MeloColors.Gray.divider)
+                          ? MeloColors.Dark.accent
+                          : MeloColors.Dark.track)
                     .frame(height: 3)
             }
         }
@@ -245,23 +239,24 @@ struct ProfileSetupView: View {
                 text: $displayName
             )
             .font(MeloFonts.zenMaruOrFallback(16))
+            .foregroundColor(MeloColors.Dark.textPrimary)
             .multilineTextAlignment(.center)
             .padding(.vertical, 14)
             .padding(.horizontal, 20)
             .background(
                 RoundedRectangle(cornerRadius: 14)
-                    .fill(Color.white)
-                    .shadow(color: MeloColors.Brand.pinkLight.opacity(0.12), radius: 8, x: 0, y: 2)
+                    .fill(MeloColors.Dark.card)
+                    .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 2)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 14)
-                    .stroke(MeloColors.Surface.pinkPale, lineWidth: 1)
+                    .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
             )
             .padding(.horizontal, 40)
 
             Text(String(localized: "あとから変更できます", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(11))
-                .foregroundColor(MeloColors.Gray.subButton)
+                .foregroundColor(MeloColors.Dark.textSecondary)
         }
     }
 
@@ -278,29 +273,29 @@ struct ProfileSetupView: View {
                         .clipShape(Circle())
                         .overlay(
                             Circle()
-                                .stroke(MeloColors.Brand.pinkLight.opacity(0.3), lineWidth: 2)
+                                .stroke(MeloColors.Dark.accent.opacity(0.3), lineWidth: 2)
                         )
-                        .shadow(color: MeloColors.Brand.pinkLight.opacity(0.2), radius: 12, x: 0, y: 4)
+                        .shadow(color: Color.black.opacity(0.3), radius: 12, x: 0, y: 4)
                 } else {
                     ZStack {
                         Circle()
                             .fill(
                                 LinearGradient(
-                                    colors: [MeloColors.Surface.pinkPale, MeloColors.Surface.pinkPale],
+                                    colors: [MeloColors.Dark.card, MeloColors.Dark.card],
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 )
                             )
                             .frame(width: 120, height: 120)
-                            .shadow(color: MeloColors.Brand.pinkLight.opacity(0.15), radius: 12, x: 0, y: 4)
+                            .shadow(color: Color.black.opacity(0.3), radius: 12, x: 0, y: 4)
 
                         VStack(spacing: 6) {
                             Image(systemName: "camera.fill")
                                 .font(.system(size: 28))
-                                .foregroundColor(MeloColors.Brand.pinkLight)
+                                .foregroundColor(MeloColors.Dark.accent)
                             Text(String(localized: "タップして選択", bundle: LanguageManager.appBundle))
                                 .font(MeloFonts.zenMaruOrFallback(10))
-                                .foregroundColor(MeloColors.Brand.pinkLight)
+                                .foregroundColor(MeloColors.Dark.accent)
                         }
                     }
                 }
@@ -328,13 +323,13 @@ struct ProfileSetupView: View {
                 } label: {
                     Text(String(localized: "非表示", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruOrFallback(14))
-                        .foregroundColor(selectedMBTI == nil ? .white : MeloColors.Text.secondary)
+                        .foregroundColor(selectedMBTI == nil ? MeloColors.Dark.onAccent : MeloColors.Dark.textSecondary)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
                         .background(
                             Capsule()
-                                .fill(selectedMBTI == nil ? MeloColors.Brand.pinkLight : Color.white)
-                                .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 2)
+                                .fill(selectedMBTI == nil ? MeloColors.Dark.accent : MeloColors.Dark.card)
+                                .shadow(color: Color.black.opacity(0.3), radius: 4, x: 0, y: 2)
                         )
                 }
                 .buttonStyle(.plain)
@@ -385,22 +380,23 @@ struct ProfileSetupView: View {
                 axis: .vertical
             )
             .font(MeloFonts.zenMaruOrFallback(14))
+            .foregroundColor(MeloColors.Dark.textPrimary)
             .lineLimit(3...5)
             .padding(16)
             .background(
                 RoundedRectangle(cornerRadius: 14)
-                    .fill(Color.white)
-                    .shadow(color: MeloColors.Brand.pinkLight.opacity(0.12), radius: 8, x: 0, y: 2)
+                    .fill(MeloColors.Dark.card)
+                    .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 2)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 14)
-                    .stroke(MeloColors.Surface.pinkPale, lineWidth: 1)
+                    .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
             )
             .padding(.horizontal, 32)
 
             Text("\(bio.count)/100")
                 .font(MeloFonts.zenMaruRegular(11))
-                .foregroundColor(MeloColors.Gray.subButton)
+                .foregroundColor(MeloColors.Dark.textSecondary)
         }
         .onChange(of: bio) { _ in
             if bio.count > 100 {
@@ -441,16 +437,16 @@ struct ProfileSetupView: View {
             HStack(spacing: 14) {
                 Image(systemName: icon)
                     .font(.system(size: 20))
-                    .foregroundColor(isSelected ? MeloColors.Brand.pinkLight : MeloColors.Gray.subButton)
+                    .foregroundColor(isSelected ? MeloColors.Dark.accent : MeloColors.Dark.textSecondary)
                     .frame(width: 36)
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(title)
                         .font(MeloFonts.zenMaruOrFallback(14))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                     Text(description)
                         .font(MeloFonts.zenMaruOrFallback(11))
-                        .foregroundColor(MeloColors.Text.secondary)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                         .lineLimit(2)
                 }
 
@@ -458,17 +454,17 @@ struct ProfileSetupView: View {
 
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .font(.system(size: 22))
-                    .foregroundColor(isSelected ? MeloColors.Brand.pinkLight : MeloColors.Gray.subButton)
+                    .foregroundColor(isSelected ? MeloColors.Dark.accent : MeloColors.Dark.textSecondary)
             }
             .padding(16)
             .background(
                 RoundedRectangle(cornerRadius: 14)
-                    .fill(isSelected ? MeloColors.Surface.pinkPale : Color.white)
+                    .fill(isSelected ? MeloColors.Dark.bgElevated : MeloColors.Dark.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: 14)
-                            .stroke(isSelected ? MeloColors.Brand.pinkLight.opacity(0.3) : MeloColors.Gray.subButtonLight, lineWidth: 1)
+                            .stroke(isSelected ? MeloColors.Dark.accent.opacity(0.3) : MeloColors.Dark.cardStroke, lineWidth: 1)
                     )
-                    .shadow(color: Color.black.opacity(0.04), radius: 6, x: 0, y: 2)
+                    .shadow(color: Color.black.opacity(0.3), radius: 6, x: 0, y: 2)
             )
         }
         .buttonStyle(.plain)

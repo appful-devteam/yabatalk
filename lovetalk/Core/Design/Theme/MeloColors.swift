@@ -6,7 +6,7 @@ import SwiftUI
 /// 唯一の例外: ユーザー設定で動的に決まる色を変数経由で渡すケース。
 enum MeloColors {
 
-    // MARK: - Brand
+    // MARK: - Brand（レガシー lovetalk 画面用。診断フローは MeloColors.Dark を使う）
     /// メインピンク。フラット用途は Brand.pink、グラデは Gradient.pinkPrimary を使う。
     enum Brand {
         static let pink         = Color(hex: "FF6CB0") // 中間ストップ。フラット代表色
@@ -20,6 +20,51 @@ enum MeloColors {
         static let white     = Color.white
         static let pinkPale  = Color(hex: "FFE1F0") // ヘッダー背景・選択後ピル背景
         static let card      = Color.white
+    }
+
+    // MARK: - Dark（yabatalk 診断フロー専用ダークテーマ: 黒地 × ネオンライム）
+    /// 診断 4 画面（Home / Import / Analyzing / Result）はこの名前空間を使う。
+    /// レガシー lovetalk 画面は従来の Brand/Surface/Text（ライト）を使い続ける。
+    enum Dark {
+        // 地・面
+        static let bg          = Color(hex: "0C0C0F") // 画面最背面（ほぼ黒）
+        static let bgElevated  = Color(hex: "15151B") // ヘッダー/ピル等の一段持ち上げ
+        static let card        = Color(hex: "17171F") // カード面
+        static let cardStroke  = Color(hex: "2A2A34") // カード境界線
+        static let divider     = Color(hex: "24242C")
+
+        // 文字
+        static let textPrimary   = Color(hex: "F2F2F5") // 明文字
+        static let textSecondary = Color(hex: "9A9AA6") // 副文字（薄め）
+
+        // アクセント = 危険ホットピンク（旧ネオンライムから変更。アプリ全体の主アクセント）
+        static let accent       = Color(hex: "FF3B6B") // 主アクセント（数字/バー/選択ピル/見出し/ボタン/タブバー）
+        static let accentBright = Color(hex: "FF6B8E") // ハイライト端
+        static let accentDeep   = Color(hex: "E5295A") // グラデ濃端
+        static let onAccent     = Color(hex: "0C0C0F") // アクセント面の上の文字（黒。ピンク/黄/緑いずれも明るいので黒が読める）
+
+        // severity ramp（毒性の危険度＝データの意味、ブランド accent とは別）: 安全=safe(緑) / 注意=caution(黄) / 危険=danger(ピンク)
+        static let safe        = Color(hex: "C6FF2E") // 安全（〜59%）ライムグリーン
+        static let safeBright  = Color(hex: "D8FF63")
+        static let safeDeep    = Color(hex: "9BE000")
+        static let caution     = Color(hex: "FFD23F") // 注意（60–79%）イエロー
+        static let danger      = Color(hex: "FF3B6B") // 危険（80%+）ホットピンク（= accent と同色）
+        static let dangerDeep  = Color(hex: "E5295A") // 危険グラデ濃端
+
+        /// アクセントグラデ（ボタン/見出し/バー/選択ピル）
+        static let accentGradient = LinearGradient(
+            colors: [Color(hex: "E5295A"), Color(hex: "FF3B6B"), Color(hex: "FF6B8E")],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        /// 安全グラデ（緑）— severity 表示用
+        static let safeGradient = LinearGradient(
+            colors: [Color(hex: "9BE000"), Color(hex: "C6FF2E"), Color(hex: "D8FF63")],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        /// バーのトラック（未充填部）
+        static let track = Color(hex: "23231C")
     }
 
     // MARK: - Text
@@ -89,16 +134,20 @@ enum MeloColors {
         static let errorBg      = Color(hex: "FFEDED")
     }
 
-    // MARK: - CTA (アクセントとして使う緑)
+    // MARK: - CTA (アクセント = アシッドライム ☣ "毒"の差し色)
+    /// yabatalk アクセントカラー。互換のため case 名は primaryGreen のままだが実体はアシッドライム。
+    /// ライムは高輝度なので、この色を背景に敷くボタンの文字色は必ず濃色（Text.primary 等）を使うこと。
     enum CTA {
-        /// 診断するページの「LINE相性診断をはじめる」ボタン用 (#48D300)
-        static let primaryGreen = Color(hex: "48D300")
-        /// 緑グラデ (押し感を出すための濃淡)。濃い側を左に配置、全体を少し明るめに調整。
+        /// 診断 CTA ボタン等のアクセント (#B6FF3C)
+        static let primaryGreen = Color(hex: "B6FF3C")
+        /// ライムグラデ (押し感を出すための濃淡)。濃い側を左に配置。
         static let primaryGreenGradient = LinearGradient(
-            colors: [Color(hex: "4FC500"), Color(hex: "5BDC10"), Color(hex: "73EE2E")],
+            colors: [Color(hex: "9EE82A"), Color(hex: "B6FF3C"), Color(hex: "C8FF5E")],
             startPoint: .leading,
             endPoint: .trailing
         )
+        /// ライム背景上の濃色文字（コントラスト確保用）。
+        static let onLime = Color(hex: "2A1A3C")
     }
 
     // MARK: - Axis (4軸スコア、例外)

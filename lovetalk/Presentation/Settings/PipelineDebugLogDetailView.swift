@@ -29,6 +29,11 @@ struct PipelineDebugLogDetailView: View {
         }
         .navigationTitle("ログ詳細")
         .navigationBarTitleDisplayMode(.inline)
+        // 開発者専用デバッグ画面。多数のシステムセマンティック色 (.primary/.secondary/Color(.systemBackground) 等)
+        // を使うため、ルートの forced .light を打ち消して Apple 標準のダーク色に揃える。
+        // TODO(dark): 要確認 — MeloColors.Dark トークンへの厳密置換ではなくシステムダーク配色を採用
+        .preferredColorScheme(.dark)
+        .background(MeloColors.Dark.bg.ignoresSafeArea())
         .toolbar {
             if entry != nil {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -200,7 +205,7 @@ struct PipelineDebugLogDetailView: View {
             }
             .frame(maxHeight: 200)
             .padding(6)
-            .background(Color(.systemGray6))
+            .background(MeloColors.Dark.bgElevated)
             .cornerRadius(6)
         }
     }
@@ -212,8 +217,8 @@ private extension View {
     func disclosureGroupStyle() -> some View {
         self
             .padding(10)
-            .background(Color(.systemBackground))
+            .background(MeloColors.Dark.card)
             .cornerRadius(10)
-            .shadow(color: .black.opacity(0.05), radius: 2, y: 1)
+            .shadow(color: Color.black.opacity(0.3), radius: 2, y: 1)
     }
 }

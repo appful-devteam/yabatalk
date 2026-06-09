@@ -7,24 +7,24 @@ struct PrivacyPolicyView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                MeloGradientBackground(style: .subtle)
+                MeloColors.Dark.bg.ignoresSafeArea()
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         // 最終更新日
                         Text(String(localized: "最終更新日: 2026年5月18日", bundle: LanguageManager.appBundle))
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(MeloColors.Text.secondary)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
 
                         // イントロ
-                        Text(String(localized: "めろとーく（以下「本アプリ」）は、ユーザーのプライバシーを尊重し、個人情報の保護に努めています。本プライバシーポリシーは、本アプリが取り扱う情報の種類、利用目的、第三者への提供、およびユーザーの権利について説明します。本アプリのご利用をもって、本プライバシーポリシーに同意したものとみなします。", bundle: LanguageManager.appBundle))
+                        Text(String(localized: "ハラスメントーク（以下「本アプリ」）は、ユーザーのプライバシーを尊重し、個人情報の保護に努めています。本プライバシーポリシーは、本アプリが取り扱う情報の種類、利用目的、第三者への提供、およびユーザーの権利について説明します。本アプリのご利用をもって、本プライバシーポリシーに同意したものとみなします。", bundle: LanguageManager.appBundle))
                             .font(.system(size: 14, weight: .regular))
-                            .foregroundColor(MeloColors.Text.secondary)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
                             .lineSpacing(6)
 
                         policySection(
                             title: String(localized: "1. 収集する情報", bundle: LanguageManager.appBundle),
-                            content: String(localized: "本アプリは以下の情報を取り扱います：\n\n(1) トーク履歴データ\nユーザーがインポートしたLINEのトーク履歴ファイル（テキスト形式）を解析のために使用します。これらのデータにはメッセージ本文、送信者名、送信日時が含まれます。\n\n(2) 解析結果データ\nトーク履歴から算出された4軸スコア（トーク量・感情温度・リズム・深度）、統計情報、性格タイプ分類、および診断結果。\n\n(3) サブスクリプション情報\nApple App Store経由でのPremium／Premium+プランの購入履歴。本アプリが決済情報を直接収集することはありません。\n\n(4) 匿名利用統計・エラーログ\nアプリの機能改善および障害対応のため、匿名化された利用統計情報・エラーログを Google LLC が提供する Firebase（Firebase Analytics・Crashlytics）に送信する場合があります。これらのデータには個人を特定する情報は含まれません。\n\n(5) 認証用識別子・プッシュ通知トークン\nコミュニティ機能・通知機能の提供のため、Firebase Authentication が発行する匿名 UID および APNs プッシュトークンを Firebase（Firestore／Cloud Functions）上に保存します。", bundle: LanguageManager.appBundle)
+                            content: String(localized: "本アプリは以下の情報を取り扱います：\n\n(1) トーク履歴データ\nユーザーがインポートしたLINEのトーク履歴ファイル（テキスト形式）を解析のために使用します。これらのデータにはメッセージ本文、送信者名、送信日時が含まれます。\n\n(2) 解析結果データ\nトーク履歴から算出されたハラスメント傾向スコア（やばさ度）、ハラスメント分類、検出された要素、統計情報、および診断結果。\n\n(3) サブスクリプション情報\nApple App Store経由でのPremium／Premium+プランの購入履歴。本アプリが決済情報を直接収集することはありません。\n\n(4) 匿名利用統計・エラーログ\nアプリの機能改善および障害対応のため、匿名化された利用統計情報・エラーログを Google LLC が提供する Firebase（Firebase Analytics・Crashlytics）に送信する場合があります。これらのデータには個人を特定する情報は含まれません。\n\n(5) 認証用識別子・プッシュ通知トークン\nコミュニティ機能・通知機能の提供のため、Firebase Authentication が発行する匿名 UID および APNs プッシュトークンを Firebase（Firestore／Cloud Functions）上に保存します。", bundle: LanguageManager.appBundle)
                         )
 
                         policySection(
@@ -34,7 +34,7 @@ struct PrivacyPolicyView: View {
 
                         policySection(
                             title: String(localized: "3. 情報の利用目的", bundle: LanguageManager.appBundle),
-                            content: String(localized: "収集した情報は以下の目的にのみ利用します：\n\n• トーク履歴の解析および4軸スコア・診断結果の生成\n• AI機能（サマリー生成・返信提案）の提供\n• アプリ機能の提供、維持、改善\n• エラーの検出および修正\n• ユーザーサポートへの対応", bundle: LanguageManager.appBundle)
+                            content: String(localized: "収集した情報は以下の目的にのみ利用します：\n\n• トーク履歴の解析およびハラスメント診断結果の生成\n• AI機能（サマリー生成・返信提案）の提供\n• アプリ機能の提供、維持、改善\n• エラーの検出および修正\n• ユーザーサポートへの対応", bundle: LanguageManager.appBundle)
                         )
 
                         policySection(
@@ -88,7 +88,7 @@ struct PrivacyPolicyView: View {
                         HapticManager.light()
                         dismiss()
                     }
-                    .foregroundColor(MeloColors.Brand.pinkDeep)
+                    .foregroundColor(MeloColors.Dark.accent)
                 }
             }
         }
@@ -98,11 +98,11 @@ struct PrivacyPolicyView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.system(size: 16, weight: .bold))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
 
             Text(content)
                 .font(.system(size: 14, weight: .regular))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .lineSpacing(6)
         }
     }

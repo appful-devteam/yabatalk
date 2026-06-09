@@ -4,15 +4,15 @@ import UIKit
 
 // MARK: - Analyzing View Tokens (NewHomeView 準拠)
 private enum AnalyzingTokens {
-    static let pageBg = Color.white
-    static let softBg = MeloColors.Surface.pinkPale
-    static let softBgAlt = MeloColors.Surface.pinkPale
-    static let brandPink = MeloColors.Brand.pink
-    static let filledPink = MeloColors.Brand.pink
-    static let softPink = MeloColors.Brand.pinkLight
-    static let textDark = MeloColors.Text.primary
-    static let textGrey = MeloColors.Text.secondary
-    static let brownBorder = MeloColors.Text.primary
+    static let pageBg = MeloColors.Dark.bg
+    static let softBg = MeloColors.Dark.bgElevated
+    static let softBgAlt = MeloColors.Dark.bgElevated
+    static let brandPink = MeloColors.Dark.accent
+    static let filledPink = MeloColors.Dark.accent
+    static let softPink = MeloColors.Dark.accent
+    static let textDark = MeloColors.Dark.textPrimary
+    static let textGrey = MeloColors.Dark.textSecondary
+    static let brownBorder = MeloColors.Dark.cardStroke
 }
 
 // MARK: - Analyzing View
@@ -34,11 +34,11 @@ struct AnalyzingView: View {
         ZStack {
             // 背景: 診断するページと共通のピンクスターダスト (30% opacity)
             ZStack {
-                MeloColors.Surface.pinkPale
+                MeloColors.Dark.bg
                 Image("bg_diagnose_stardust")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .opacity(0.3)
+                    .opacity(0.12)
             }
             .ignoresSafeArea()
 
@@ -214,8 +214,46 @@ struct AnalyzingView: View {
         try? await Task.sleep(nanoseconds: 200_000_000)
 
         await MainActor.run {
+            let storedSession = saveSession()
+            saveDiagnosis(diagnosisResult, to: storedSession)
             coordinator.navigateToDiagnosis(result: diagnosisResult, session: session)
         }
+    }
+
+    /// ハラスメント診断結果を永続化（同じ相手の旧結果は置き換え）。
+    @MainActor
+    private func saveDiagnosis(_ result: DiagnosisResult, to storedSession: StoredChatSession) {
+        let data = try? JSONEncoder().encode(result)
+        let sid = storedSession.id
+        let descriptor = FetchDescriptor<StoredAnalysisResult>(
+            predicate: #Predicate { $0.sessionId == sid }
+        )
+        if let olds = try? modelContext.fetch(descriptor) {
+            for old in olds { modelContext.delete(old) }
+        }
+        let partner = storedSession.participantNames.first { $0 != selfName } ?? ""
+        let stored = StoredAnalysisResult(
+            id: UUID(),
+            sessionId: storedSession.id,
+            period: "all",
+            balanceScore: 0,
+            tensionScore: 0,
+            responseScore: 0,
+            wordScore: 0,
+            confidence: 1,
+            selfParticipant: selfName,
+            partnerParticipant: partner,
+            analyzedAt: Date(),
+            totalMessages: session.totalMessageCount,
+            totalBlocks: 0,
+            analyzedDays: 0,
+            firstMessageDate: session.firstMessageDate,
+            lastMessageDate: session.lastMessageDate,
+            diagnosisData: data
+        )
+        stored.session = storedSession
+        modelContext.insert(stored)
+        try? modelContext.save()
     }
 
     /// セッションを保存（Upsert方式）

@@ -68,8 +68,8 @@ struct DiagnosisPickerView: View {
                         .padding(14)
                         .background(
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(selectedCard == nil ? MeloColors.Surface.pinkPale : Color.white)
-                                .shadow(color: BoardColors.accent.opacity(0.06), radius: 4, x: 0, y: 2)
+                                .fill(selectedCard == nil ? MeloColors.Dark.bgElevated : MeloColors.Dark.card)
+                                .shadow(color: Color.black.opacity(0.3), radius: 4, x: 0, y: 2)
                         )
                     }
                     .buttonStyle(.plain)
@@ -77,6 +77,10 @@ struct DiagnosisPickerView: View {
                     ForEach(analysisHistory, id: \.id) { result in
                         let baseCard = makeBaseCard(from: result)
                         let isExpanded = expandedSessionId == result.sessionId
+                        // ハラスメント診断がある場合は毒性スコア + ハラスメントタイプ名を表示
+                        let toxicity = result.diagnosisResult
+                        let rowScore = toxicity?.overallRiskScore ?? baseCard.totalScore
+                        let rowTypeName = toxicity?.primaryType.typeName ?? baseCard.typeName
 
                         VStack(spacing: 0) {
                             // 診断結果カード — タップで展開
@@ -97,7 +101,7 @@ struct DiagnosisPickerView: View {
                                 }
                             } label: {
                                 HStack(spacing: 14) {
-                                    partnerAvatar(sessionId: result.sessionId, score: baseCard.totalScore, typeCode: baseCard.typeCode)
+                                    partnerAvatar(sessionId: result.sessionId, score: rowScore, typeCode: baseCard.typeCode)
 
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(result.partnerParticipant)
@@ -106,15 +110,19 @@ struct DiagnosisPickerView: View {
                                             .lineLimit(1)
 
                                         HStack(spacing: 6) {
-                                            Text("\(baseCard.totalScore)点")
+                                            Text("\(rowScore)点")
                                                 .font(MeloFonts.zenMaruMedium(11))
-                                                .foregroundColor(.white)
+                                                .foregroundColor(toxicity != nil ? MeloColors.Dark.onAccent : .white)
                                                 .padding(.horizontal, 8)
                                                 .padding(.vertical, 2)
                                                 .background(
-                                                    Capsule().fill(MeloColors.typeGradient(for: baseCard.typeCode))
+                                                    Capsule().fill(
+                                                        toxicity != nil
+                                                        ? AnyShapeStyle(toxicity!.riskLevel.labColor)
+                                                        : AnyShapeStyle(MeloColors.typeGradient(for: baseCard.typeCode))
+                                                    )
                                                 )
-                                            Text(baseCard.typeName)
+                                            Text(rowTypeName)
                                                 .font(MeloFonts.zenMaruRegular(12))
                                                 .foregroundColor(BoardColors.textSecondary)
                                                 .lineLimit(1)
@@ -153,7 +161,7 @@ struct DiagnosisPickerView: View {
                                                     .frame(width: 28, height: 28)
                                                     .background(
                                                         Circle()
-                                                            .fill(MeloColors.Surface.pinkPale)
+                                                            .fill(MeloColors.Dark.bgElevated)
                                                     )
 
                                                 Text(style.localizedName)
@@ -168,7 +176,7 @@ struct DiagnosisPickerView: View {
                                                         .foregroundColor(BoardColors.accent)
                                                 } else {
                                                     Circle()
-                                                        .stroke(MeloColors.Gray.subButton, lineWidth: 1.5)
+                                                        .stroke(MeloColors.Dark.cardStroke, lineWidth: 1.5)
                                                         .frame(width: 16, height: 16)
                                                 }
                                             }
@@ -176,7 +184,7 @@ struct DiagnosisPickerView: View {
                                             .padding(.vertical, 10)
                                             .background(
                                                 RoundedRectangle(cornerRadius: 10)
-                                                    .fill(isSelected ? MeloColors.Surface.pinkPale : MeloColors.Gray.subButtonLight)
+                                                    .fill(isSelected ? MeloColors.Dark.bgElevated : MeloColors.Dark.card)
                                             )
                                         }
                                         .buttonStyle(.plain)
@@ -201,14 +209,14 @@ struct DiagnosisPickerView: View {
                                                         } label: {
                                                             Text(label)
                                                                 .font(MeloFonts.zenMaruOrFallback(12))
-                                                                .foregroundColor(relationshipText == label ? .white : BoardColors.textSecondary)
+                                                                .foregroundColor(relationshipText == label ? MeloColors.Dark.onAccent : BoardColors.textSecondary)
                                                                 .padding(.horizontal, 12)
                                                                 .padding(.vertical, 6)
                                                                 .background(
                                                                     Capsule()
                                                                         .fill(relationshipText == label
-                                                                            ? AnyShapeStyle(LinearGradient(colors: [MeloColors.Brand.pinkDeep, MeloColors.Brand.pinkLight], startPoint: .leading, endPoint: .trailing))
-                                                                            : AnyShapeStyle(MeloColors.Gray.subButtonLight))
+                                                                            ? AnyShapeStyle(MeloColors.Dark.accentGradient)
+                                                                            : AnyShapeStyle(MeloColors.Dark.card))
                                                                 )
                                                         }
                                                         .buttonStyle(.plain)
@@ -222,11 +230,12 @@ struct DiagnosisPickerView: View {
                                                 text: $relationshipText
                                             )
                                             .font(MeloFonts.zenMaruOrFallback(13))
+                                            .foregroundColor(MeloColors.Dark.textPrimary)
                                             .textFieldStyle(.plain)
                                             .padding(10)
                                             .background(
                                                 RoundedRectangle(cornerRadius: 8)
-                                                    .fill(MeloColors.Gray.subButtonLight)
+                                                    .fill(MeloColors.Dark.card)
                                             )
                                             .focused($isRelationshipFocused)
 
@@ -269,7 +278,7 @@ struct DiagnosisPickerView: View {
                                                                 RoundedRectangle(cornerRadius: 8)
                                                                     .fill(isSelected
                                                                         ? AnyShapeStyle(MeloColors.mbtiColor(for: mbti))
-                                                                        : AnyShapeStyle(MeloColors.Gray.subButtonLight))
+                                                                        : AnyShapeStyle(MeloColors.Dark.card))
                                                             )
                                                     }
                                                     .buttonStyle(.plain)
@@ -299,18 +308,12 @@ struct DiagnosisPickerView: View {
                                             } label: {
                                                 Text(String(localized: "このカードを添付", bundle: LanguageManager.appBundle))
                                                     .font(MeloFonts.zenMaruOrFallback(14))
-                                                    .foregroundColor(.white)
+                                                    .foregroundColor(MeloColors.Dark.onAccent)
                                                     .frame(maxWidth: .infinity)
                                                     .padding(.vertical, 10)
                                                     .background(
                                                         RoundedRectangle(cornerRadius: 10)
-                                                            .fill(
-                                                                LinearGradient(
-                                                                    colors: [MeloColors.Brand.pinkDeep, MeloColors.Brand.pinkLight],
-                                                                    startPoint: .leading,
-                                                                    endPoint: .trailing
-                                                                )
-                                                            )
+                                                            .fill(MeloColors.Dark.accentGradient)
                                                     )
                                             }
                                             .buttonStyle(.plain)
@@ -325,8 +328,8 @@ struct DiagnosisPickerView: View {
                         }
                         .background(
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.white)
-                                .shadow(color: BoardColors.accent.opacity(0.06), radius: 4, x: 0, y: 2)
+                                .fill(MeloColors.Dark.card)
+                                .shadow(color: Color.black.opacity(0.3), radius: 4, x: 0, y: 2)
                         )
                     }
                 }
@@ -349,7 +352,7 @@ struct DiagnosisPickerView: View {
 
         ZStack {
             Circle()
-                .fill(MeloColors.Surface.pinkPale)
+                .fill(MeloColors.Dark.bgElevated)
             if let data = customImageData, let uiImage = UIImage(data: data) {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -365,13 +368,17 @@ struct DiagnosisPickerView: View {
         .frame(width: 52, height: 52)
         .overlay(
             Circle()
-                .stroke(MeloColors.Brand.pink.opacity(0.35), lineWidth: 1)
+                .stroke(MeloColors.Dark.accent.opacity(0.35), lineWidth: 1)
         )
     }
 
     // MARK: - Available Styles
 
     private func availableStyles(for result: StoredAnalysisResult) -> [DiagnosisCard.CardStyle] {
+        // yabatalk: ハラスメント毒性診断がある結果は毒性鑑定カードのみ。
+        if result.diagnosisResult != nil {
+            return [.toxicity]
+        }
         var styles: [DiagnosisCard.CardStyle] = [.score, .type]
         if let stats = result.detailedStatistics,
            (stats.loveWordsAnalysis.selfTotalCount + stats.loveWordsAnalysis.partnerTotalCount) > 0 {
@@ -430,6 +437,18 @@ struct DiagnosisPickerView: View {
                 card.selfLoveTotal = lwa.selfTotalCount
                 card.partnerLoveTotal = lwa.partnerTotalCount
             }
+        case .toxicity:
+            // yabatalk: 保存済み DiagnosisResult から毒性鑑定フィールドを埋める。
+            if let dr = result.diagnosisResult {
+                card.toxicityScore = dr.overallRiskScore
+                card.toxicityLevel = dr.riskLevel.rawValue
+                card.toxicityDangerLabel = dr.dangerLabel
+                card.toxicityCatchCopy = dr.catchCopy
+                card.toxicityCategoryCode = dr.primaryCategory.labCode
+                card.toxicitySpecimenNo = dr.labSpecimenNo
+                card.toxicityTitle = dr.sessionTitle
+            }
+            // dr が nil の場合は従来 lovetalk スコアフィールドのみ（フォールバック）。
         }
 
         return card

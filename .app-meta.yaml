@@ -7,7 +7,7 @@
 schemaVersion: 1
 
 name: yabatalk
-displayName: yabatalk
+displayName: ハラスメントーク
 kind: ios
 
 xcode:
@@ -59,8 +59,18 @@ services:
   firebase: null
   cloudflare: null
   inAppPurchase:
-    enabled: false
-    products: []
+    enabled: true
+    # 自動更新サブスク 2 tier × 3 期間（StoreKit: lovetalk/Configuration.storekit / グループ "やばトーク Premium"）。
+    # 価格は lovetalk 継承の暫定値 → AI 原価+インフラで要再検証。ASC 登録時に product ID をこの値で作成。
+    type: autoRenewingSubscription
+    subscriptionGroup: "やばトーク Premium"
+    products:
+      - id: yaba.weekly       # Premium 週額   ¥500
+      - id: yaba.monthly      # Premium 月額   ¥980
+      - id: yaba.yearly       # Premium 年額   ¥5,000
+      - id: yaba.plus.weekly  # Premium+ 週額  ¥980
+      - id: yaba.plus.monthly # Premium+ 月額  ¥1,980
+      - id: yaba.plus.yearly  # Premium+ 年額  ¥12,800
   analytics: []
   crashReporting: null
 
@@ -114,7 +124,7 @@ secrets:
 
 links:
   repository: https://github.com/appful-devteam/yabatalk
-  designs: null
+  designs: https://www.figma.com/design/YYHv0bHQOBMNC3vxgVjHOZ  # 診断結果リデザイン（4タブ現状の編集可能再現）
   appStore: null
   testflight: null
   productionMonitoring: null

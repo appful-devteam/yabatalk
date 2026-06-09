@@ -6,19 +6,19 @@ import UserNotifications
 struct NotificationPromptView: View {
     @Environment(\.dismiss) private var dismiss
 
-    // Design tokens (shared across onboarding)
-    private let brandPink = MeloColors.Brand.pink
-    private let filledPink = MeloColors.Brand.pink
-    private let brownStroke = MeloColors.Text.primary
-    private let textPrimary = MeloColors.Text.primary
-    private let textMuted = MeloColors.Text.secondary
-    private let textFaint = MeloColors.Text.secondary
+    // Design tokens (shared across onboarding) — dark theme
+    private let brandPink = MeloColors.Dark.accent
+    private let filledPink = MeloColors.Dark.accent
+    private let brownStroke = MeloColors.Dark.cardStroke
+    private let textPrimary = MeloColors.Dark.textPrimary
+    private let textMuted = MeloColors.Dark.textSecondary
+    private let textFaint = MeloColors.Dark.textSecondary
 
     var body: some View {
         ZStack {
-            // 背景: ソフトピンクグラデ（FFF1F4 → FFE5EE）
+            // 背景: 黒地グラデ
             LinearGradient(
-                colors: [MeloColors.Surface.pinkPale, MeloColors.Surface.pinkPale],
+                colors: [MeloColors.Dark.bg, MeloColors.Dark.bg],
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -42,7 +42,7 @@ struct NotificationPromptView: View {
                 // 説明
                 Text(String(localized: "いいね・返信・フォローなどの\nお知らせをリアルタイムで受け取れます", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruOrFallback(14))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .multilineTextAlignment(.center)
                     .lineSpacing(4)
                     .padding(.top, 10)
@@ -57,7 +57,7 @@ struct NotificationPromptView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.card)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(brownStroke, lineWidth: 1)
@@ -75,7 +75,7 @@ struct NotificationPromptView: View {
                 } label: {
                     Text(String(localized: "次へ", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruMedium(16))
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                         .background(
@@ -114,7 +114,7 @@ struct NotificationPromptView: View {
 
             Text(text)
                 .font(MeloFonts.zenMaruMedium(14))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
         }
     }
 

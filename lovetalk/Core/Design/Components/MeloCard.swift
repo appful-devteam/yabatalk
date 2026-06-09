@@ -49,9 +49,9 @@ struct MeloCard<Content: View>: View {
     private var backgroundColor: Color {
         switch style {
         case .standard, .bordered, .gradient:
-            return MeloColors.Surface.card
+            return MeloColors.Dark.card
         case .soft:
-            return MeloColors.Surface.pinkPale.opacity(0.5)
+            return MeloColors.Dark.bgElevated
         case .transparent:
             return .clear
         }
@@ -60,7 +60,7 @@ struct MeloCard<Content: View>: View {
     private var borderColor: Color {
         switch style {
         case .bordered:
-            return MeloColors.Brand.pinkDeep.opacity(0.15)
+            return MeloColors.Dark.cardStroke
         default:
             return .clear
         }
@@ -76,9 +76,9 @@ struct MeloCard<Content: View>: View {
     private var shadowColor: Color {
         switch style {
         case .standard:
-            return .black.opacity(0.06)
+            return .black.opacity(0.3)
         case .soft, .bordered:
-            return .black.opacity(0.04)
+            return .black.opacity(0.3)
         default:
             return .clear
         }
@@ -125,14 +125,14 @@ struct MeloGradientCard<Content: View>: View {
             .padding(padding)
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(MeloColors.Surface.card)
+                    .fill(MeloColors.Dark.card)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(MeloColors.Gradient.pinkPrimary, lineWidth: borderWidth)
+                    .stroke(MeloColors.Dark.accentGradient, lineWidth: borderWidth)
             )
             .shadow(
-                color: MeloColors.Brand.pinkDeep.opacity(0.12),
+                color: MeloColors.Dark.accent.opacity(0.15),
                 radius: 16,
                 x: 0,
                 y: 6
@@ -166,9 +166,9 @@ struct MeloInteractiveCard<Content: View>: View {
                 .padding(20)
                 .background(
                     RoundedRectangle(cornerRadius: cornerRadius)
-                        .fill(MeloColors.Surface.card)
+                        .fill(MeloColors.Dark.card)
                         .shadow(
-                            color: .black.opacity(0.06),
+                            color: .black.opacity(0.3),
                             radius: isPressed ? 8 : 16,
                             x: 0,
                             y: isPressed ? 2 : 4
@@ -176,7 +176,7 @@ struct MeloInteractiveCard<Content: View>: View {
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: cornerRadius)
-                        .stroke(MeloColors.Brand.pinkDeep.opacity(isPressed ? 0.3 : 0.1), lineWidth: 1.5)
+                        .stroke(MeloColors.Dark.accent.opacity(isPressed ? 0.3 : 0.1), lineWidth: 1.5)
                 )
                 .scaleEffect(isPressed ? 0.98 : 1.0)
         }
@@ -210,7 +210,7 @@ struct MeloStatCard: View {
         title: String,
         value: String,
         unit: String? = nil,
-        color: Color = MeloColors.Brand.pinkDeep
+        color: Color = MeloColors.Dark.accent
     ) {
         self.icon = icon
         self.title = title
@@ -229,18 +229,18 @@ struct MeloStatCard: View {
             // タイトル
             Text(title)
                 .font(MeloTypography.caption)
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
 
             // 値
             HStack(alignment: .lastTextBaseline, spacing: 2) {
                 Text(value)
                     .font(MeloTypography.title)
-                    .foregroundStyle(MeloColors.Gradient.pinkPrimary)
+                    .foregroundStyle(MeloColors.Dark.accentGradient)
 
                 if let unit = unit {
                     Text(unit)
                         .font(MeloTypography.caption)
-                        .foregroundColor(MeloColors.Text.secondary)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                 }
             }
         }
@@ -248,7 +248,7 @@ struct MeloStatCard: View {
         .padding(16)
         .background(
             RoundedRectangle(cornerRadius: 20)
-                .fill(MeloColors.Surface.pinkPale.opacity(0.5))
+                .fill(MeloColors.Dark.bgElevated)
         )
     }
 }
@@ -285,13 +285,13 @@ struct MeloListRow<Content: View>: View {
             .padding(16)
             .background(
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(MeloColors.Brand.pinkDeep.opacity(0.08), lineWidth: 1)
+                    .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
             )
-            .shadow(color: .black.opacity(0.04), radius: 8, x: 0, y: 2)
+            .shadow(color: .black.opacity(0.3), radius: 8, x: 0, y: 2)
     }
 }
 
@@ -335,11 +335,11 @@ struct MeloListRow<Content: View>: View {
                         .font(MeloTypography.body)
                     Spacer()
                     Image(systemName: "chevron.right")
-                        .foregroundColor(MeloColors.Text.secondary)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                 }
             }
         }
         .padding(20)
     }
-    .background(MeloColors.Surface.pinkPale)
+    .background(MeloColors.Dark.bg)
 }

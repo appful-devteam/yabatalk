@@ -4,19 +4,19 @@ import PhotosUI
 // MARK: - Persona Chat Colors (Figma node 615:51)
 private enum ChatColors {
     /// ヘッダー薄ピンク
-    static let headerBg = MeloColors.Surface.pinkPale
+    static let headerBg = MeloColors.Dark.bgElevated
     /// 自分バブル（こいピンク確定）
-    static let userBubble = MeloColors.Brand.pink
+    static let userBubble = MeloColors.Dark.accent
     /// 相手バブル（白）
-    static let partnerBubble = Color.white
+    static let partnerBubble = MeloColors.Dark.card
     /// システム通知背景（激薄茶）
-    static let systemBg = MeloColors.Surface.white
+    static let systemBg = MeloColors.Dark.bgElevated
     /// 文字色（黒系 — 旧 716463 茶を 1E1E1E に変更）
-    static let textMain = MeloColors.Text.primary
+    static let textMain = MeloColors.Dark.textPrimary
     /// バブル枠 / dot 等の装飾用（旧 textMain と同じ茶を維持）
-    static let bubbleStroke = MeloColors.Text.primary
+    static let bubbleStroke = MeloColors.Dark.cardStroke
     /// 入力欄ボーダー
-    static let inputBorder = MeloColors.Surface.pinkPale
+    static let inputBorder = MeloColors.Dark.cardStroke
 }
 
 // MARK: - Persona Chat View
@@ -41,7 +41,7 @@ struct PersonaChatView: View {
     var body: some View {
         ZStack {
             // Background: Body は白。ヘッダー部分だけピンクを敷く。
-            Color.white.ignoresSafeArea()
+            MeloColors.Dark.bg.ignoresSafeArea()
 
             VStack(spacing: 0) {
                 header
@@ -187,7 +187,7 @@ struct PersonaChatView: View {
         .padding(.horizontal, MeloLayout.titleHorizontalPadding)
         .padding(.bottom, 8)
         .frame(maxWidth: .infinity)
-        .background(Color.white.ignoresSafeArea(edges: .top))
+        .background(MeloColors.Dark.bgElevated.ignoresSafeArea(edges: .top))
     }
 
     // MARK: - Chat Messages
@@ -220,9 +220,10 @@ struct PersonaChatView: View {
                         .id("bottomAnchor")
                 }
                 .padding(.horizontal, 12)
-                .padding(.vertical, 28)
+                .padding(.top, 10)
+                .padding(.bottom, 28)
             }
-            .background(Color.white)
+            .background(MeloColors.Dark.bg)
             .onChange(of: viewModel.chat.messages.count) { _ in
                 withAnimation(.easeOut(duration: 0.3)) {
                     proxy.scrollTo("bottomAnchor", anchor: .bottom)
@@ -294,7 +295,7 @@ struct PersonaChatView: View {
         Text(message.text)
             .font(MeloFonts.zenMaruMedium(12))
             .tracking(0.36)
-            .foregroundColor(.white)
+            .foregroundColor(MeloColors.Dark.onAccent)
             .lineLimit(nil)
             .fixedSize(horizontal: false, vertical: true)
             .padding(10)
@@ -336,7 +337,7 @@ struct PersonaChatView: View {
         let avatarName = ConsultationPartnerAvatarStore.avatarName(for: sessionId) ?? "char_meromaru_3d"
         return ZStack {
             Circle()
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
             if let data = customImageData, let uiImage = UIImage(data: data) {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -350,7 +351,7 @@ struct PersonaChatView: View {
             }
         }
         .frame(width: size, height: size)
-        .overlay(Circle().stroke(MeloColors.Brand.pink.opacity(0.35), lineWidth: borderWidth))
+        .overlay(Circle().stroke(MeloColors.Dark.accent.opacity(0.35), lineWidth: borderWidth))
     }
 
     // MARK: - Typing Indicator
@@ -432,7 +433,7 @@ struct PersonaChatView: View {
             .padding(.horizontal, 14)
             .padding(.vertical, 10)
             .frame(minHeight: 38)
-            .background(Color.white)
+            .background(MeloColors.Dark.card)
             .clipShape(RoundedRectangle(cornerRadius: 22))
             .contentShape(RoundedRectangle(cornerRadius: 22))
             .onTapGesture {
@@ -450,13 +451,17 @@ struct PersonaChatView: View {
                     Circle()
                         .fill(
                             viewModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                                ? AnyShapeStyle(MeloColors.Surface.pinkPale)
+                                ? AnyShapeStyle(MeloColors.Dark.bgElevated)
                                 : AnyShapeStyle(ChatColors.userBubble)
                         )
                         .frame(width: 38, height: 38)
                     Image(systemName: "arrow.up")
                         .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(.white)
+                        .foregroundColor(
+                            viewModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                                ? MeloColors.Dark.textSecondary
+                                : MeloColors.Dark.onAccent
+                        )
                 }
             }
             .disabled(viewModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
@@ -465,10 +470,10 @@ struct PersonaChatView: View {
         .padding(.top, 8)
         .padding(.bottom, 8)
         .background(
-            Color.white
+            MeloColors.Dark.bgElevated
                 .overlay(
                     Rectangle()
-                        .fill(MeloColors.Gray.subButtonLight)
+                        .fill(MeloColors.Dark.divider)
                         .frame(height: 1),
                     alignment: .top
                 )
@@ -505,18 +510,18 @@ struct PersonaChatSetupView: View {
     @State private var relationshipType: PersonaRelationship = .crush
 
     // NewHome tokens
-    private let brandPink = MeloColors.Brand.pink
-    private let filledPink = MeloColors.Brand.pink
-    private let brownStroke = MeloColors.Text.primary
-    private let textPrimary = MeloColors.Text.primary
-    private let textMuted = MeloColors.Text.secondary
-    private let softFieldBg = MeloColors.Surface.pinkPale
+    private let brandPink = MeloColors.Dark.accent
+    private let filledPink = MeloColors.Dark.accent
+    private let brownStroke = MeloColors.Dark.cardStroke
+    private let textPrimary = MeloColors.Dark.textPrimary
+    private let textMuted = MeloColors.Dark.textSecondary
+    private let softFieldBg = MeloColors.Dark.bgElevated
 
     var body: some View {
         ZStack(alignment: .topLeading) {
             // Soft pink gradient (NewHome)
             LinearGradient(
-                colors: [MeloColors.Surface.pinkPale, MeloColors.Surface.pinkPale],
+                colors: [MeloColors.Dark.bg, MeloColors.Dark.bg],
                 startPoint: .top,
                 endPoint: .bottom
             ).ignoresSafeArea()
@@ -528,7 +533,7 @@ struct PersonaChatSetupView: View {
                     // Title
                     Text(String(format: String(localized: "%@のAIペルソナ", bundle: LanguageManager.appBundle), partnerName))
                         .font(MeloFonts.zenMaruOrFallback(22))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
 
                     Spacer().frame(height: 14)
 
@@ -537,10 +542,10 @@ struct PersonaChatSetupView: View {
                         HStack {
                             Text(String(format: String(localized: "ねぇ、%@と話せるよ！", bundle: LanguageManager.appBundle), partnerName))
                                 .font(MeloFonts.zenMaruOrFallback(13))
-                                .foregroundColor(MeloColors.Text.primary)
+                                .foregroundColor(MeloColors.Dark.textPrimary)
                                 .padding(.horizontal, 14)
                                 .padding(.vertical, 8)
-                                .background(Color.white)
+                                .background(MeloColors.Dark.card)
                                 .clipShape(RoundedRectangle(cornerRadius: 14))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 14)
@@ -553,7 +558,7 @@ struct PersonaChatSetupView: View {
                             Spacer()
                             Text(String(localized: "えっ、ほんとに？", bundle: LanguageManager.appBundle))
                                 .font(MeloFonts.zenMaruOrFallback(13))
-                                .foregroundColor(.white)
+                                .foregroundColor(MeloColors.Dark.onAccent)
                                 .padding(.horizontal, 14)
                                 .padding(.vertical, 8)
                                 .background(filledPink)
@@ -630,7 +635,7 @@ struct PersonaChatSetupView: View {
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.white)
+                            .fill(MeloColors.Dark.card)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(brownStroke, lineWidth: 1)
@@ -658,7 +663,7 @@ struct PersonaChatSetupView: View {
                             Text(String(localized: "チャットを始める", bundle: LanguageManager.appBundle))
                                 .font(MeloFonts.zenMaruMedium(16))
                         }
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                         .background(
@@ -681,7 +686,7 @@ struct PersonaChatSetupView: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.card)
                         .overlay(
                             Circle().stroke(brownStroke.opacity(0.4), lineWidth: 1)
                         )
@@ -714,7 +719,7 @@ struct PersonaChatSetupView: View {
                     .font(.system(size: 16))
                 Text(speed.label)
                     .font(MeloFonts.zenMaruOrFallback(10))
-                    .foregroundColor(isSelected ? .white : MeloColors.Text.primary)
+                    .foregroundColor(isSelected ? MeloColors.Dark.onAccent : MeloColors.Dark.textPrimary)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 10)
@@ -740,7 +745,7 @@ struct PersonaChatSetupView: View {
                     .font(.system(size: 14))
                 Text(type.label)
                     .font(MeloFonts.zenMaruOrFallback(12))
-                    .foregroundColor(isSelected ? .white : MeloColors.Text.primary)
+                    .foregroundColor(isSelected ? MeloColors.Dark.onAccent : MeloColors.Dark.textPrimary)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 10)
@@ -771,17 +776,17 @@ private struct PersonaCardLoadingOverlay: View {
             VStack(spacing: 18) {
                 ProgressView()
                     .progressViewStyle(.circular)
-                    .tint(MeloColors.Brand.pink)
+                    .tint(MeloColors.Dark.accent)
                     .scaleEffect(1.2)
 
                 VStack(spacing: 6) {
                     Text(String(format: String(localized: "%@の人物像を準備中…", bundle: LanguageManager.appBundle), partnerName))
                         .font(MeloFonts.zenMaruMedium(15))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                         .multilineTextAlignment(.center)
                     Text(String(localized: "口調や性格を分析しています(数十秒ほど)", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruOrFallback(11))
-                        .foregroundColor(MeloColors.Text.secondary)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                         .multilineTextAlignment(.center)
                 }
             }
@@ -789,7 +794,7 @@ private struct PersonaCardLoadingOverlay: View {
             .padding(.vertical, 24)
             .background(
                 RoundedRectangle(cornerRadius: 18)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .shadow(color: Color.black.opacity(0.15), radius: 12, x: 0, y: 4)
             )
             .padding(.horizontal, 32)
@@ -819,12 +824,12 @@ private struct PersonaLearningEmptyOverlay: View {
                 VStack(spacing: 8) {
                     Text(String(localized: "学習データがありません", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruMedium(17))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                         .multilineTextAlignment(.center)
 
                     Text(String(format: String(localized: "%@の擬人化は、実際のLINEトーク履歴から口調や性格を学習しています。\n古いトーク履歴は容量の都合で削除されているため、もう一度トークデータを取り込んでください。", bundle: LanguageManager.appBundle), partnerName))
                         .font(MeloFonts.zenMaruOrFallback(12))
-                        .foregroundColor(MeloColors.Text.secondary)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                         .multilineTextAlignment(.center)
                         .lineSpacing(4)
                         .fixedSize(horizontal: false, vertical: true)
@@ -835,12 +840,12 @@ private struct PersonaLearningEmptyOverlay: View {
                 } label: {
                     Text(String(localized: "診断画面に戻る", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruMedium(14))
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
                         .background(
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(MeloColors.Gradient.pinkPrimary)
+                                .fill(MeloColors.Dark.accentGradient)
                         )
                 }
                 .buttonStyle(.plain)
@@ -849,8 +854,8 @@ private struct PersonaLearningEmptyOverlay: View {
             .padding(.vertical, 24)
             .background(
                 RoundedRectangle(cornerRadius: 18)
-                    .fill(Color.white)
-                    .shadow(color: Color.black.opacity(0.15), radius: 12, x: 0, y: 4)
+                    .fill(MeloColors.Dark.card)
+                    .shadow(color: Color.black.opacity(0.3), radius: 12, x: 0, y: 4)
             )
             .padding(.horizontal, 28)
         }
@@ -880,13 +885,13 @@ struct PersonaChatSettingsSheet: View {
     @State private var personaCardExpanded: Bool = false
 
     // NewHome tokens
-    private let brandPink = MeloColors.Brand.pink
-    private let filledPink = MeloColors.Brand.pink
-    private let brownStroke = MeloColors.Text.primary
-    private let textPrimary = MeloColors.Text.primary
-    private let textMuted = MeloColors.Text.secondary
-    /// 入力欄 / 関係性ボタン等の背景は白に統一 (旧: 薄ピンク)。
-    private let softFieldBg = Color.white
+    private let brandPink = MeloColors.Dark.accent
+    private let filledPink = MeloColors.Dark.accent
+    private let brownStroke = MeloColors.Dark.cardStroke
+    private let textPrimary = MeloColors.Dark.textPrimary
+    private let textMuted = MeloColors.Dark.textSecondary
+    /// 入力欄 / 関係性ボタン等の背景 (旧: 白)。
+    private let softFieldBg = MeloColors.Dark.bgElevated
 
     var body: some View {
         NavigationView {
@@ -902,10 +907,10 @@ struct PersonaChatSettingsSheet: View {
                                     PhotosPicker(selection: $photoItem, matching: .images, photoLibrary: .shared()) {
                                         Text(String(localized: "画像を選ぶ", bundle: LanguageManager.appBundle))
                                             .font(MeloFonts.zenMaruMedium(13))
-                                            .foregroundColor(.white)
+                                            .foregroundColor(MeloColors.Dark.onAccent)
                                             .padding(.horizontal, 14)
                                             .padding(.vertical, 8)
-                                            .background(Capsule().fill(MeloColors.Gradient.pinkPrimary))
+                                            .background(Capsule().fill(MeloColors.Dark.accentGradient))
                                     }
                                     if partnerImageData != nil {
                                         Button {
@@ -915,7 +920,7 @@ struct PersonaChatSettingsSheet: View {
                                         } label: {
                                             Text(String(localized: "デフォルトに戻す", bundle: LanguageManager.appBundle))
                                                 .font(MeloFonts.zenMaruMedium(11))
-                                                .foregroundColor(MeloColors.Text.secondary)
+                                                .foregroundColor(MeloColors.Dark.textSecondary)
                                         }
                                         .buttonStyle(.plain)
                                     }
@@ -941,7 +946,7 @@ struct PersonaChatSettingsSheet: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(MeloColors.Brand.pinkLight, lineWidth: 1)
+                                        .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
                                 )
                         }
                     }
@@ -1090,7 +1095,7 @@ struct PersonaChatSettingsSheet: View {
                                              : String(localized: "学習された本文を表示", bundle: LanguageManager.appBundle))
                                             .font(MeloFonts.zenMaruMedium(12))
                                     }
-                                    .foregroundColor(MeloColors.Brand.pink)
+                                    .foregroundColor(MeloColors.Dark.accent)
                                 }
                                 .buttonStyle(.plain)
 
@@ -1098,7 +1103,7 @@ struct PersonaChatSettingsSheet: View {
                                     ScrollView {
                                         Text(summary)
                                             .font(MeloFonts.zenMaruOrFallback(12))
-                                            .foregroundColor(MeloColors.Text.primary)
+                                            .foregroundColor(MeloColors.Dark.textPrimary)
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                             .textSelection(.enabled)
                                             .padding(12)
@@ -1106,7 +1111,7 @@ struct PersonaChatSettingsSheet: View {
                                     .frame(maxHeight: 320)
                                     .background(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .fill(MeloColors.Surface.pinkPale)
+                                            .fill(MeloColors.Dark.bgElevated)
                                     )
                                 }
                             }
@@ -1117,12 +1122,12 @@ struct PersonaChatSettingsSheet: View {
                             } label: {
                                 Text(String(localized: "人物像を再生成", bundle: LanguageManager.appBundle))
                                     .font(MeloFonts.zenMaruMedium(13))
-                                    .foregroundColor(MeloColors.Brand.pink)
+                                    .foregroundColor(MeloColors.Dark.accent)
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, 10)
                                     .background(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .stroke(MeloColors.Brand.pink, lineWidth: 1)
+                                            .stroke(MeloColors.Dark.accent, lineWidth: 1)
                                     )
                             }
                             .buttonStyle(.plain)
@@ -1137,14 +1142,14 @@ struct PersonaChatSettingsSheet: View {
                     } label: {
                         Text(String(localized: "保存", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruMedium(16))
-                            .foregroundColor(.white)
+                            .foregroundColor(MeloColors.Dark.onAccent)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
                             .background(
                                 RoundedRectangle(cornerRadius: 14)
-                                    .fill(MeloColors.Gradient.pinkPrimary)
+                                    .fill(MeloColors.Dark.accentGradient)
                             )
-                            .shadow(color: MeloColors.Brand.pink.opacity(0.45), radius: 6, x: 0, y: 3)
+                            .shadow(color: MeloColors.Dark.accent.opacity(0.15), radius: 6, x: 0, y: 3)
                     }
                     .buttonStyle(.plain)
                     .padding(.top, 4)
@@ -1154,7 +1159,7 @@ struct PersonaChatSettingsSheet: View {
             }
             .background(
                 LinearGradient(
-                    colors: [MeloColors.Surface.pinkPale, MeloColors.Surface.pinkPale],
+                    colors: [MeloColors.Dark.bg, MeloColors.Dark.bg],
                     startPoint: .top,
                     endPoint: .bottom
                 ).ignoresSafeArea()
@@ -1182,7 +1187,7 @@ struct PersonaChatSettingsSheet: View {
                     } label: {
                         Text(String(localized: "キャンセル", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruOrFallback(15))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                     }
                 }
             }
@@ -1195,8 +1200,8 @@ struct PersonaChatSettingsSheet: View {
     private var partnerImagePreview: some View {
         ZStack {
             Circle()
-                .fill(Color.white)
-                .overlay(Circle().stroke(MeloColors.Brand.pink.opacity(0.35), lineWidth: 1))
+                .fill(MeloColors.Dark.card)
+                .overlay(Circle().stroke(MeloColors.Dark.accent.opacity(0.35), lineWidth: 1))
             if let data = partnerImageData, let uiImage = UIImage(data: data) {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -1218,10 +1223,10 @@ struct PersonaChatSettingsSheet: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: 15)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: 15)
-                            .stroke(MeloColors.Brand.pinkLight, lineWidth: 1)
+                            .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
                     )
             )
     }
@@ -1267,7 +1272,7 @@ struct PersonaChatSettingsSheet: View {
                     .font(.system(size: 14))
                 Text(type.label)
                     .font(MeloFonts.zenMaruOrFallback(12))
-                    .foregroundColor(isSelected ? .white : MeloColors.Text.primary)
+                    .foregroundColor(isSelected ? MeloColors.Dark.onAccent : MeloColors.Dark.textPrimary)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 10)
@@ -1275,16 +1280,16 @@ struct PersonaChatSettingsSheet: View {
                 Group {
                     if isSelected {
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(MeloColors.Gradient.pinkPrimary)
+                            .fill(MeloColors.Dark.accentGradient)
                     } else {
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.white)
+                            .fill(MeloColors.Dark.card)
                     }
                 }
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(MeloColors.Brand.pinkLight, lineWidth: 1)
+                    .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
             )
         }
         .buttonStyle(.plain)

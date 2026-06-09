@@ -6,11 +6,7 @@ struct ConsultationLimitReachedView: View {
     let onUpgrade: () -> Void
     let onDismiss: () -> Void
 
-    private let plusGradient = LinearGradient(
-        colors: [MeloColors.Brand.pinkLight, MeloColors.Brand.pinkLight],
-        startPoint: .leading,
-        endPoint: .trailing
-    )
+    private let plusGradient = MeloColors.Dark.accentGradient
 
     var body: some View {
         VStack(spacing: 20) {
@@ -21,17 +17,17 @@ struct ConsultationLimitReachedView: View {
 
             Text(String(localized: "相談の制限に達しました", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(18))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
 
             Text(reason)
                 .font(MeloFonts.zenMaruOrFallback(14))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .multilineTextAlignment(.center)
                 .lineSpacing(3)
 
             Text(String(localized: "Premium+なら回数制限なし！\nめろまるに何度でも相談できます", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(13))
-                .foregroundColor(MeloColors.Brand.pinkLight)
+                .foregroundColor(MeloColors.Dark.accent)
                 .multilineTextAlignment(.center)
                 .lineSpacing(3)
 
@@ -45,13 +41,13 @@ struct ConsultationLimitReachedView: View {
                     Text(String(localized: "Premium+にアップグレード", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruOrFallback(16))
                 }
-                .foregroundColor(.white)
+                .foregroundColor(MeloColors.Dark.onAccent)
                 .frame(maxWidth: .infinity)
                 .frame(height: 52)
                 .background(
                     RoundedRectangle(cornerRadius: 14)
                         .fill(plusGradient)
-                        .shadow(color: MeloColors.Brand.pinkLight.opacity(0.4), radius: 12, x: 0, y: 6)
+                        .shadow(color: MeloColors.Dark.accent.opacity(0.15), radius: 12, x: 0, y: 6)
                 )
             }
             .buttonStyle(.plain)
@@ -61,15 +57,15 @@ struct ConsultationLimitReachedView: View {
             } label: {
                 Text(String(localized: "閉じる", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruOrFallback(14))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textSecondary)
             }
             .buttonStyle(.plain)
         }
         .padding(28)
         .background(
             RoundedRectangle(cornerRadius: 20)
-                .fill(Color.white)
-                .shadow(color: MeloColors.Brand.pinkLight.opacity(0.2), radius: 20, x: 0, y: 8)
+                .fill(MeloColors.Dark.card)
+                .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 8)
         )
         .padding(.horizontal, 32)
     }

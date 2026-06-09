@@ -12,7 +12,7 @@ struct BoardSignInView: View {
             ZStack {
                 // 背景
                 LinearGradient(
-                    colors: [MeloColors.Surface.pinkPale, Color.white],
+                    colors: [MeloColors.Dark.bgElevated, MeloColors.Dark.bg],
                     startPoint: .top,
                     endPoint: .bottom
                 )
@@ -30,11 +30,11 @@ struct BoardSignInView: View {
 
                         Text(String(localized: "サインインして投稿しよう", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruOrFallback(22))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
 
                         Text(String(localized: "投稿やリアクションにはサインインが必要です", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruOrFallback(13))
-                            .foregroundColor(MeloColors.Text.secondary)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
                             .multilineTextAlignment(.center)
                     }
 
@@ -64,7 +64,7 @@ struct BoardSignInView: View {
                                 print("[Board] Apple Sign-In failed: \(error)")
                             }
                         }
-                        .signInWithAppleButtonStyle(.black)
+                        .signInWithAppleButtonStyle(.white)
                         .frame(height: 50)
                         .cornerRadius(25)
                         .padding(.horizontal, 32)
@@ -76,7 +76,7 @@ struct BoardSignInView: View {
                         } label: {
                             Text(String(localized: "閲覧だけにする", bundle: LanguageManager.appBundle))
                                 .font(MeloFonts.zenMaruOrFallback(13))
-                                .foregroundColor(MeloColors.Gray.subButton)
+                                .foregroundColor(MeloColors.Dark.textSecondary)
                         }
                         .buttonStyle(.plain)
                         .padding(.top, 4)
@@ -85,7 +85,7 @@ struct BoardSignInView: View {
                     // 注意書き
                     Text(String(localized: "サインインすることで利用規約に同意したものとみなされます", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruRegular(10))
-                        .foregroundColor(MeloColors.Gray.subButton)
+                        .foregroundColor(MeloColors.Dark.textSecondary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 40)
 
@@ -100,7 +100,7 @@ struct BoardSignInView: View {
                     } label: {
                         Image(systemName: "xmark")
                             .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(MeloColors.Text.secondary)
+                            .foregroundColor(MeloColors.Dark.textSecondary)
                     }
                 }
             }

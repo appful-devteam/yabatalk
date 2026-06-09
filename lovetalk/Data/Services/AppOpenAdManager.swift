@@ -24,6 +24,13 @@ final class AppOpenAdManager: NSObject, ObservableObject {
     // MARK: - Load
 
     func loadAd() {
+        // Remote Config で広告 OFF の間は読み込まない（公開前デフォルト）。
+        guard AdGate.shared.adsEnabled else { return }
+        #if DEBUG
+        // 診断フロー動作確認の seed 起動時、および ASC スクショ撮影用の no-ads 起動時は
+        // App Open 広告で画面を塞がない。
+        if YabatalkDebug.isSeedingDiagnosis || YabatalkDebug.isScreenshotMode { return }
+        #endif
         guard !isLoadingAd else { return }
         isLoadingAd = true
 
@@ -65,6 +72,8 @@ final class AppOpenAdManager: NSObject, ObservableObject {
     // MARK: - Show
 
     func showAdIfAvailable() {
+        // Remote Config で広告 OFF の間は表示しない（公開前デフォルト）。
+        guard AdGate.shared.adsEnabled else { return }
         // 初回起動時のみ表示
         guard !hasShownAd else { return }
         // プレミアムユーザーは広告を表示しない

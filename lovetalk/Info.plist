@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleDisplayName</key>
+	<string>ハラスメントーク</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>appful.yabatalk.personaMessage</string>
@@ -25,7 +27,7 @@
 		</dict>
 	</array>
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-9654811308679484~8925228081</string>
+	<string>ca-app-pub-9654811308679484~1586638311</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>line</string>
@@ -47,6 +49,9 @@
 		<string>ZenMaruGothic-Regular.ttf</string>
 		<string>ZenMaruGothic-Medium.ttf</string>
 		<string>ZenMaruGothic-Bold.ttf</string>
+		<string>Anton-Regular.ttf</string>
+		<string>RobotoMono-Regular.ttf</string>
+		<string>RobotoMono-Medium.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

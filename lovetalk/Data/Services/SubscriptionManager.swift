@@ -18,12 +18,12 @@ enum SubscriptionTier: String, CaseIterable {
 
 // MARK: - Subscription Product
 enum SubscriptionProduct: String, CaseIterable {
-    case weekly = "mero.weekly"
-    case monthly = "mero.monthly"
-    case yearly = "mero.yearly"
-    case plusWeekly = "mero.plus.weekly"
-    case plusMonthly = "mero.plus.monthly"
-    case plusYearly = "mero.plus.yearly"
+    case weekly = "yaba.weekly"
+    case monthly = "yaba.monthly"
+    case yearly = "yaba.yearly"
+    case plusWeekly = "yaba.plus.weekly"
+    case plusMonthly = "yaba.plus.monthly"
+    case plusYearly = "yaba.plus.yearly"
 
     var tier: SubscriptionTier {
         switch self {

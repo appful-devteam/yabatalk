@@ -3,17 +3,17 @@ import PhotosUI
 
 // MARK: - Design Tokens (Post Detail - aligned with NewHomeView / BoardFeedView redesign)
 private enum BoardDetailTokens {
-    static let brandPink = MeloColors.Brand.pink
-    static let accentPink = MeloColors.Brand.pink
-    static let softPink = MeloColors.Brand.pinkLight
-    static let headerBg = MeloColors.Surface.pinkPale
-    static let softPinkBg = MeloColors.Surface.pinkPale
-    static let softerPinkBg = MeloColors.Surface.pinkPale
-    static let textDark = MeloColors.Text.primary
-    static let textMuted = MeloColors.Text.secondary
-    static let textGrey = MeloColors.Text.secondary
-    static let brownStroke = MeloColors.Text.primary
-    static let divider = MeloColors.Gray.subButtonLight
+    static let brandPink = MeloColors.Dark.accent
+    static let accentPink = MeloColors.Dark.accent
+    static let softPink = MeloColors.Dark.accent
+    static let headerBg = MeloColors.Dark.bgElevated
+    static let softPinkBg = MeloColors.Dark.bgElevated
+    static let softerPinkBg = MeloColors.Dark.bgElevated
+    static let textDark = MeloColors.Dark.textPrimary
+    static let textMuted = MeloColors.Dark.textSecondary
+    static let textGrey = MeloColors.Dark.textSecondary
+    static let brownStroke = MeloColors.Dark.cardStroke
+    static let divider = MeloColors.Dark.divider
 }
 
 // MARK: - Board Post Detail View
@@ -68,7 +68,7 @@ struct BoardPostDetailView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
-                Color.white
+                MeloColors.Dark.bg
                     .ignoresSafeArea()
 
                 VStack(spacing: 0) {
@@ -247,7 +247,7 @@ struct BoardPostDetailView: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.bgElevated)
                         .overlay(
                             Circle().stroke(BoardDetailTokens.brandPink, lineWidth: 1)
                         )
@@ -296,7 +296,7 @@ struct BoardPostDetailView: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.bgElevated)
                         .overlay(
                             Circle().stroke(BoardDetailTokens.brandPink, lineWidth: 1)
                         )
@@ -310,7 +310,7 @@ struct BoardPostDetailView: View {
         .padding(.horizontal, 20)
         .padding(.top, 14)
         .padding(.bottom, 10)
-        .background(Color.white)
+        .background(MeloColors.Dark.bg)
     }
 
     // MARK: - Post Content
@@ -368,7 +368,7 @@ struct BoardPostDetailView: View {
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 3)
                                 .background(
-                                    Capsule().fill(MeloColors.Surface.pinkPale)
+                                    Capsule().fill(MeloColors.Dark.bgElevated)
                                         .overlay(
                                             Capsule().stroke(BoardFeedPalette.accentPink.opacity(0.5), lineWidth: 0.8)
                                         )
@@ -442,7 +442,7 @@ struct BoardPostDetailView: View {
             Image(AnonymousAvatarPicker.imageName(forSeed: post.id))
                 .resizable()
                 .scaledToFit()
-                .background(Circle().fill(MeloColors.Surface.pinkPale))
+                .background(Circle().fill(MeloColors.Dark.bgElevated))
                 .clipShape(Circle())
         } else if let urlString = post.authorProfileImageURL, let url = URL(string: urlString) {
             CachedAsyncImage(url: url) {
@@ -632,7 +632,7 @@ struct BoardPostDetailView: View {
     }
 
     private func postImageCell(_ urlString: String, index: Int) -> some View {
-        MeloColors.Surface.pinkPale
+        MeloColors.Dark.bgElevated
             .overlay(
                 CachedAsyncImage(url: URL(string: urlString)) {
                     Color.clear
@@ -919,22 +919,22 @@ struct BoardPostDetailView: View {
                         HStack(spacing: 6) {
                             Text(reply.authorDisplayName)
                                 .font(MeloFonts.zenMaruMedium(13))
-                                .foregroundColor(MeloColors.Text.primary)
+                                .foregroundColor(MeloColors.Dark.textPrimary)
 
                             // 投稿者本人による返信に「投稿者」ピル
                             if reply.authorId == post.authorId {
                                 Text(String(localized: "投稿者", bundle: LanguageManager.appBundle))
                                     .font(MeloFonts.zenMaruMedium(9))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(MeloColors.Dark.onAccent)
                                     .padding(.horizontal, 6)
                                     .padding(.vertical, 2)
-                                    .background(Capsule().fill(MeloColors.Gradient.pinkPrimary))
+                                    .background(Capsule().fill(MeloColors.Dark.accentGradient))
                             }
 
                             if let badge = reply.authorBadge {
                                 Text(badge.typeCode)
                                     .font(MeloFonts.zenMaruMedium(8))
-                                    .foregroundColor(MeloColors.Text.primary)
+                                    .foregroundColor(MeloColors.Dark.textPrimary)
                                     .padding(.horizontal, 6)
                                     .padding(.vertical, 1)
                                     .background(
@@ -1148,7 +1148,7 @@ struct BoardPostDetailView: View {
 
                     Text(String(localized: "\(mention.userName) に返信", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruRegular(12))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
 
                     Spacer()
 
@@ -1280,7 +1280,7 @@ struct BoardPostDetailView: View {
                                 .fill(hasContent ? BoardDetailTokens.accentPink : BoardDetailTokens.softerPinkBg)
                             Image(systemName: "paperplane.fill")
                                 .font(.system(size: 14))
-                                .foregroundColor(hasContent ? .white : BoardDetailTokens.textMuted)
+                                .foregroundColor(hasContent ? MeloColors.Dark.onAccent : BoardDetailTokens.textMuted)
                                 .offset(x: -1)
                         }
                         .frame(width: 30, height: 30)
@@ -1294,8 +1294,8 @@ struct BoardPostDetailView: View {
         }
         .background(
             Rectangle()
-                .fill(Color.white)
-                .shadow(color: .black.opacity(0.04), radius: 2, x: 0, y: -1)
+                .fill(MeloColors.Dark.bgElevated)
+                .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: -1)
                 .ignoresSafeArea(edges: .bottom)
         )
     }
@@ -1340,7 +1340,7 @@ struct BoardPostDetailView: View {
                         } label: {
                             Text(category.localizedName)
                                 .font(MeloFonts.zenMaruMedium(11))
-                                .foregroundColor(selectedStampCategory == category ? .white : MeloColors.Text.primary)
+                                .foregroundColor(selectedStampCategory == category ? MeloColors.Dark.onAccent : MeloColors.Dark.textPrimary)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
                                 .background(
@@ -1374,7 +1374,7 @@ struct BoardPostDetailView: View {
             .padding(.horizontal, 16)
             .padding(.bottom, 8)
         }
-        .background(Color.white)
+        .background(MeloColors.Dark.bgElevated)
     }
 
     // MARK: - Toast
@@ -1804,22 +1804,33 @@ struct BoardDiagnosisCardFull: View {
     var body: some View {
         Group {
             switch card.cardStyle {
+            case .toxicity:
+                ToxicityVerdictCardView(card: card)
             case .type:
                 typeFullCard
             case .loveWords:
                 loveWordsFullCard
             default:
-                scoreFullCard
+                // 旧データでも毒性フィールドがあれば毒性カードで描画。
+                if card.hasToxicityData {
+                    ToxicityVerdictCardView(card: card)
+                } else {
+                    scoreFullCard
+                }
             }
         }
-        .padding(.horizontal, 22)
-        .padding(.vertical, 16)
+        .padding(.horizontal, card.cardStyle == .toxicity || card.hasToxicityData ? 0 : 22)
+        .padding(.vertical, card.cardStyle == .toxicity || card.hasToxicityData ? 0 : 16)
         .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.white)
-                .overlay(
+            (card.cardStyle == .toxicity || card.hasToxicityData)
+                ? AnyView(Color.clear)
+                : AnyView(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(BoardFeedPalette.cardBorderGray, lineWidth: 1)
+                        .fill(MeloColors.Dark.card)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(BoardFeedPalette.cardBorderGray, lineWidth: 1)
+                        )
                 )
         )
     }
@@ -1834,18 +1845,18 @@ struct BoardDiagnosisCardFull: View {
                     if let label = card.relationshipLabel {
                         Text(label)
                             .font(MeloFonts.zenMaruOrFallback(13))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                     }
                     if card.relationshipLabel != nil && !card.effectivePartnerMBTIs.isEmpty {
                         Text("-")
                             .font(MeloFonts.zenMaruRegular(13))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                     }
                     ForEach(Array(card.effectivePartnerMBTIs.enumerated()), id: \.offset) { index, mbti in
                         if index > 0 {
                             Text("×")
                                 .font(MeloFonts.zenMaruRegular(10))
-                                .foregroundColor(MeloColors.Gray.subButton)
+                                .foregroundColor(MeloColors.Dark.textSecondary)
                         }
                         Text(mbti)
                             .font(MeloFonts.zenMaruOrFallback(9))
@@ -1871,11 +1882,11 @@ struct BoardDiagnosisCardFull: View {
                     HStack(alignment: .lastTextBaseline, spacing: 0) {
                         Text("\(card.totalScore)")
                             .font(MeloFonts.jerseyOrFallback(48))
-                            .foregroundColor(MeloColors.Brand.pink)
+                            .foregroundColor(MeloColors.Dark.accent)
                             .tracking(-1.0)
                         Text(String(localized: "点", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruOrFallback(13))
-                            .foregroundColor(MeloColors.Brand.pink)
+                            .foregroundColor(MeloColors.Dark.accent)
                     }
 
                     VStack(spacing: 5) {
@@ -1894,8 +1905,8 @@ struct BoardDiagnosisCardFull: View {
     /// 新診断結果ページと同じ「○○の相性です」見出し (黒+ピンク混合)。
     private var compatibilityHeadline: some View {
         let phrase = compatibilityPhrase(for: card.totalScore)
-        let dark = MeloColors.Text.primary
-        let pink = MeloColors.Brand.pink
+        let dark = MeloColors.Dark.textPrimary
+        let pink = MeloColors.Dark.accent
         return (Text(phrase.prefix).foregroundColor(dark)
                 + Text(phrase.highlight).foregroundColor(pink)
                 + Text(phrase.suffix).foregroundColor(dark))
@@ -1953,7 +1964,7 @@ struct BoardDiagnosisCardFull: View {
         HStack(spacing: 6) {
             Text(label)
                 .font(MeloFonts.zenMaruOrFallback(10))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .lineLimit(1)
                 .fixedSize(horizontal: true, vertical: false)
                 .frame(minWidth: 78, alignment: .trailing)
@@ -1961,13 +1972,9 @@ struct BoardDiagnosisCardFull: View {
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule()
-                        .fill(Color.gray.opacity(0.12))
+                        .fill(MeloColors.Dark.track)
                     Capsule()
-                        .fill(LinearGradient(
-                            colors: [MeloColors.Member.partner, MeloColors.Brand.pink],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        ))
+                        .fill(MeloColors.Dark.accentGradient)
                         .frame(width: geo.size.width * CGFloat(min(score, 100)) / 100)
                 }
             }
@@ -1985,12 +1992,12 @@ struct BoardDiagnosisCardFull: View {
                     if let label = card.relationshipLabel {
                         Text(label)
                             .font(MeloFonts.zenMaruOrFallback(11))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                     }
                     if card.relationshipLabel != nil && (card.selfMBTI != nil || !card.effectivePartnerMBTIs.isEmpty) {
                         Text("-")
                             .font(MeloFonts.zenMaruRegular(11))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                     }
                     if let selfMBTI = card.selfMBTI {
                         Text(selfMBTI)
@@ -2004,7 +2011,7 @@ struct BoardDiagnosisCardFull: View {
                         if card.selfMBTI != nil || index > 0 {
                             Text("×")
                                 .font(MeloFonts.zenMaruRegular(10))
-                                .foregroundColor(MeloColors.Gray.subButton)
+                                .foregroundColor(MeloColors.Dark.textSecondary)
                         }
                         Text(mbti)
                             .font(MeloFonts.zenMaruOrFallback(9))
@@ -2019,8 +2026,8 @@ struct BoardDiagnosisCardFull: View {
             // タイプ名（ピンク大文字）
             Text(card.localizedTypeName)
                 .font(MeloFonts.zenMaruOrFallback(22))
-                .foregroundColor(MeloColors.Brand.pinkLight)
-                .shadow(color: MeloColors.Brand.pinkLight.opacity(0.3), radius: 8)
+                .foregroundColor(MeloColors.Dark.accent)
+                .shadow(color: MeloColors.Dark.accent.opacity(0.3), radius: 8)
                 .multilineTextAlignment(.center)
 
             // マスコット画像 (古い投稿でも typeCode から最新アセット名を引き直す)
@@ -2035,7 +2042,7 @@ struct BoardDiagnosisCardFull: View {
             if let desc = card.localizedTypeDescription {
                 Text(desc)
                     .font(MeloFonts.zenMaruOrFallback(13))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .lineSpacing(6)
                     .multilineTextAlignment(.leading)
             }
@@ -2049,7 +2056,7 @@ struct BoardDiagnosisCardFull: View {
             // タイトル（診断ページ準拠）
             Text(String(localized: "愛情表現", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(20))
-                .foregroundColor(MeloColors.Brand.pinkLight)
+                .foregroundColor(MeloColors.Dark.accent)
 
             // カウント比較カード（枠線 + 白背景）
             if let selfTotal = card.selfLoveTotal, let partnerTotal = card.partnerLoveTotal {
@@ -2057,10 +2064,10 @@ struct BoardDiagnosisCardFull: View {
                     VStack(spacing: 6) {
                         Text("\(selfTotal)")
                             .font(MeloFonts.jerseyOrFallback(48))
-                            .foregroundColor(MeloColors.Brand.pinkLight)
+                            .foregroundColor(MeloColors.Dark.accent)
                         Text(String(localized: "自分", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruRegular(12))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                         if let mbti = card.selfMBTI {
                             Text(mbti)
                                 .font(MeloFonts.zenMaruOrFallback(9))
@@ -2074,15 +2081,15 @@ struct BoardDiagnosisCardFull: View {
 
                     Image(systemName: "heart.fill")
                         .font(.system(size: 22))
-                        .foregroundColor(MeloColors.Brand.pinkLight)
+                        .foregroundColor(MeloColors.Dark.accent)
 
                     VStack(spacing: 6) {
                         Text("\(partnerTotal)")
                             .font(MeloFonts.jerseyOrFallback(48))
-                            .foregroundColor(MeloColors.Brand.pinkLight)
+                            .foregroundColor(MeloColors.Dark.accent)
                         Text(card.relationshipLabel ?? String(localized: "相手", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruRegular(12))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                         ForEach(card.effectivePartnerMBTIs, id: \.self) { mbti in
                             Text(mbti)
                                 .font(MeloFonts.zenMaruOrFallback(9))
@@ -2098,10 +2105,10 @@ struct BoardDiagnosisCardFull: View {
                 .padding(.horizontal, 12)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.bgElevated)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(MeloColors.Gray.subButtonLight, lineWidth: 1)
+                                .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
                         )
                 )
             }
@@ -2111,21 +2118,21 @@ struct BoardDiagnosisCardFull: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(String(localized: "あなたの感情表現", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruOrFallback(14))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
 
                     FlowLayout(spacing: 8) {
                         ForEach(selfWords) { w in
                             HStack(spacing: 4) {
                                 Text(w.phrase)
                                     .font(MeloFonts.zenMaruOrFallback(12))
-                                    .foregroundColor(MeloColors.Brand.pinkLight)
+                                    .foregroundColor(MeloColors.Dark.accent)
                                 Text("×\(w.count)")
                                     .font(MeloFonts.zenMaruOrFallback(12))
-                                    .foregroundColor(MeloColors.Text.primary)
+                                    .foregroundColor(MeloColors.Dark.textPrimary)
                             }
                             .padding(.horizontal, 10)
                             .padding(.vertical, 6)
-                            .background(MeloColors.Brand.pinkLight.opacity(0.1))
+                            .background(MeloColors.Dark.accent.opacity(0.18))
                             .clipShape(Capsule())
                         }
                     }
@@ -2137,7 +2144,7 @@ struct BoardDiagnosisCardFull: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(String(format: String(localized: "%@の感情表現", bundle: LanguageManager.appBundle), card.relationshipLabel ?? String(localized: "相手", bundle: LanguageManager.appBundle)))
                         .font(MeloFonts.zenMaruOrFallback(14))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
 
                     FlowLayout(spacing: 8) {
                         ForEach(partnerWords) { w in
@@ -2147,7 +2154,7 @@ struct BoardDiagnosisCardFull: View {
                                     .foregroundColor(MeloColors.Member.partner)
                                 Text("×\(w.count)")
                                     .font(MeloFonts.zenMaruOrFallback(12))
-                                    .foregroundColor(MeloColors.Text.primary)
+                                    .foregroundColor(MeloColors.Dark.textPrimary)
                             }
                             .padding(.horizontal, 10)
                             .padding(.vertical, 6)
@@ -2166,16 +2173,16 @@ struct BoardDiagnosisCardFull: View {
         HStack(spacing: 4) {
             Text(label)
                 .font(MeloFonts.zenMaruRegular(9))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
             Text(value)
                 .font(MeloFonts.zenMaruOrFallback(12))
-                .foregroundColor(MeloColors.Brand.pink)
+                .foregroundColor(MeloColors.Dark.accent)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
         .background(
             Capsule()
-                .fill(MeloColors.Surface.pinkPale)
+                .fill(MeloColors.Dark.bgElevated)
         )
     }
 

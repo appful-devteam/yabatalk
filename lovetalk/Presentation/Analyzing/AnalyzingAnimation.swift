@@ -3,14 +3,14 @@ import UIKit
 
 // MARK: - Analyzing Colors (NewHomeView 準拠)
 private enum AnalyzingColors {
-    static let brandPink = MeloColors.Brand.pink
-    static let filledPink = MeloColors.Brand.pink
-    static let softPink = MeloColors.Brand.pinkLight
-    static let softBg = MeloColors.Surface.pinkPale
-    static let softBgAlt = MeloColors.Surface.pinkPale
-    static let textDark = MeloColors.Text.primary
-    static let textGrey = MeloColors.Text.secondary
-    static let brownBorder = MeloColors.Text.primary
+    static let brandPink = MeloColors.Dark.accent
+    static let filledPink = MeloColors.Dark.accent
+    static let softPink = MeloColors.Dark.accentBright
+    static let softBg = MeloColors.Dark.bgElevated
+    static let softBgAlt = MeloColors.Dark.bgElevated
+    static let textDark = MeloColors.Dark.textPrimary
+    static let textGrey = MeloColors.Dark.textSecondary
+    static let brownBorder = MeloColors.Dark.cardStroke
 }
 
 // MARK: - Analyzing Animation
@@ -41,7 +41,7 @@ struct AnalyzingAnimation: View {
             // 中央: めろまる ペア画像 (ハートビートで脈動)
             ZStack {
                 Circle()
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         Circle()
                             .stroke(AnalyzingColors.brandPink, lineWidth: 1)
@@ -143,7 +143,7 @@ struct HeartParticle: View {
             AnalyzingColors.brandPink,
             AnalyzingColors.filledPink,
             AnalyzingColors.softPink,
-            MeloColors.Surface.pinkPale
+            MeloColors.Dark.accentBright
         ]
         return colors[index % colors.count]
     }
@@ -195,12 +195,12 @@ struct ProgressSteps: View {
                                 // 完了
                                 Image(systemName: "checkmark")
                                     .font(.system(size: 11, weight: .bold))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(MeloColors.Dark.onAccent)
                             } else if index == currentStepIndex {
                                 // 進行中
                                 ProgressView()
                                     .scaleEffect(0.55)
-                                    .tint(.white)
+                                    .tint(MeloColors.Dark.onAccent)
                             } else {
                                 // 未完了
                                 Text("\(index + 1)")
@@ -222,7 +222,7 @@ struct ProgressSteps: View {
         .padding(18)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .stroke(AnalyzingColors.brownBorder, lineWidth: 1)
@@ -236,7 +236,7 @@ struct ProgressSteps: View {
         } else if index == currentStepIndex {
             return AnalyzingColors.filledPink
         } else {
-            return Color.white
+            return MeloColors.Dark.card
         }
     }
 
@@ -281,7 +281,7 @@ struct AnalyzingStep: Identifiable {
 #Preview {
     ZStack {
         LinearGradient(
-            colors: [Color.white, MeloColors.Surface.pinkPale, MeloColors.Surface.pinkPale],
+            colors: [MeloColors.Dark.bg, MeloColors.Dark.bg, MeloColors.Dark.bg],
             startPoint: .top,
             endPoint: .bottom
         )

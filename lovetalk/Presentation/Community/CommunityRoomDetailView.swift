@@ -344,16 +344,16 @@ final class CommunityRoomDetailViewModel: ObservableObject {
 // MARK: - Palette
 
 private enum DetailPalette {
-    static let background = Color.white
-    static let koiPink = MeloColors.Brand.pink
-    static let cardBorder = MeloColors.Surface.pinkPale
-    static let mbtiPill = MeloColors.Brand.pinkLight
-    static let subText = MeloColors.Text.secondary
-    static let mutedGray = MeloColors.Text.secondary
-    static let reactionBg = MeloColors.Gray.subButtonLight
-    static let titleText = MeloColors.Text.primary
+    static let background = MeloColors.Dark.bg
+    static let koiPink = MeloColors.Dark.accent
+    static let cardBorder = MeloColors.Dark.cardStroke
+    static let mbtiPill = MeloColors.Dark.accent
+    static let subText = MeloColors.Dark.textSecondary
+    static let mutedGray = MeloColors.Dark.textSecondary
+    static let reactionBg = MeloColors.Dark.bgElevated
+    static let titleText = MeloColors.Dark.textPrimary
     static let avatarBorder = Color.black.opacity(0.3)
-    static let overlayBorder = MeloColors.Text.secondary
+    static let overlayBorder = MeloColors.Dark.cardStroke
 }
 
 // MARK: - Main View
@@ -394,7 +394,7 @@ struct CommunityRoomDetailView: View {
             participantCount: 20,
             imageURL: nil,
             isJoined: false,
-            iconColor: MeloColors.Gray.subButton
+            iconColor: MeloColors.Dark.textSecondary
         )
         self.roomsViewModel = nil
     }
@@ -631,6 +631,7 @@ struct CommunityRoomDetailView: View {
                     .resizable()
                     .scaledToFill()
             } else {
+                // TODO(dark): 要確認（ヘッダー画像が無い時の装飾シーン placeholder。独自の青×緑グラデ）
                 LinearGradient(
                     colors: [MeloColors.Member.partner, MeloColors.Status.successBg],
                     startPoint: .top,
@@ -709,7 +710,7 @@ struct CommunityRoomDetailView: View {
         .frame(height: 110, alignment: .top)
         .background(
             RoundedCorner(radius: 10, corners: [.topLeft, .topRight])
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
         )
     }
 
@@ -721,13 +722,13 @@ struct CommunityRoomDetailView: View {
         } label: {
             Image(systemName: "gearshape.fill")
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .frame(width: 28, height: 28)
                 .background(
                     Circle()
-                        .fill(MeloColors.Surface.pinkPale)
+                        .fill(MeloColors.Dark.bgElevated)
                         .overlay(
-                            Circle().stroke(MeloColors.Text.primary, lineWidth: 1)
+                            Circle().stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
                         )
                 )
         }
@@ -787,7 +788,7 @@ struct CommunityRoomDetailView: View {
 
     private var memberAvatarStack: some View {
         HStack(spacing: -5) {
-            memberBubble(color: MeloColors.Brand.pinkLight, symbol: "heart.fill")
+            memberBubble(color: MeloColors.Dark.accent, symbol: "heart.fill")
             memberBubble(color: MeloColors.Status.warningBg, symbol: "face.smiling.fill")
             memberBubble(color: MeloColors.Status.success, symbol: "leaf.fill")
         }
@@ -802,7 +803,7 @@ struct CommunityRoomDetailView: View {
                     .font(.system(size: 9))
                     .foregroundColor(.white)
             )
-            .overlay(Circle().stroke(Color.white, lineWidth: 1))
+            .overlay(Circle().stroke(MeloColors.Dark.card, lineWidth: 1))
     }
 
     // MARK: - Posts
@@ -867,10 +868,10 @@ struct CommunityRoomDetailView: View {
         } label: {
             Image(systemName: "square.and.pencil")
                 .font(.system(size: 22, weight: .semibold))
-                .foregroundColor(.white)
+                .foregroundColor(MeloColors.Dark.onAccent)
                 .frame(width: 56, height: 56)
                 .background(Circle().fill(isSelfBlocked ? DetailPalette.mutedGray : DetailPalette.koiPink))
-                .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 3)
+                .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 3)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("新しい投稿を作成")
@@ -928,11 +929,12 @@ struct CommunityPostCardV2: View {
         .padding(.horizontal, 36)
         .padding(.vertical, 14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.white)
+        // TODO(dark): CommunityPostCardV2 は BoardFeedPalette 依存。Board ダーク化と整合させる際に文字/ピル色を再確認
+        .background(MeloColors.Dark.card)
         .overlay(alignment: .bottom) {
             if showsBottomDivider {
                 Rectangle()
-                    .fill(MeloColors.Gray.subButton)
+                    .fill(MeloColors.Dark.divider)
                     .frame(height: 0.5)
             }
         }
@@ -1042,7 +1044,7 @@ struct CommunityPostCardV2: View {
             .padding(.horizontal, 10)
             .padding(.vertical, 3)
             .background(
-                Capsule().fill(MeloColors.Surface.pinkPale)
+                Capsule().fill(BoardFeedPalette.pillBgPink)
                     .overlay(
                         Capsule().stroke(BoardFeedPalette.accentPink.opacity(0.5), lineWidth: 0.8)
                     )
@@ -1074,7 +1076,7 @@ struct CommunityPostCardV2: View {
                     Text("もっと表示")
                         .font(MeloFonts.zenMaruMedium(13))
                         .foregroundColor(BoardFeedPalette.accentPink)
-                        .shadow(color: MeloColors.Brand.pink.opacity(0.35), radius: 2, x: 0, y: 1)
+                        .shadow(color: MeloColors.Dark.accent.opacity(0.35), radius: 2, x: 0, y: 1)
                 }
                 .buttonStyle(.plain)
             }
@@ -1100,7 +1102,7 @@ struct CommunityPostCardV2: View {
     private func cardImage(symbol: String) -> some View {
         RoundedRectangle(cornerRadius: 10)
             .fill(LinearGradient(
-                colors: [MeloColors.Surface.pinkPale, MeloColors.Member.partnerBg],
+                colors: [MeloColors.Dark.card, MeloColors.Dark.bgElevated],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             ))
@@ -1234,6 +1236,7 @@ struct CommunityPostCardV2: View {
 /// Community 側は Firebase を使わず、`post.selectedReaction` の状態をそのまま反映する。
 
 /// 掲示板の `BoardFeedPollBars` と同じデザイン (背景・進捗バー・票数表示)。
+// TODO(dark): BoardFeedPalette 依存（textBrown/timeGray 等のライト色）。Board ダーク化と合わせて再確認
 private struct CommunityRoomPollBars: View {
     let options: [String]
     let counts: [String: Int]
@@ -1343,7 +1346,7 @@ private struct CommunityRoomComposeSheet: View {
                 }
                 .padding(20)
             }
-            .background(MeloColors.Surface.pinkPale.ignoresSafeArea())
+            .background(MeloColors.Dark.bg.ignoresSafeArea())
             .navigationTitle("相談を投稿")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -1371,7 +1374,7 @@ private struct CommunityRoomComposeSheet: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
-        .background(Capsule().fill(Color.white))
+        .background(Capsule().fill(MeloColors.Dark.card))
         .overlay(Capsule().stroke(DetailPalette.cardBorder, lineWidth: 1))
     }
 
@@ -1382,7 +1385,7 @@ private struct CommunityRoomComposeSheet: View {
                 .foregroundColor(DetailPalette.subText)
             TextField("例: ももせ", text: $name)
                 .padding(12)
-                .background(Color.white)
+                .background(MeloColors.Dark.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(DetailPalette.cardBorder, lineWidth: 1)
@@ -1405,12 +1408,12 @@ private struct CommunityRoomComposeSheet: View {
                     } label: {
                         Text(option)
                             .font(MeloFonts.zenMaruMedium(14))
-                            .foregroundColor(selection.wrappedValue == option ? .white : color)
+                            .foregroundColor(selection.wrappedValue == option ? MeloColors.Dark.onAccent : color)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
                             .background(
                                 Capsule()
-                                    .fill(selection.wrappedValue == option ? color : Color.white)
+                                    .fill(selection.wrappedValue == option ? color : MeloColors.Dark.card)
                             )
                             .overlay(
                                 Capsule().stroke(color, lineWidth: 1)
@@ -1431,7 +1434,7 @@ private struct CommunityRoomComposeSheet: View {
                 TextEditor(text: $bodyText)
                     .frame(minHeight: 150)
                     .padding(8)
-                    .background(Color.white)
+                    .background(MeloColors.Dark.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(DetailPalette.cardBorder, lineWidth: 1)
@@ -1489,7 +1492,7 @@ private struct RoundedCorner: Shape {
             participantCount: 20,
             imageURL: nil,
             isJoined: false,
-            iconColor: MeloColors.Gray.subButton
+            iconColor: MeloColors.Dark.textSecondary
         ))
     }
 }

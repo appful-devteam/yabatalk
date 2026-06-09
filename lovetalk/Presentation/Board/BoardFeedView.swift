@@ -30,9 +30,9 @@ struct BoardToastView: View {
                 .fill(.ultraThinMaterial)
                 .overlay(
                     Capsule()
-                        .fill(Color.white.opacity(0.8))
+                        .fill(MeloColors.Dark.card.opacity(0.92))
                 )
-                .shadow(color: Color.black.opacity(0.1), radius: 12, x: 0, y: 4)
+                .shadow(color: Color.black.opacity(0.3), radius: 12, x: 0, y: 4)
         )
     }
 }
@@ -74,18 +74,18 @@ struct HeartBurstView: View {
 
 // MARK: - Board Colors
 enum BoardColors {
-    static let bgTop = MeloColors.Surface.pinkPale
-    static let bgBottom = MeloColors.Surface.white
-    static let cardBg = Color.white
-    static let accent = MeloColors.Brand.pinkLight
-    static let accentLight = MeloColors.Brand.pinkLight
-    static let textPrimary = MeloColors.Text.primary
-    static let textSecondary = MeloColors.Text.secondary
-    static let textTertiary = MeloColors.Gray.subButton
-    static let divider = MeloColors.Gray.subButtonLight
-    static let sortPill = MeloColors.Surface.pinkPale
-    static let composeGradientStart = MeloColors.Brand.pinkDeep
-    static let composeGradientEnd = MeloColors.Brand.pinkLight
+    static let bgTop = MeloColors.Dark.bg
+    static let bgBottom = MeloColors.Dark.bg
+    static let cardBg = MeloColors.Dark.card
+    static let accent = MeloColors.Dark.accent
+    static let accentLight = MeloColors.Dark.accent
+    static let textPrimary = MeloColors.Dark.textPrimary
+    static let textSecondary = MeloColors.Dark.textSecondary
+    static let textTertiary = MeloColors.Dark.textSecondary
+    static let divider = MeloColors.Dark.divider
+    static let sortPill = MeloColors.Dark.bgElevated
+    static let composeGradientStart = MeloColors.Dark.accentDeep
+    static let composeGradientEnd = MeloColors.Dark.accent
 }
 
 // MARK: - Skeleton Loading Card
@@ -96,30 +96,30 @@ struct SkeletonPostCard: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
                 Circle()
-                    .fill(MeloColors.Gray.subButtonLight)
+                    .fill(MeloColors.Dark.bgElevated)
                     .frame(width: 36, height: 36)
                 VStack(alignment: .leading, spacing: 4) {
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(MeloColors.Gray.subButtonLight)
+                        .fill(MeloColors.Dark.bgElevated)
                         .frame(width: 80, height: 12)
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(MeloColors.Gray.subButtonLight)
+                        .fill(MeloColors.Dark.bgElevated)
                         .frame(width: 50, height: 10)
                 }
                 Spacer()
             }
             RoundedRectangle(cornerRadius: 4)
-                .fill(MeloColors.Gray.subButtonLight)
+                .fill(MeloColors.Dark.bgElevated)
                 .frame(height: 14)
             RoundedRectangle(cornerRadius: 4)
-                .fill(MeloColors.Gray.subButtonLight)
+                .fill(MeloColors.Dark.bgElevated)
                 .frame(width: 200, height: 14)
             HStack(spacing: 14) {
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(MeloColors.Gray.subButtonLight)
+                    .fill(MeloColors.Dark.bgElevated)
                     .frame(width: 40, height: 12)
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(MeloColors.Gray.subButtonLight)
+                    .fill(MeloColors.Dark.bgElevated)
                     .frame(width: 40, height: 12)
                 Spacer()
             }
@@ -252,7 +252,7 @@ struct BoardFeedView: View {
                 VStack(spacing: 0) {
                     // ヘッダーは常時表示
                     boardHeader
-                        .background(Color.white)
+                        .background(MeloColors.Dark.bg)
 
                     // 新着 / おすすめ / フォロー の行 (常時表示・下線インジケータ式)
                     sortTabsRow
@@ -284,7 +284,7 @@ struct BoardFeedView: View {
                     .scaleEffect(barsHidden ? 0.75 : 1.0, anchor: .bottomTrailing)
                     .opacity(barsHidden ? 0.7 : 1.0)
             }
-            .background(Color.white.ignoresSafeArea())
+            .background(MeloColors.Dark.bg.ignoresSafeArea())
             .navigationBarHidden(true)
             .sheet(isPresented: $showCompose, onDismiss: {
                 quotePost = nil
@@ -579,11 +579,11 @@ struct BoardFeedView: View {
                     .tracking(0.48)
                     .foregroundStyle(
                         isSelected
-                        ? AnyShapeStyle(MeloColors.Gradient.pinkPrimary)
+                        ? AnyShapeStyle(MeloColors.Dark.accentGradient)
                         : AnyShapeStyle(BoardFeedPalette.textBrown)
                     )
                     .shadow(
-                        color: isSelected ? MeloColors.Brand.pink.opacity(0.4) : .clear,
+                        color: isSelected ? MeloColors.Dark.accent.opacity(0.4) : .clear,
                         radius: 4, x: 0, y: 2
                     )
                     .lineLimit(1)
@@ -592,7 +592,7 @@ struct BoardFeedView: View {
                 Rectangle()
                     .fill(
                         isSelected
-                        ? AnyShapeStyle(MeloColors.Gradient.pinkPrimary)
+                        ? AnyShapeStyle(MeloColors.Dark.accentGradient)
                         : AnyShapeStyle(Color.clear)
                     )
                     .frame(height: isSelected ? 3 : 1)
@@ -613,7 +613,7 @@ struct BoardFeedView: View {
         ZStack(alignment: .bottom) {
             // 画面端から端まで伸びるフルワイド薄線
             Rectangle()
-                .fill(MeloColors.Gray.subButton.opacity(0.5))
+                .fill(MeloColors.Dark.divider)
                 .frame(height: 1)
                 .frame(maxWidth: .infinity)
 
@@ -629,7 +629,7 @@ struct BoardFeedView: View {
             .padding(.horizontal, 8)
             .padding(.top, 4)
         }
-        .background(Color.white)
+        .background(MeloColors.Dark.bg)
     }
 
     private var boardHeader: some View {
@@ -638,7 +638,7 @@ struct BoardFeedView: View {
             Text(String(localized: "ホーム", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(22))
                 .tracking(0.66)
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .lineLimit(1)
 
             Spacer(minLength: 0)
@@ -650,12 +650,12 @@ struct BoardFeedView: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.bgElevated)
                         .frame(width: PremiumBadgeButton.height, height: PremiumBadgeButton.height)
                         .overlay(
                             Circle().stroke(BoardFeedPalette.borderPink, lineWidth: 1)
                         )
-                        .shadow(color: BoardFeedPalette.shadowPink.opacity(0.6), radius: 3, x: 0, y: 1.9)
+                        .shadow(color: Color.black.opacity(0.3), radius: 3, x: 0, y: 1.9)
                     Image(systemName: "magnifyingglass")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(BoardFeedPalette.textBrown)
@@ -677,12 +677,12 @@ struct BoardFeedView: View {
                 ZStack(alignment: .topTrailing) {
                     ZStack {
                         Circle()
-                            .fill(Color.white)
+                            .fill(MeloColors.Dark.bgElevated)
                             .frame(width: PremiumBadgeButton.height, height: PremiumBadgeButton.height)
                             .overlay(
                                 Circle().stroke(BoardFeedPalette.borderPink, lineWidth: 1)
                             )
-                            .shadow(color: BoardFeedPalette.shadowPink.opacity(0.6), radius: 3, x: 0, y: 1.9)
+                            .shadow(color: Color.black.opacity(0.3), radius: 3, x: 0, y: 1.9)
                         Image(systemName: "bell.fill")
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(BoardFeedPalette.textBrown)
@@ -691,7 +691,7 @@ struct BoardFeedView: View {
                         Circle()
                             .fill(Color.red)
                             .frame(width: 9, height: 9)
-                            .overlay(Circle().stroke(Color.white, lineWidth: 1.5))
+                            .overlay(Circle().stroke(MeloColors.Dark.bg, lineWidth: 1.5))
                             .offset(x: -3, y: 3)
                     }
                 }
@@ -709,7 +709,7 @@ struct BoardFeedView: View {
         .padding(.horizontal, MeloLayout.titleHorizontalPadding)
         .padding(.top, 6)
         .padding(.bottom, 6)
-        .background(Color.white)
+        .background(MeloColors.Dark.bg)
     }
 
     // MARK: - Category Pill Row
@@ -742,12 +742,12 @@ struct BoardFeedView: View {
                 if let icon = cat.icon {
                     Image(systemName: icon)
                         .font(.system(size: 11, weight: .semibold))
-                        .foregroundColor(isSelected ? .white : BoardFeedPalette.accentPink)
+                        .foregroundColor(isSelected ? MeloColors.Dark.onAccent : BoardFeedPalette.accentPink)
                 }
                 Text(cat.localizedName)
                     .font(isSelected ? MeloFonts.zenMaruOrFallback(12) : MeloFonts.zenMaruMedium(12))
                     .tracking(0.36)
-                    .foregroundColor(isSelected ? .white : BoardFeedPalette.textBrown)
+                    .foregroundColor(isSelected ? MeloColors.Dark.onAccent : BoardFeedPalette.textBrown)
                     .lineLimit(1)
             }
             .padding(.horizontal, 16)
@@ -755,14 +755,14 @@ struct BoardFeedView: View {
             .background(
                 ZStack {
                     Capsule()
-                        .fill(isSelected ? BoardFeedPalette.accentPink : Color.white)
+                        .fill(isSelected ? BoardFeedPalette.accentPink : MeloColors.Dark.card)
                     if !isSelected {
                         Capsule()
                             .stroke(BoardFeedPalette.borderPink, lineWidth: 1)
                     }
                 }
             )
-            .shadow(color: isSelected ? Color.clear : BoardFeedPalette.shadowPink.opacity(0.6), radius: 3, x: 0, y: 1.9)
+            .shadow(color: isSelected ? Color.clear : Color.black.opacity(0.3), radius: 3, x: 0, y: 1.9)
         }
         .buttonStyle(.plain)
     }
@@ -800,7 +800,7 @@ struct BoardFeedView: View {
                             Text(String(localized: "ユーザーを探す", bundle: LanguageManager.appBundle))
                                 .font(MeloFonts.zenMaruOrFallback(13))
                         }
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                         .padding(.horizontal, 20)
                         .padding(.vertical, 10)
                         .background(
@@ -846,7 +846,7 @@ struct BoardFeedView: View {
                         Text(String(localized: "投稿する", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruOrFallback(13))
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
                     .background(
@@ -960,10 +960,10 @@ struct BoardFeedView: View {
         } label: {
             Image(systemName: "square.and.pencil")
                 .font(.system(size: 22, weight: .semibold))
-                .foregroundColor(.white)
+                .foregroundColor(MeloColors.Dark.onAccent)
                 .frame(width: 56, height: 56)
-                .background(Circle().fill(MeloColors.Gradient.pinkPrimary))
-                .shadow(color: MeloColors.Brand.pink.opacity(0.45), radius: 10, x: 0, y: 4)
+                .background(Circle().fill(MeloColors.Dark.accentGradient))
+                .shadow(color: MeloColors.Dark.accent.opacity(0.45), radius: 10, x: 0, y: 4)
         }
         .buttonStyle(ScaleFABStyle())
         .accessibilityLabel("新しい投稿を作成")
@@ -983,33 +983,31 @@ struct BoardFeedView: View {
 // MARK: - Board Feed Palette (Figma 【確定】ホーム画面)
 
 enum BoardFeedPalette {
-    static let accentPink = MeloColors.Brand.pink
-    static let textBrown = MeloColors.Text.primary
-    static let bodyInk = MeloColors.Text.primary          // 投稿本文のより黒い色
-    static let borderPink = MeloColors.Surface.pinkPale
+    static let accentPink = MeloColors.Dark.accent
+    static let textBrown = MeloColors.Dark.textPrimary
+    static let bodyInk = MeloColors.Dark.textPrimary          // 投稿本文のより黒い色
+    static let borderPink = MeloColors.Dark.cardStroke
     /// 投稿カード/相談部屋カード/診断カード/各種カード共通のアウトライン色 (濃いグレー)
-    static let cardBorderGray = MeloColors.Text.secondary
-    static let shadowPink = MeloColors.Surface.pinkPale
-    static let barBgPink = MeloColors.Surface.pinkPale
-    static let pillBgPink = MeloColors.Surface.pinkPale
-    static let timeGray = MeloColors.Gray.subButton
-    static let engageGray = MeloColors.Text.secondary
-    static let pollInactiveBg = MeloColors.Gray.subButtonLight    // アンケート未投票時の灰色背景
-    static let pollInactiveFill = MeloColors.Gray.subButton  // 未投票時のバー色
+    static let cardBorderGray = MeloColors.Dark.cardStroke
+    static let shadowPink = MeloColors.Dark.bgElevated
+    static let barBgPink = MeloColors.Dark.bgElevated
+    static let pillBgPink = MeloColors.Dark.bgElevated
+    static let timeGray = MeloColors.Dark.textSecondary
+    static let engageGray = MeloColors.Dark.textSecondary
+    static let pollInactiveBg = MeloColors.Dark.track    // アンケート未投票時の灰色背景
+    static let pollInactiveFill = MeloColors.Dark.track  // 未投票時のバー色
 }
 
 // MARK: - Board Feed Category (UI-only filter)
 
 enum BoardFeedCategory: String, CaseIterable, Identifiable {
     case all
-    case oneSided    // 片思い
-    case mutual      // 両思い
-    case breakup     // 失恋
-    case reunite     // 復縁
-    case ex          // 元カレ・元カノ
-    case confession  // 告白
-    case dateLine    // デート・LINE
-    case fight       // 喧嘩・倦怠期
+    case power     // パワハラ
+    case sexual    // セクハラ
+    case moral     // モラハラ
+    case customer  // カスハラ
+    case other     // その他
+    case consult   // ぶっちゃけ相談
 
     var id: String { rawValue }
 
@@ -1017,38 +1015,38 @@ enum BoardFeedCategory: String, CaseIterable, Identifiable {
     /// `PostTheme.label` と一致させること。`.all` は空 = 全件マッチ。
     var themeLabel: String? {
         switch self {
-        case .all:        return nil
-        case .oneSided:   return "片思い"
-        case .mutual:     return "両思い"
-        case .breakup:    return "失恋"
-        case .reunite:    return "復縁"
-        case .ex:         return "元カレ・元カノ"
-        case .confession: return "告白"
-        case .dateLine:   return "デート・LINE"
-        case .fight:      return "喧嘩・倦怠期"
+        case .all:      return nil
+        case .power:    return "パワハラ"
+        case .sexual:   return "セクハラ"
+        case .moral:    return "モラハラ"
+        case .customer: return "カスハラ"
+        case .other:    return "その他"
+        case .consult:  return "ぶっちゃけ相談"
         }
     }
 
     var localizedName: String {
         switch self {
-        case .all:        return String(localized: "すべて", bundle: LanguageManager.appBundle)
-        case .oneSided:   return String(localized: "片思い", bundle: LanguageManager.appBundle)
-        case .mutual:     return String(localized: "両思い", bundle: LanguageManager.appBundle)
-        case .breakup:    return String(localized: "失恋", bundle: LanguageManager.appBundle)
-        case .reunite:    return String(localized: "復縁", bundle: LanguageManager.appBundle)
-        case .ex:         return String(localized: "元カレ・元カノ", bundle: LanguageManager.appBundle)
-        case .confession: return String(localized: "告白", bundle: LanguageManager.appBundle)
-        case .dateLine:   return String(localized: "デート・LINE", bundle: LanguageManager.appBundle)
-        case .fight:      return String(localized: "喧嘩・倦怠期", bundle: LanguageManager.appBundle)
+        case .all:      return String(localized: "すべて", bundle: LanguageManager.appBundle)
+        case .power:    return String(localized: "パワハラ", bundle: LanguageManager.appBundle)
+        case .sexual:   return String(localized: "セクハラ", bundle: LanguageManager.appBundle)
+        case .moral:    return String(localized: "モラハラ", bundle: LanguageManager.appBundle)
+        case .customer: return String(localized: "カスハラ", bundle: LanguageManager.appBundle)
+        case .other:    return String(localized: "その他", bundle: LanguageManager.appBundle)
+        case .consult:  return String(localized: "ぶっちゃけ相談", bundle: LanguageManager.appBundle)
         }
     }
 
-    /// Figmaではハート/しずくアイコン。すべて=アイコンなし、失恋系=drop、他=heart
+    /// テーマ別アイコン。すべて=アイコンなし。
     var icon: String? {
         switch self {
-        case .all: return nil
-        case .breakup, .ex: return "drop.fill"
-        default: return "heart.fill"
+        case .all:      return nil
+        case .power:    return "bolt.fill"
+        case .sexual:   return "eye.slash.fill"
+        case .moral:    return "cloud.fog.fill"
+        case .customer: return "megaphone.fill"
+        case .other:    return "ellipsis.circle.fill"
+        case .consult:  return "bubble.left.and.bubble.right.fill"
         }
     }
 
@@ -1112,10 +1110,10 @@ struct BoardFeedPostCard: View {
         .padding(.horizontal, horizontalPadding ?? MeloLayout.contentHorizontalPadding)
         .padding(.vertical, 14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.white)
+        .background(MeloColors.Dark.bg)
         .overlay(alignment: .bottom) {
             Rectangle()
-                .fill(MeloColors.Gray.subButton)
+                .fill(MeloColors.Dark.divider)
                 .frame(height: 0.5)
         }
         .contentShape(Rectangle())
@@ -1270,7 +1268,7 @@ struct BoardFeedPostCard: View {
                     Image(AnonymousAvatarPicker.imageName(forSeed: post.id))
                         .resizable()
                         .scaledToFit()
-                        .background(Circle().fill(MeloColors.Surface.pinkPale))
+                        .background(Circle().fill(MeloColors.Dark.bgElevated))
                         .clipShape(Circle())
                 } else if let urlString = post.authorProfileImageURL, let url = URL(string: urlString) {
                     CachedAsyncImage(url: url) {
@@ -1317,7 +1315,7 @@ struct BoardFeedPostCard: View {
         .foregroundColor(BoardFeedPalette.textBrown)
         .padding(.horizontal, 10)
         .padding(.vertical, 3)
-        .background(Capsule().fill(MeloColors.Surface.pinkPale))
+        .background(Capsule().fill(MeloColors.Dark.bgElevated))
         .overlay(Capsule().stroke(BoardFeedPalette.accentPink.opacity(0.35), lineWidth: 0.8))
     }
 
@@ -1329,7 +1327,7 @@ struct BoardFeedPostCard: View {
             .padding(.horizontal, 10)
             .padding(.vertical, 3)
             .background(
-                Capsule().fill(MeloColors.Surface.pinkPale)
+                Capsule().fill(MeloColors.Dark.bgElevated)
                     .overlay(
                         Capsule().stroke(BoardFeedPalette.accentPink.opacity(0.5), lineWidth: 0.8)
                     )
@@ -1436,7 +1434,7 @@ struct BoardFeedPostCard: View {
         // 土台は Color (intrinsic size 無し) → 親 (HStack/VStack の分配サイズ) に
         // 完全追従。CachedAsyncImage は overlay として土台のサイズに収まり、
         // .clipped() が画像のはみ出しを防ぐ。これでカードが画像幅で広がらない。
-        MeloColors.Surface.pinkPale
+        MeloColors.Dark.bgElevated
             .overlay(
                 CachedAsyncImage(url: URL(string: urlString)) {
                     Color.clear
@@ -1908,12 +1906,12 @@ struct BoardPostCard: View {
                     Text(post.postType.localizedName)
                         .font(MeloFonts.zenMaruOrFallback(10))
                 }
-                .foregroundColor(MeloColors.Brand.pinkLight)
+                .foregroundColor(MeloColors.Dark.accent)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 3)
                 .background(
                     Capsule()
-                        .fill(MeloColors.Member.partnerBg)
+                        .fill(MeloColors.Dark.bgElevated)
                 )
             }
 
@@ -1928,7 +1926,7 @@ struct BoardPostCard: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 36, height: 36)
-                            .background(Circle().fill(MeloColors.Surface.pinkPale))
+                            .background(Circle().fill(MeloColors.Dark.bgElevated))
                             .clipShape(Circle())
                     } else if let urlString = post.authorProfileImageURL, let url = URL(string: urlString) {
                         CachedAsyncImage(url: url) {
@@ -2011,7 +2009,7 @@ struct BoardPostCard: View {
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 3)
                                     .background(
-                                        Capsule().fill(MeloColors.Surface.pinkPale)
+                                        Capsule().fill(MeloColors.Dark.bgElevated)
                                             .overlay(
                                                 Capsule().stroke(BoardFeedPalette.accentPink.opacity(0.5), lineWidth: 0.8)
                                             )
@@ -2069,7 +2067,7 @@ struct BoardPostCard: View {
                             .padding(8)
                             .background(
                                 RoundedRectangle(cornerRadius: 8)
-                                    .fill(MeloColors.Surface.pinkPale)
+                                    .fill(MeloColors.Dark.bgElevated)
                             )
                         }
                         .buttonStyle(.plain)
@@ -2184,7 +2182,7 @@ struct BoardPostCard: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 16)
-        .background(Color.white)
+        .background(MeloColors.Dark.bg)
         .contentShape(Rectangle())
         .onTapGesture {
             onTap()
@@ -2269,7 +2267,7 @@ struct BoardPostCard: View {
         // GeometryReader を避ける(スクロール中のセル再測定で横揺れの原因になる)。
         CachedAsyncImage(url: URL(string: urlString)) {
             Rectangle()
-                .fill(MeloColors.Gray.subButtonLight)
+                .fill(MeloColors.Dark.bgElevated)
         }
         .frame(maxWidth: .infinity)
         .frame(height: height)
@@ -2320,21 +2318,35 @@ struct BoardDiagnosisCardExpanded: View {
     let card: DiagnosisCard
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        Group {
             switch card.cardStyle {
+            case .toxicity:
+                ToxicityVerdictCardView(card: card)
             case .type:
-                typeCard
+                wrappedCard { typeCard }
             case .loveWords:
-                loveWordsCard
+                wrappedCard { loveWordsCard }
             default:
-                scoreCard
+                if card.hasToxicityData {
+                    ToxicityVerdictCardView(card: card)
+                } else {
+                    wrappedCard { scoreCard }
+                }
             }
+        }
+    }
+
+    /// 旧 lovetalk カード用の角丸チェース。毒性カードは自前の LabCard 枠を持つので適用しない。
+    @ViewBuilder
+    private func wrappedCard<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            content()
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 14)
         .background(
             RoundedRectangle(cornerRadius: 14)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: 14)
                         .stroke(BoardFeedPalette.cardBorderGray, lineWidth: 1)
@@ -2352,18 +2364,18 @@ struct BoardDiagnosisCardExpanded: View {
                     if let label = card.relationshipLabel {
                         Text(label)
                             .font(MeloFonts.zenMaruOrFallback(12))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                     }
                     if card.relationshipLabel != nil && !card.effectivePartnerMBTIs.isEmpty {
                         Text("-")
                             .font(MeloFonts.zenMaruRegular(12))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                     }
                     ForEach(Array(card.effectivePartnerMBTIs.enumerated()), id: \.offset) { index, mbti in
                         if index > 0 {
                             Text("×")
                                 .font(MeloFonts.zenMaruRegular(10))
-                                .foregroundColor(MeloColors.Gray.subButton)
+                                .foregroundColor(MeloColors.Dark.textSecondary)
                         }
                         Text(mbti)
                             .font(MeloFonts.zenMaruOrFallback(9))
@@ -2389,11 +2401,11 @@ struct BoardDiagnosisCardExpanded: View {
                     HStack(alignment: .lastTextBaseline, spacing: 0) {
                         Text("\(card.totalScore)")
                             .font(MeloFonts.jerseyOrFallback(40))
-                            .foregroundColor(MeloColors.Brand.pink)
+                            .foregroundColor(MeloColors.Dark.accent)
                             .tracking(-1.0)
                         Text(String(localized: "点", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruOrFallback(12))
-                            .foregroundColor(MeloColors.Brand.pink)
+                            .foregroundColor(MeloColors.Dark.accent)
                     }
 
                     VStack(spacing: 4) {
@@ -2412,8 +2424,8 @@ struct BoardDiagnosisCardExpanded: View {
     /// 新診断結果ページと同じ「○○の相性です」見出し (黒+ピンク混合)。
     private var compatibilityHeadline: some View {
         let phrase = compatibilityPhrase(for: card.totalScore)
-        let dark = MeloColors.Text.primary
-        let pink = MeloColors.Brand.pink
+        let dark = MeloColors.Dark.textPrimary
+        let pink = MeloColors.Dark.accent
         return (Text(phrase.prefix).foregroundColor(dark)
                 + Text(phrase.highlight).foregroundColor(pink)
                 + Text(phrase.suffix).foregroundColor(dark))
@@ -2473,7 +2485,7 @@ struct BoardDiagnosisCardExpanded: View {
         HStack(spacing: 6) {
             Text(label)
                 .font(MeloFonts.zenMaruOrFallback(9))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .lineLimit(1)
                 .fixedSize(horizontal: true, vertical: false)
                 .frame(minWidth: 64, alignment: .trailing)
@@ -2481,13 +2493,9 @@ struct BoardDiagnosisCardExpanded: View {
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule()
-                        .fill(Color.gray.opacity(0.12))
+                        .fill(MeloColors.Dark.track)
                     Capsule()
-                        .fill(LinearGradient(
-                            colors: [MeloColors.Member.partner, MeloColors.Brand.pink],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        ))
+                        .fill(MeloColors.Dark.accentGradient)
                         .frame(width: geo.size.width * CGFloat(min(score, 100)) / 100)
                 }
             }
@@ -2505,12 +2513,12 @@ struct BoardDiagnosisCardExpanded: View {
                     if let label = card.relationshipLabel {
                         Text(label)
                             .font(MeloFonts.zenMaruOrFallback(11))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                     }
                     if card.relationshipLabel != nil && (card.selfMBTI != nil || !card.effectivePartnerMBTIs.isEmpty) {
                         Text("-")
                             .font(MeloFonts.zenMaruRegular(11))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                     }
                     if let selfMBTI = card.selfMBTI {
                         Text(selfMBTI)
@@ -2524,7 +2532,7 @@ struct BoardDiagnosisCardExpanded: View {
                         if card.selfMBTI != nil || index > 0 {
                             Text("×")
                                 .font(MeloFonts.zenMaruRegular(10))
-                                .foregroundColor(MeloColors.Gray.subButton)
+                                .foregroundColor(MeloColors.Dark.textSecondary)
                         }
                         Text(mbti)
                             .font(MeloFonts.zenMaruOrFallback(9))
@@ -2539,7 +2547,7 @@ struct BoardDiagnosisCardExpanded: View {
             // タイプ名（ピンク大文字）
             Text(card.localizedTypeName)
                 .font(MeloFonts.zenMaruOrFallback(20))
-                .foregroundColor(MeloColors.Brand.pinkLight)
+                .foregroundColor(MeloColors.Dark.accent)
                 .multilineTextAlignment(.center)
 
             // マスコット画像 (古い投稿でも typeCode から最新アセット名を引き直す)
@@ -2554,7 +2562,7 @@ struct BoardDiagnosisCardExpanded: View {
             if let desc = card.localizedTypeDescription {
                 Text(desc)
                     .font(MeloFonts.zenMaruOrFallback(12))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .lineSpacing(5)
                     .multilineTextAlignment(.leading)
                     .lineLimit(3)
@@ -2569,7 +2577,7 @@ struct BoardDiagnosisCardExpanded: View {
             // タイトル（診断ページ準拠）
             Text(String(localized: "愛情表現", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(20))
-                .foregroundColor(MeloColors.Brand.pinkLight)
+                .foregroundColor(MeloColors.Dark.accent)
 
             // カウント比較カード（枠線 + 白背景）
             if let selfTotal = card.selfLoveTotal, let partnerTotal = card.partnerLoveTotal {
@@ -2577,10 +2585,10 @@ struct BoardDiagnosisCardExpanded: View {
                     VStack(spacing: 6) {
                         Text("\(selfTotal)")
                             .font(MeloFonts.jerseyOrFallback(48))
-                            .foregroundColor(MeloColors.Brand.pinkLight)
+                            .foregroundColor(MeloColors.Dark.accent)
                         Text(String(localized: "自分", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruRegular(12))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                         if let mbti = card.selfMBTI {
                             Text(mbti)
                                 .font(MeloFonts.zenMaruOrFallback(9))
@@ -2594,15 +2602,15 @@ struct BoardDiagnosisCardExpanded: View {
 
                     Image(systemName: "heart.fill")
                         .font(.system(size: 22))
-                        .foregroundColor(MeloColors.Brand.pinkLight)
+                        .foregroundColor(MeloColors.Dark.accent)
 
                     VStack(spacing: 6) {
                         Text("\(partnerTotal)")
                             .font(MeloFonts.jerseyOrFallback(48))
-                            .foregroundColor(MeloColors.Brand.pinkLight)
+                            .foregroundColor(MeloColors.Dark.accent)
                         Text(card.relationshipLabel ?? String(localized: "相手", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruRegular(12))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                         ForEach(card.effectivePartnerMBTIs, id: \.self) { mbti in
                             Text(mbti)
                                 .font(MeloFonts.zenMaruOrFallback(9))
@@ -2618,10 +2626,10 @@ struct BoardDiagnosisCardExpanded: View {
                 .padding(.horizontal, 12)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.bgElevated)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(MeloColors.Gray.subButtonLight, lineWidth: 1)
+                                .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
                         )
                 )
             }
@@ -2637,23 +2645,36 @@ struct BoardDiagnosisCardMini: View {
     var body: some View {
         Group {
             switch card.cardStyle {
+            case .toxicity:
+                ToxicityVerdictCardView(card: card, compact: true)
             case .type:
                 typeMiniCard
+                    .padding(12)
+                    .background(miniBackground)
             case .loveWords:
                 loveWordsMiniCard
+                    .padding(12)
+                    .background(miniBackground)
             default:
-                scoreMiniCard
+                if card.hasToxicityData {
+                    ToxicityVerdictCardView(card: card, compact: true)
+                } else {
+                    scoreMiniCard
+                        .padding(12)
+                        .background(miniBackground)
+                }
             }
         }
-        .padding(12)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(MeloColors.Surface.pinkPale)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(BoardColors.accent.opacity(0.15), lineWidth: 1)
-                )
-        )
+    }
+
+    /// 旧 lovetalk ミニカード用の背景。毒性カードは LabCard 枠を持つので適用しない。
+    private var miniBackground: some View {
+        RoundedRectangle(cornerRadius: 12)
+            .fill(MeloColors.Dark.card)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(BoardColors.accent.opacity(0.15), lineWidth: 1)
+            )
     }
 
     // Score style (default)
@@ -2673,13 +2694,7 @@ struct BoardDiagnosisCardMini: View {
 
             Text("\(card.totalScore)")
                 .font(MeloFonts.jerseyOrFallback(28))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [MeloColors.Brand.pinkLight, MeloColors.Brand.pinkLight, MeloColors.Brand.pinkDeep],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                )
+                .foregroundStyle(MeloColors.Dark.accentGradient)
         }
     }
 
@@ -2715,7 +2730,7 @@ struct BoardDiagnosisCardMini: View {
                 .padding(.vertical, 4)
                 .background(
                     Capsule()
-                        .fill(MeloColors.Surface.pinkPale)
+                        .fill(MeloColors.Dark.bgElevated)
                 )
         }
     }
@@ -2744,12 +2759,12 @@ struct BoardDiagnosisCardMini: View {
                         ForEach(Array(words)) { w in
                             Text(w.phrase)
                                 .font(MeloFonts.zenMaruRegular(10))
-                                .foregroundColor(MeloColors.Brand.pinkLight)
+                                .foregroundColor(MeloColors.Dark.accent)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)
                                 .background(
                                     Capsule()
-                                        .fill(MeloColors.Brand.pinkLight)
+                                        .fill(MeloColors.Dark.bgElevated)
                                 )
                         }
                     }
@@ -2789,7 +2804,7 @@ struct BoardPollInteractive: View {
     @State private var voteError = false
 
     private let firestoreService = BoardFirestoreService.shared
-    private let accentPink = MeloColors.Brand.pinkLight
+    private let accentPink = MeloColors.Dark.accent
 
     private var maxVoteCount: Int {
         localOptions.map(\.voteCount).max() ?? 0
@@ -2814,7 +2829,7 @@ struct BoardPollInteractive: View {
                 } label: {
                     ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(MeloColors.Gray.subButtonLight)
+                            .fill(MeloColors.Dark.track)
                             .frame(height: 36)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
@@ -2824,7 +2839,7 @@ struct BoardPollInteractive: View {
                         if hasVoted {
                             GeometryReader { geo in
                                 RoundedRectangle(cornerRadius: 8)
-                                    .fill(isMostPopular ? accentPink.opacity(0.18) : Color.gray.opacity(0.06))
+                                    .fill(isMostPopular ? accentPink.opacity(0.35) : MeloColors.Dark.bgElevated)
                                     .frame(width: geo.size.width * max(percentage, 0.02))
                             }
                             .frame(height: 36)

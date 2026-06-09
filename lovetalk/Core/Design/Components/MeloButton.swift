@@ -113,39 +113,39 @@ struct MeloButton: View {
     private var background: some View {
         switch style {
         case .primary:
-            MeloColors.Gradient.pinkPrimary
+            MeloColors.Dark.accentGradient
         case .secondary:
-            Color.white
+            MeloColors.Dark.card
         case .outline, .ghost:
             Color.clear
         case .cream:
-            MeloColors.Surface.pinkPale
+            MeloColors.Dark.bgElevated
         }
     }
 
     private var textColor: Color {
         switch style {
         case .primary:
-            return .white
+            return MeloColors.Dark.onAccent
         case .secondary:
-            return MeloColors.Brand.pinkDeep
+            return MeloColors.Dark.accent
         case .outline:
-            return MeloColors.Brand.pinkDeep
+            return MeloColors.Dark.accent
         case .cream:
-            return MeloColors.Text.primary
+            return MeloColors.Dark.textPrimary
         case .ghost:
-            return MeloColors.Text.secondary
+            return MeloColors.Dark.textSecondary
         }
     }
 
     private var borderColor: Color {
         switch style {
         case .secondary:
-            return MeloColors.Brand.pinkDeep.opacity(0.3)
+            return MeloColors.Dark.accent.opacity(0.3)
         case .outline:
-            return MeloColors.Brand.pinkDeep
+            return MeloColors.Dark.accent
         case .cream:
-            return MeloColors.Brand.pink
+            return MeloColors.Dark.cardStroke
         default:
             return .clear
         }
@@ -163,9 +163,9 @@ struct MeloButton: View {
     private var shadowColor: Color {
         switch style {
         case .primary:
-            return MeloColors.Brand.pinkDeep.opacity(0.35)
+            return MeloColors.Dark.accent.opacity(0.15)
         case .cream:
-            return MeloColors.Brand.pink.opacity(0.3)
+            return Color.black.opacity(0.3)
         default:
             return .clear
         }
@@ -223,19 +223,19 @@ struct MeloPillButton: View {
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 12)
-            .foregroundColor(isSelected ? .white : MeloColors.Brand.pinkDeep)
+            .foregroundColor(isSelected ? MeloColors.Dark.onAccent : MeloColors.Dark.accent)
             .background(
                 isSelected
-                    ? AnyView(MeloColors.Gradient.pinkPrimary)
-                    : AnyView(Color.white)
+                    ? AnyView(MeloColors.Dark.accentGradient)
+                    : AnyView(MeloColors.Dark.card)
             )
             .clipShape(Capsule())
             .overlay(
                 Capsule()
-                    .stroke(isSelected ? Color.clear : MeloColors.Brand.pinkDeep.opacity(0.3), lineWidth: 1.5)
+                    .stroke(isSelected ? Color.clear : MeloColors.Dark.accent.opacity(0.3), lineWidth: 1.5)
             )
             .shadow(
-                color: isSelected ? MeloColors.Brand.pinkDeep.opacity(0.3) : .clear,
+                color: isSelected ? MeloColors.Dark.accent.opacity(0.15) : .clear,
                 radius: 8,
                 x: 0,
                 y: 4
@@ -270,19 +270,19 @@ struct MeloIconButton: View {
         } label: {
             Image(systemName: icon)
                 .font(.system(size: size * 0.4, weight: .semibold))
-                .foregroundColor(style == .primary ? .white : MeloColors.Brand.pinkLight)
+                .foregroundColor(style == .primary ? MeloColors.Dark.onAccent : MeloColors.Dark.accent)
                 .frame(width: size, height: size)
                 .background(
                     style == .primary
-                        ? AnyView(MeloColors.Gradient.pinkPrimary)
-                        : AnyView(Color.white)
+                        ? AnyView(MeloColors.Dark.accentGradient)
+                        : AnyView(MeloColors.Dark.card)
                 )
                 .clipShape(Circle())
                 .overlay(
                     Circle()
-                        .stroke(style == .primary ? Color.clear : MeloColors.Brand.pinkLight.opacity(0.2), lineWidth: 1.5)
+                        .stroke(style == .primary ? Color.clear : MeloColors.Dark.cardStroke, lineWidth: 1.5)
                 )
-                .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
+                .shadow(color: .black.opacity(0.3), radius: 8, x: 0, y: 2)
         }
     }
 }
@@ -323,5 +323,5 @@ struct MeloIconButton: View {
         }
         .padding(24)
     }
-    .background(MeloColors.Surface.pinkPale)
+    .background(MeloColors.Dark.bg)
 }

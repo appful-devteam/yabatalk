@@ -177,6 +177,9 @@ final class StoredAnalysisResult {
     var replySessionsData: Data?
     var replyChatHistoryData: Data?
 
+    // yabatalk: ハラスメント診断結果（DiagnosisResult を JSON エンコード）
+    var diagnosisData: Data?
+
     // リレーション
     var session: StoredChatSession?
 
@@ -204,7 +207,8 @@ final class StoredAnalysisResult {
         wordRawValuesData: Data? = nil,
         memberScoresData: Data? = nil,
         groupParticipantNames: [String]? = nil,
-        replyStyleProfilesData: Data? = nil
+        replyStyleProfilesData: Data? = nil,
+        diagnosisData: Data? = nil
     ) {
         self.id = id
         self.sessionId = sessionId
@@ -230,6 +234,7 @@ final class StoredAnalysisResult {
         self.memberScoresData = memberScoresData
         self.replyStyleProfilesData = replyStyleProfilesData
         self.groupParticipantNames = groupParticipantNames
+        self.diagnosisData = diagnosisData
     }
 
     // MARK: - Computed Properties
@@ -237,6 +242,11 @@ final class StoredAnalysisResult {
     /// 総合スコア
     var totalScore: Double {
         (balanceScore + tensionScore + responseScore + wordScore) / 4.0
+    }
+
+    /// yabatalk: ハラスメント診断結果（保存済みなら復元）
+    var diagnosisResult: DiagnosisResult? {
+        decodeJSON(DiagnosisResult.self, from: diagnosisData, label: "DiagnosisResult")
     }
 
     /// JSONデコードヘルパー（失敗時にログ出力）

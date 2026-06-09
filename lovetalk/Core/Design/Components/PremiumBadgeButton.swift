@@ -16,16 +16,16 @@ struct PremiumBadgeButton: View {
             HStack(spacing: 6) {
                 Image(systemName: "crown.fill")
                     .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
                 Text("Premium")
                     .font(MeloFonts.zenMaruOrFallback(14))
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
                     .tracking(0.42)
             }
             .padding(.horizontal, 8)
             .frame(height: Self.height)
-            .background(Capsule().fill(MeloColors.Gradient.pinkPrimary))
-            .shadow(color: MeloColors.Brand.pink.opacity(0.45), radius: 6, x: 0, y: 2)
+            .background(Capsule().fill(MeloColors.Dark.accentGradient))
+            .shadow(color: MeloColors.Dark.accent.opacity(0.45), radius: 6, x: 0, y: 2)
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier("premium_badge_button")
@@ -38,5 +38,5 @@ struct PremiumBadgeButton: View {
         Spacer()
     }
     .padding()
-    .background(MeloColors.Surface.pinkPale)
+    .background(MeloColors.Dark.bg)
 }

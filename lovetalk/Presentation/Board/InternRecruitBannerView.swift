@@ -42,13 +42,13 @@ struct InternRecruitBannerView: View {
                 Text(String(localized: "SNS運用インターン生募集中!", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruMedium(14))
                     .tracking(0.42)
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.85)
 
                 Text(String(localized: "一緒にめろとーくをバズらせませんか?", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruRegular(11))
-                    .foregroundColor(MeloColors.Text.secondary)
+                    .foregroundColor(MeloColors.Dark.textSecondary)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -57,21 +57,21 @@ struct InternRecruitBannerView: View {
             // 右: ピンク丸 + chevron (NewHomeView の CTA カード末尾と同じ)
             ZStack {
                 Circle()
-                    .fill(MeloColors.Gradient.pinkPrimary)
+                    .fill(MeloColors.Dark.accentGradient)
                     .frame(width: 29, height: 29)
                 Image(systemName: "chevron.right")
                     .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
             }
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 12)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(MeloColors.Surface.pinkPale)
+                .fill(MeloColors.Dark.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .stroke(MeloColors.Brand.pink, lineWidth: 1)
+                        .stroke(MeloColors.Dark.accent, lineWidth: 1)
                 )
         )
     }
@@ -92,7 +92,7 @@ private struct BannerButtonStyle: ButtonStyle {
 // MARK: - Preview
 #Preview {
     ZStack {
-        Color.white.ignoresSafeArea()
+        MeloColors.Dark.bg.ignoresSafeArea()
         VStack {
             InternRecruitBannerView()
             Spacer()

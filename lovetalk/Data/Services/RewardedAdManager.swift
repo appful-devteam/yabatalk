@@ -9,7 +9,13 @@ final class RewardedAdManager: NSObject, ObservableObject {
     static let shared = RewardedAdManager()
 
     // MARK: - Constants
-    private let adUnitID = "ca-app-pub-9654811308679484/1746749677"
+    private var adUnitID: String {
+        #if DEBUG
+        "ca-app-pub-3940256099942544/1712485313"   // Google 公式テスト: Rewarded
+        #else
+        "ca-app-pub-9654811308679484/5369970658"   // yabatalk 本番ユニットID
+        #endif
+    }
 
     // MARK: - Published Properties
     @Published private(set) var isAdLoaded = false
@@ -31,6 +37,8 @@ final class RewardedAdManager: NSObject, ObservableObject {
 
     /// 広告を読み込む
     func loadAd() {
+        // Remote Config で広告 OFF の間は読み込まない（公開前デフォルト）。
+        guard AdGate.shared.adsEnabled else { return }
         guard !isLoading else { return }
 
         isLoading = true
@@ -60,6 +68,11 @@ final class RewardedAdManager: NSObject, ObservableObject {
     /// 広告を表示する
     /// - Parameter completion: 広告視聴完了時のコールバック（成功時true）
     func showAd(completion: @escaping (Bool) -> Void) {
+        // Remote Config で広告 OFF の間は表示せず、未報酬で完了を返す（公開前デフォルト）。
+        guard AdGate.shared.adsEnabled else {
+            completion(false)
+            return
+        }
         guard let rewardedAd = rewardedAd else {
             errorMessage = String(localized: "広告を準備中です", bundle: LanguageManager.appBundle)
             showError = true

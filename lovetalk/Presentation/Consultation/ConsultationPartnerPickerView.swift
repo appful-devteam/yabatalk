@@ -17,20 +17,20 @@ struct ConsultationPartnerPickerView: View {
     var onSelectGeneral: (() -> Void)? = nil
 
     // MARK: - Design Tokens (NewHomeView に合わせる)
-    private let pageBg = Color.white
-    private let brandPink = MeloColors.Brand.pink
-    private let filledPink = MeloColors.Brand.pink
-    private let softPinkBg = MeloColors.Surface.pinkPale
-    private let textDark = MeloColors.Text.primary
-    private let textGrey = MeloColors.Text.secondary
-    private let brown = MeloColors.Text.secondary  // カード枠の濃いグレー (旧716463から変更)
-    private let divider = MeloColors.Gray.subButtonLight
+    private let pageBg = MeloColors.Dark.bg
+    private let brandPink = MeloColors.Dark.accent
+    private let filledPink = MeloColors.Dark.accent
+    private let softPinkBg = MeloColors.Dark.bgElevated
+    private let textDark = MeloColors.Dark.textPrimary
+    private let textGrey = MeloColors.Dark.textSecondary
+    private let brown = MeloColors.Dark.cardStroke  // カード枠の濃いグレー (旧716463から変更)
+    private let divider = MeloColors.Dark.divider
 
     var body: some View {
         ZStack {
             // 診断ページと共通のピンクスターダスト背景
             ZStack {
-                MeloColors.Surface.pinkPale
+                MeloColors.Dark.bg
                 Image("bg_diagnose_stardust")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -74,13 +74,13 @@ struct ConsultationPartnerPickerView: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(MeloColors.Gradient.pinkPrimary)
+                        .fill(MeloColors.Dark.accentGradient)
                     Image(systemName: "chevron.left")
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                 }
                 .frame(width: 32, height: 32)
-                .shadow(color: MeloColors.Brand.pink.opacity(0.45), radius: 6, x: 0, y: 2)
+                .shadow(color: MeloColors.Dark.accent.opacity(0.15), radius: 6, x: 0, y: 2)
             }
             .buttonStyle(.plain)
             .accessibilityLabel(Text(String(localized: "閉じる", bundle: LanguageManager.appBundle)))
@@ -88,7 +88,7 @@ struct ConsultationPartnerPickerView: View {
             Text(String(localized: "誰のことで相談する？", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaru(20))
                 .tracking(0.6)
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
 
@@ -116,9 +116,9 @@ struct ConsultationPartnerPickerView: View {
         .padding(14)
         .background(
             RoundedRectangle(cornerRadius: 15, style: .continuous)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
         )
-        .shadow(color: MeloColors.Brand.pinkLight.opacity(0.5), radius: 6, x: 0, y: 2)
+        .shadow(color: Color.black.opacity(0.3), radius: 6, x: 0, y: 2)
     }
 
     // MARK: - Partner Card
@@ -150,7 +150,7 @@ struct ConsultationPartnerPickerView: View {
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 15, style: .continuous)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
             )
             .contentShape(Rectangle())
         }
@@ -160,7 +160,7 @@ struct ConsultationPartnerPickerView: View {
     private func partnerAvatar(for sessionId: UUID) -> some View {
         ZStack {
             Circle()
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
 
             if let avatarName = ConsultationPartnerAvatarStore.avatarName(for: sessionId) {
                 Image(avatarName)
@@ -219,7 +219,7 @@ struct ConsultationPartnerPickerView: View {
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 15, style: .continuous)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
             )
             .contentShape(Rectangle())
         }

@@ -1,0 +1,224 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ============================================================
+    // Helpers
+    // ============================================================
+    function signedIn() {
+      return request.auth != null;
+    }
+    function isUser(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+    // create 時、書き込まれる data の指定フィールドが auth.uid と一致するか
+    function createdBy(field) {
+      return request.auth != null && request.resource.data[field] == request.auth.uid;
+    }
+    // update 時に「変更されたトップレベルキーの集合」が allowed の部分集合か
+    function onlyChanges(allowed) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(allowed);
+    }
+
+    // ============================================================
+    // users/{uid}  (プロフィール + 運用フィールド + bookmark/theme 配列)
+    //   doc id == uid。本人のみ書込。read はサインイン者全員（プロフィール閲覧/検索）。
+    // ============================================================
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow create, update: if isUser(uid);
+      allow delete: if isUser(uid);
+
+      // followers: 相手(uid)本人 か、フォローする側(followerId)本人 が書ける
+      match /followers/{followerId} {
+        allow read: if signedIn();
+        allow create: if isUser(uid) || isUser(followerId);
+        allow delete: if isUser(uid) || isUser(followerId);
+      }
+
+      // following: 本人(uid) か、フォロー承認時に相手(targetId)本人 が書ける
+      match /following/{targetId} {
+        allow read: if signedIn();
+        allow create: if isUser(uid) || isUser(targetId);
+        allow delete: if isUser(uid) || isUser(targetId);
+      }
+
+      // followRequests: 受信箱。受信者(uid)本人のみ read。
+      //   送信=requesterId本人 / 承認・拒否=uid本人 / 取消=requesterId本人
+      match /followRequests/{requesterId} {
+        allow read: if isUser(uid);
+        allow create: if isUser(requesterId);
+        allow delete: if isUser(uid) || isUser(requesterId);
+      }
+
+      // 自分のリポスト一覧（マイページ用）。本人のみ書込。
+      match /reposts/{postId} {
+        allow read: if signedIn();
+        allow create, update, delete: if isUser(uid);
+      }
+    }
+
+    // ============================================================
+    // posts/{postId}  (共通掲示板)
+    //   所有者=authorId。他人は like/reaction/カウンタ/投票/viewCount のみ増減可。
+    // ============================================================
+    match /posts/{postId} {
+      allow read: if signedIn();
+      allow create: if createdBy('authorId');
+      // 所有者は全フィールド更新可。他人は集計系フィールドだけ。
+      allow update: if isUser(resource.data.authorId)
+        || (signedIn() && onlyChanges([
+              'replyCount', 'quoteCount', 'repostCount', 'bookmarkCount',
+              'reactionCounts', 'totalReactions', 'totalVotes',
+              'pollOptions', 'viewCount', 'updatedAt'
+            ]));
+      allow delete: if isUser(resource.data.authorId);
+
+      // replies: 所有者=authorId。他人は likeCount のみ。
+      match /replies/{replyId} {
+        allow read: if signedIn();
+        allow create: if createdBy('authorId');
+        allow update: if isUser(resource.data.authorId)
+          || (signedIn() && onlyChanges(['likeCount']));
+        allow delete: if isUser(resource.data.authorId);
+      }
+
+      // reactions/{userId}: 自分のリアクションのみ
+      match /reactions/{userId} {
+        allow read: if signedIn();
+        allow create, update, delete: if isUser(userId);
+      }
+
+      // replyLikes/{replyId_userId}: docId は "replyId_userId"。data.userId で本人確認。
+      match /replyLikes/{likeId} {
+        allow read: if signedIn();
+        allow create, update: if createdBy('userId');
+        allow delete: if signedIn() && resource.data.userId == request.auth.uid;
+      }
+
+      // votes/{userId}: docId == userId
+      match /votes/{userId} {
+        allow read: if signedIn();
+        allow create, update, delete: if isUser(userId);
+      }
+
+      // reposts/{userId}: docId == userId
+      match /reposts/{userId} {
+        allow read: if signedIn();
+        allow create, update, delete: if isUser(userId);
+      }
+    }
+
+    // ============================================================
+    // community_rooms/{roomId}  (相談部屋)
+    //   所有者=ownerId（匿名作成で ownerId 無しもあり得る）。
+    //   他人は join/leave（joinedUserIds + participantCount）のみ更新可。
+    // ============================================================
+    match /community_rooms/{roomId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && (!('ownerId' in request.resource.data)
+            || request.resource.data.ownerId == request.auth.uid);
+      allow update: if (resource.data.keys().hasAny(['ownerId'])
+                        && isUser(resource.data.ownerId))
+        || (signedIn() && onlyChanges(['joinedUserIds', 'participantCount', 'updatedAt']));
+      allow delete: if resource.data.keys().hasAny(['ownerId'])
+                       && isUser(resource.data.ownerId);
+
+      match /posts/{postId} {
+        allow read: if signedIn();
+        allow create: if signedIn()
+          && (!('authorId' in request.resource.data)
+              || request.resource.data.authorId == request.auth.uid);
+        allow update: if (('authorId' in resource.data)
+                          && isUser(resource.data.authorId))
+          || (signedIn() && onlyChanges([
+                'reactionCounts', 'bookmarkCount', 'commentCount',
+                'likeCount', 'viewCount'
+              ]));
+        allow delete: if ('authorId' in resource.data)
+                         && isUser(resource.data.authorId);
+
+        // replies: 所有者=authorId。他人は likeCount のみ。
+        match /replies/{replyId} {
+          allow read: if signedIn();
+          allow create: if createdBy('authorId');
+          allow update: if isUser(resource.data.authorId)
+            || (signedIn() && onlyChanges(['likeCount']));
+          allow delete: if isUser(resource.data.authorId);
+
+          // 返信への like/{userId}: docId == userId
+          match /likes/{userId} {
+            allow read: if signedIn();
+            allow create, delete: if isUser(userId);
+          }
+        }
+
+        // likes / bookmarks / reactions /{userId}: docId == userId
+        match /likes/{userId} {
+          allow read: if signedIn();
+          allow create, update, delete: if isUser(userId);
+        }
+        match /bookmarks/{userId} {
+          allow read: if signedIn();
+          allow create, update, delete: if isUser(userId);
+        }
+        match /reactions/{userId} {
+          allow read: if signedIn();
+          allow create, update, delete: if isUser(userId);
+        }
+      }
+    }
+
+    // ============================================================
+    // notifications/{id}
+    //   userId = 受信者。read/update(read化)/delete は受信者本人。
+    //   create は「他人宛に通知を送る」ため任意のサインイン者に許可。
+    // ============================================================
+    match /notifications/{notifId} {
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create: if signedIn()
+        && request.resource.data.keys().hasAll(['userId', 'type', 'read', 'createdAt'])
+        && request.resource.data.read == false;
+      allow update: if signedIn() && resource.data.userId == request.auth.uid
+        && onlyChanges(['read']);
+      allow delete: if signedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // ============================================================
+    // UGC モデレーション: reports（作成のみ・読取不可）
+    // ============================================================
+    match /reports/{reportId} {
+      allow read: if false;
+      allow create: if createdBy('reporterId');
+      allow update, delete: if false;
+    }
+
+    // ============================================================
+    // 運用・分析（書き込み専用、クライアント read 不可）
+    // ============================================================
+    match /scores/{scoreId} {
+      allow read: if false;
+      allow create: if createdBy('userId');
+      allow update, delete: if false;
+    }
+
+    match /sessionReviews/{reviewId} {
+      allow read: if false;
+      allow create: if createdBy('userId');
+      allow update, delete: if false;
+    }
+
+    match /analytics_users/{vendorId} {
+      allow read: if false;
+      allow create, update: if createdBy('authUid');
+      allow delete: if false;
+    }
+
+    // 既定: 上記以外は全拒否
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

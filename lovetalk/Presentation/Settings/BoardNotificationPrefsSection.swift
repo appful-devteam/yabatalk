@@ -18,7 +18,7 @@ struct BoardNotificationPrefsSection: View {
                 if isLoading {
                     HStack {
                         ProgressView()
-                            .tint(MeloColors.Brand.pink)
+                            .tint(MeloColors.Dark.accent)
                         Spacer()
                     }
                     .padding(.horizontal, 16)
@@ -73,7 +73,7 @@ struct BoardNotificationPrefsSection: View {
                 Text(String(localized: "掲示板の通知", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruMedium(13))
                     .tracking(0.36)
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                 Spacer()
             }
             .padding(.horizontal, 4)
@@ -81,24 +81,24 @@ struct BoardNotificationPrefsSection: View {
             VStack(spacing: 0) {
                 content()
             }
-            .background(Color.white)
+            .background(MeloColors.Dark.card)
             .overlay(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(MeloColors.Gray.subButtonLight, lineWidth: 1)
+                    .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
             )
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
 
             Text(String(localized: "オフにすると、その種類のバナー通知は届きません。アプリ内の通知タブには引き続き表示されます。", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruRegular(11))
                 .tracking(0.3)
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .padding(.horizontal, 4)
         }
     }
 
     private var rowDivider: some View {
         Rectangle()
-            .fill(MeloColors.Gray.subButtonLight)
+            .fill(MeloColors.Dark.divider)
             .frame(height: 0.5)
             .padding(.leading, 16)
     }
@@ -107,11 +107,11 @@ struct BoardNotificationPrefsSection: View {
         HStack(spacing: 12) {
             Text(title)
                 .font(MeloFonts.zenMaruMedium(14))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
             Spacer()
             Toggle("", isOn: binding)
                 .labelsHidden()
-                .tint(MeloColors.Brand.pink)
+                .tint(MeloColors.Dark.accent)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)

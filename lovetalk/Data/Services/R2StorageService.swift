@@ -33,8 +33,9 @@ actor R2StorageService {
         }
     }
 
-    /// Worker のベース URL (将来 `uploads.merotalk.com` 等のカスタムドメインに変えるならここを差し替える)。
-    private let baseURL = URL(string: "https://merotalk-r2-uploader.appful.workers.dev")!
+    /// Worker のベース URL。yabatalk + darkmerotalk(ダークめろとーく) 共有の R2 アップローダ。
+    /// darkmerotalk Firebase トークンを検証して darkmerotalk-board-images バケットへ PUT する。
+    private let baseURL = URL(string: "https://darkmerotalk-r2-uploader.appful.workers.dev")!
     private let session: URLSession
 
     private init() {
@@ -115,11 +116,12 @@ actor R2StorageService {
     // MARK: - Helpers
 
     /// 公開 URL から key (`posts/.../uuid.jpg` 等) を逆算する。
-    /// 旧 Firebase Storage URL に対しては nil を返す (= R2 から削除しない)。
+    /// darkmerotalk 共有 R2 の公開配信 (pub-xxxx.r2.dev) のみ対象。
+    /// 旧 Firebase Storage / 旧 images.merotalk.com URL には nil を返す (= dark R2 から削除しない)。
     nonisolated func keyFromPublicURL(_ urlString: String) -> String? {
         guard let url = URL(string: urlString),
               let host = url.host,
-              host == "images.merotalk.com" else {
+              host.hasSuffix(".r2.dev") else {
             return nil
         }
         let path = url.path

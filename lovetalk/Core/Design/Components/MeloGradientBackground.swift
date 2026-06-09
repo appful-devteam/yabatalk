@@ -16,9 +16,9 @@ struct MeloGradientBackground: View {
         case .standard:
             LinearGradient(
                 colors: [
-                    MeloColors.Surface.pinkPale,
-                    MeloColors.Surface.pinkPale,
-                    MeloColors.Surface.pinkPale
+                    MeloColors.Dark.bg,
+                    MeloColors.Dark.bg,
+                    MeloColors.Dark.bg
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -28,8 +28,8 @@ struct MeloGradientBackground: View {
         case .subtle:
             LinearGradient(
                 colors: [
-                    MeloColors.Surface.white,
-                    MeloColors.Surface.pinkPale
+                    MeloColors.Dark.bgElevated,
+                    MeloColors.Dark.bg
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -39,9 +39,9 @@ struct MeloGradientBackground: View {
         case .warm:
             LinearGradient(
                 colors: [
-                    MeloColors.Surface.pinkPale,
-                    MeloColors.Surface.pinkPale,
-                    MeloColors.Surface.pinkPale
+                    MeloColors.Dark.bg,
+                    MeloColors.Dark.bg,
+                    MeloColors.Dark.bg
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -50,7 +50,7 @@ struct MeloGradientBackground: View {
 
         case .result:
             LinearGradient(
-                colors: [MeloColors.Surface.pinkPale, .white],
+                colors: [MeloColors.Dark.bgElevated, MeloColors.Dark.bg],
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -82,10 +82,10 @@ struct MeloAnimatedBackground: View {
     var body: some View {
         LinearGradient(
             colors: [
-                MeloColors.Brand.pinkLight.opacity(0.3),
-                MeloColors.Brand.pinkLight.opacity(0.2),
-                MeloColors.Member.partner.opacity(0.2),
-                MeloColors.Brand.pinkLight.opacity(0.2)
+                MeloColors.Dark.accent.opacity(0.18),
+                MeloColors.Dark.accent.opacity(0.10),
+                MeloColors.Member.partner.opacity(0.10), // TODO(dark): 要確認（partner ブルーの装飾グラデ）
+                MeloColors.Dark.accent.opacity(0.10)
             ],
             startPoint: animateGradient ? .topLeading : .bottomTrailing,
             endPoint: animateGradient ? .bottomTrailing : .topLeading
@@ -104,17 +104,17 @@ struct MeloDecorativeCircles: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(MeloColors.Brand.pinkDeep.opacity(0.05))
+                .fill(MeloColors.Dark.accent.opacity(0.05))
                 .frame(width: 300, height: 300)
                 .offset(x: -100, y: -200)
 
             Circle()
-                .fill(MeloColors.Brand.pink.opacity(0.05))
+                .fill(MeloColors.Dark.accent.opacity(0.05))
                 .frame(width: 200, height: 200)
                 .offset(x: 150, y: -100)
 
             Circle()
-                .fill(MeloColors.Brand.pinkLight.opacity(0.05))
+                .fill(MeloColors.Dark.accent.opacity(0.05))
                 .frame(width: 250, height: 250)
                 .offset(x: -50, y: 300)
         }

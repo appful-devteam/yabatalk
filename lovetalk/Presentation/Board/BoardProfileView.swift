@@ -29,15 +29,15 @@ struct BoardProfileView: View {
 
     private let firestoreService = BoardFirestoreService.shared
 
-    // MARK: - Figma palette (aligned with NewHomeView / BoardMyProfileView)
-    private let pinkAccent = MeloColors.Brand.pink
-    private let pinkBrand = MeloColors.Brand.pink
-    private let pinkSoft = MeloColors.Surface.pinkPale
-    private let pinkBG = Color.white
-    private let brown = MeloColors.Text.primary
-    private let brownLight = MeloColors.Gray.subButton
-    private let borderLight = MeloColors.Gray.subButtonLight
-    private let textDark = MeloColors.Text.primary
+    // MARK: - Figma palette（ダーク化: 黒地 × ホットピンク accent）
+    private let pinkAccent = MeloColors.Dark.accent
+    private let pinkBrand = MeloColors.Dark.accent
+    private let pinkSoft = MeloColors.Dark.bgElevated
+    private let pinkBG = MeloColors.Dark.bgElevated
+    private let brown = MeloColors.Dark.textPrimary
+    private let brownLight = MeloColors.Dark.textSecondary
+    private let borderLight = MeloColors.Dark.divider
+    private let textDark = MeloColors.Dark.textPrimary
 
     private var isOwnProfile: Bool {
         guard let currentId = authService.currentUser?.id else { return false }
@@ -60,7 +60,7 @@ struct BoardProfileView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .top) {
-                Color.white.ignoresSafeArea()
+                MeloColors.Dark.bg.ignoresSafeArea()
 
                 VStack(spacing: 0) {
                     header
@@ -144,7 +144,7 @@ struct BoardProfileView: View {
                     dismiss()
                 } label: {
                     Circle()
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.card)
                         .frame(width: 32, height: 32)
                         .overlay(
                             Image(systemName: "chevron.left")
@@ -165,7 +165,7 @@ struct BoardProfileView: View {
                      : profile.displayName)
                     .font(MeloFonts.zenMaruOrFallback(22))
                     .tracking(0.66)
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .lineLimit(1)
 
                 Spacer()
@@ -177,7 +177,7 @@ struct BoardProfileView: View {
                         showEditProfile = true
                     } label: {
                         Circle()
-                            .fill(Color.white)
+                            .fill(MeloColors.Dark.card)
                             .frame(width: 32, height: 32)
                             .overlay(
                                 Image(systemName: "pencil")
@@ -224,14 +224,14 @@ struct BoardProfileView: View {
                     if profile.isPrivate {
                         Image(systemName: "lock.fill")
                             .font(.system(size: 13))
-                            .foregroundColor(MeloColors.Text.primary.opacity(0.7))
+                            .foregroundColor(MeloColors.Dark.textPrimary.opacity(0.7))
                     }
                     Text(profile.displayName.isEmpty
                          ? String(localized: "名無し", bundle: LanguageManager.appBundle)
                          : profile.displayName)
                         .font(MeloFonts.zenMaruOrFallback(24))
                         .tracking(0.72)
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                         .lineLimit(1)
                 }
 
@@ -290,7 +290,7 @@ struct BoardProfileView: View {
                     .font(MeloFonts.zenMaruMedium(13))
                     .tracking(0.91)
                     .lineSpacing(13 * 0.45)
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .padding(.leading, 25)
                     .padding(.trailing, 20)
             } else if isOwnProfile {
@@ -351,7 +351,7 @@ struct BoardProfileView: View {
         VStack(spacing: 2) {
             Text(count.map { "\($0)" } ?? "-")
                 .font(MeloFonts.zenMaruMedium(20))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
             Text(label)
                 .font(MeloFonts.zenMaruMedium(10))
                 .foregroundColor(brownLight)
@@ -376,7 +376,7 @@ struct BoardProfileView: View {
                             .padding(.vertical, 10)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color.white)
+                                    .fill(MeloColors.Dark.card)
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
@@ -407,7 +407,7 @@ struct BoardProfileView: View {
                             .padding(.vertical, 10)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color.white)
+                                    .fill(MeloColors.Dark.card)
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
@@ -426,17 +426,17 @@ struct BoardProfileView: View {
                         if isFollowLoading {
                             ProgressView()
                                 .scaleEffect(0.7)
-                                .tint(followState == .notFollowing ? .white : MeloColors.Text.primary)
+                                .tint(followState == .notFollowing ? MeloColors.Dark.onAccent : MeloColors.Dark.textPrimary)
                         }
                         Text(followButtonLabel)
                             .font(MeloFonts.zenMaruMedium(14))
                     }
-                    .foregroundColor(followState == .notFollowing ? .white : MeloColors.Text.primary)
+                    .foregroundColor(followState == .notFollowing ? MeloColors.Dark.onAccent : MeloColors.Dark.textPrimary)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 12)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(followState == .notFollowing ? pinkAccent : Color.white)
+                            .fill(followState == .notFollowing ? pinkAccent : MeloColors.Dark.card)
                     )
                     .overlay(
                         followState != .notFollowing
@@ -471,7 +471,7 @@ struct BoardProfileView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(String(localized: "投稿", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruMedium(15))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .padding(.horizontal, 20)
 
             // 非公開アカウント＆フォロワーでない場合
@@ -483,7 +483,7 @@ struct BoardProfileView: View {
                         .frame(width: 144, height: 115)
                     Text(String(localized: "非公開アカウントです", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruMedium(14))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                     Text(String(localized: "フォロワーだけが投稿を見れます", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruMedium(12))
                         .foregroundColor(brownLight)
@@ -1030,13 +1030,14 @@ struct BoardProfileEditView: View {
 
     enum EditField { case name, bio, hobby }
 
-    // MARK: - Figma colors
-    private let pinkAccent = MeloColors.Brand.pink
-    private let pinkSoft = MeloColors.Surface.pinkPale
-    private let pinkBG = MeloColors.Surface.pinkPale
-    private let brown = MeloColors.Text.primary
-    private let brownLight = MeloColors.Gray.subButton
-    private let borderLight = MeloColors.Gray.subButtonLight
+    // MARK: - Figma colors（ダーク化: 黒地 × ホットピンク accent）
+    // 編集画面の brown は入力フィールドの 1pt 枠線専用なので、明文字ではなく枠色トークンへ。
+    private let pinkAccent = MeloColors.Dark.accent
+    private let pinkSoft = MeloColors.Dark.bgElevated
+    private let pinkBG = MeloColors.Dark.bgElevated
+    private let brown = MeloColors.Dark.cardStroke
+    private let brownLight = MeloColors.Dark.textSecondary
+    private let borderLight = MeloColors.Dark.divider
 
     private static let defaultHobbyTags: [String] = [
         "映画", "音楽", "読書", "旅行", "カフェ", "ゲーム",
@@ -1056,7 +1057,7 @@ struct BoardProfileEditView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .top) {
-                Color.white.ignoresSafeArea()
+                MeloColors.Dark.bg.ignoresSafeArea()
 
                 VStack(spacing: 0) {
                     editHeader
@@ -1140,14 +1141,14 @@ struct BoardProfileEditView: View {
                     dismiss()
                 } label: {
                     Circle()
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.card)
                         .frame(width: 30, height: 30)
                         .overlay(
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 13, weight: .semibold))
-                                .foregroundColor(MeloColors.Text.primary)
+                                .foregroundColor(MeloColors.Dark.textPrimary)
                         )
-                        .shadow(color: .black.opacity(0.04), radius: 2, x: 0, y: 1)
+                        .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
                 }
                 .buttonStyle(.plain)
 
@@ -1156,7 +1157,7 @@ struct BoardProfileEditView: View {
                 Text(String(localized: "プロフィール編集", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruOrFallback(22))
                     .tracking(0.66)
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
 
                 Spacer()
 
@@ -1166,7 +1167,7 @@ struct BoardProfileEditView: View {
                     if isSaving {
                         ProgressView()
                             .scaleEffect(0.7)
-                            .tint(.white)
+                            .tint(MeloColors.Dark.onAccent)
                             .frame(width: 30, height: 30)
                             .background(Circle().fill(pinkAccent))
                     } else {
@@ -1176,7 +1177,7 @@ struct BoardProfileEditView: View {
                             .overlay(
                                 Image(systemName: "checkmark")
                                     .font(.system(size: 13, weight: .bold))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(MeloColors.Dark.onAccent)
                             )
                     }
                 }
@@ -1215,7 +1216,7 @@ struct BoardProfileEditView: View {
                 }
                 .frame(width: 104, height: 104)
                 .clipShape(Circle())
-                .overlay(Circle().stroke(Color.black, lineWidth: 5))
+                .overlay(Circle().stroke(MeloColors.Dark.textPrimary, lineWidth: 5))
 
                 Circle()
                     .fill(pinkAccent)
@@ -1223,9 +1224,9 @@ struct BoardProfileEditView: View {
                     .overlay(
                         Image(systemName: "camera.fill")
                             .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(.white)
+                            .foregroundColor(MeloColors.Dark.onAccent)
                     )
-                    .shadow(color: .black.opacity(0.06), radius: 2, x: 0, y: 1)
+                    .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
             }
         }
         .buttonStyle(.plain)
@@ -1253,7 +1254,7 @@ struct BoardProfileEditView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(MeloFonts.zenMaruOrFallback(16))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
 
             content()
         }
@@ -1263,13 +1264,13 @@ struct BoardProfileEditView: View {
     private func roundedTextField(placeholder: String, text: Binding<String>, focus: EditField) -> some View {
         TextField(placeholder, text: text)
             .font(MeloFonts.zenMaruMedium(15))
-            .foregroundColor(MeloColors.Text.primary)
+            .foregroundColor(MeloColors.Dark.textPrimary)
             .focused($focusedField, equals: focus)
             .padding(.horizontal, 20)
             .frame(height: 40)
             .background(
                 RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 25)
@@ -1288,17 +1289,17 @@ struct BoardProfileEditView: View {
                 HStack {
                     Text(hasBirthday ? birthdayFormatter.string(from: birthday) : String(localized: "選択してください", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruMedium(15))
-                        .foregroundColor(hasBirthday ? MeloColors.Text.primary : brownLight)
+                        .foregroundColor(hasBirthday ? MeloColors.Dark.textPrimary : brownLight)
                     Spacer()
                     Image(systemName: "calendar")
                         .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                 }
                 .padding(.horizontal, 20)
                 .frame(height: 40)
                 .background(
                     RoundedRectangle(cornerRadius: 25)
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.card)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 25)
@@ -1330,7 +1331,7 @@ struct BoardProfileEditView: View {
                     } label: {
                         Text(String(localized: "完了", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruOrFallback(14))
-                            .foregroundColor(.white)
+                            .foregroundColor(MeloColors.Dark.onAccent)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 8)
                             .background(Capsule().fill(pinkAccent))
@@ -1340,7 +1341,7 @@ struct BoardProfileEditView: View {
                 .padding(12)
                 .background(
                     RoundedRectangle(cornerRadius: 15)
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.card)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 15)
@@ -1363,7 +1364,7 @@ struct BoardProfileEditView: View {
     private var bioEditor: some View {
         ZStack(alignment: .topLeading) {
             RoundedRectangle(cornerRadius: 15)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
             RoundedRectangle(cornerRadius: 15)
                 .stroke(brown, lineWidth: 1)
 
@@ -1378,7 +1379,7 @@ struct BoardProfileEditView: View {
 
             TextEditor(text: $bio)
                 .font(MeloFonts.zenMaruMedium(15))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .scrollContentBackground(.hidden)
                 .background(Color.clear)
                 .padding(.horizontal, 15)
@@ -1418,7 +1419,7 @@ struct BoardProfileEditView: View {
         .frame(height: 140)
         .background(
             RoundedRectangle(cornerRadius: 15)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 15)
@@ -1445,10 +1446,10 @@ struct BoardProfileEditView: View {
             } label: {
                 Text("+ " + String(localized: "趣味タグをつくる", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruMedium(14))
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.textPrimary)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
-                    .background(Capsule().fill(brownLight))
+                    .background(Capsule().fill(MeloColors.Dark.bgElevated))
             }
             .buttonStyle(.plain)
 
@@ -1464,7 +1465,7 @@ struct BoardProfileEditView: View {
             } label: {
                 Text(name)
                     .font(MeloFonts.zenMaruMedium(14))
-                    .foregroundColor(selected ? .white : pinkAccent)
+                    .foregroundColor(selected ? MeloColors.Dark.onAccent : pinkAccent)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
                     .background(
@@ -1472,7 +1473,7 @@ struct BoardProfileEditView: View {
                             if selected {
                                 Capsule().fill(pinkAccent)
                             } else {
-                                Capsule().fill(Color.white)
+                                Capsule().fill(MeloColors.Dark.card)
                                 Capsule().stroke(pinkAccent, lineWidth: 1)
                             }
                         }
@@ -1497,7 +1498,7 @@ struct BoardProfileEditView: View {
         VStack(spacing: 16) {
             Text(String(localized: "趣味タグをつくる", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(16))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
                 .padding(.top, 20)
 
             TextField(
@@ -1505,6 +1506,7 @@ struct BoardProfileEditView: View {
                 text: $newHobbyText
             )
             .font(MeloFonts.zenMaruMedium(14))
+            .foregroundColor(MeloColors.Dark.textPrimary)
             .padding(.horizontal, 16)
             .frame(height: 40)
             .background(
@@ -1519,7 +1521,7 @@ struct BoardProfileEditView: View {
                 } label: {
                     Text(String(localized: "キャンセル", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruOrFallback(14))
-                        .foregroundColor(MeloColors.Text.primary)
+                        .foregroundColor(MeloColors.Dark.textPrimary)
                         .frame(maxWidth: .infinity)
                         .frame(height: 44)
                         .background(Capsule().stroke(brown, lineWidth: 1))
@@ -1539,7 +1541,7 @@ struct BoardProfileEditView: View {
                 } label: {
                     Text(String(localized: "追加", bundle: LanguageManager.appBundle))
                         .font(MeloFonts.zenMaruOrFallback(14))
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                         .frame(maxWidth: .infinity)
                         .frame(height: 44)
                         .background(Capsule().fill(pinkAccent))
@@ -1559,7 +1561,7 @@ struct BoardProfileEditView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("MBTI")
                 .font(MeloFonts.zenMaruOrFallback(16))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
 
             Button {
                 HapticManager.light()
@@ -1595,7 +1597,7 @@ struct BoardProfileEditView: View {
                 .frame(height: 40)
                 .background(
                     RoundedRectangle(cornerRadius: 25)
-                        .fill(Color.white)
+                        .fill(MeloColors.Dark.card)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 25)
@@ -1612,7 +1614,7 @@ struct BoardProfileEditView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(String(localized: "アカウント公開設定", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(16))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
 
             Toggle(isOn: $isPrivate) {
                 HStack(spacing: 8) {
@@ -1622,7 +1624,7 @@ struct BoardProfileEditView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(String(localized: "非公開アカウント", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruMedium(14))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                         Text(String(localized: "フォロワーだけが投稿を見れます", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruRegular(11))
                             .foregroundColor(brownLight)
@@ -1634,7 +1636,7 @@ struct BoardProfileEditView: View {
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 15)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 15)
@@ -1826,8 +1828,8 @@ struct MBTIPickerView: View {
                             .padding(.vertical, 12)
                             .background(
                                 Capsule()
-                                    .fill(selectedBadge == nil ? BoardColors.accent : Color.white)
-                                    .shadow(color: BoardColors.accent.opacity(0.08), radius: 4, x: 0, y: 2)
+                                    .fill(selectedBadge == nil ? BoardColors.accent : MeloColors.Dark.card)
+                                    .shadow(color: Color.black.opacity(0.3), radius: 4, x: 0, y: 2)
                             )
                     }
                     .buttonStyle(.plain)

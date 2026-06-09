@@ -28,21 +28,21 @@ struct ChatListView: View {
     @State private var cachedChats: [String: PersonaChat] = [:]
 
     // Figma design tokens
-    private let headerBg = Color.white   // 全ページで白ヘッダー統一
-    private let headerBorder = MeloColors.Surface.pinkPale
+    private let headerBg = MeloColors.Dark.bgElevated   // 全ページで白ヘッダー統一
+    private let headerBorder = MeloColors.Dark.divider
     // テキストは黒系で統一 (旧 716463 茶 → 1E1E1E)
-    private let textColor = MeloColors.Text.primary
-    private let pinkAccent = MeloColors.Brand.pink
-    private let timeColor = MeloColors.Brand.pink
+    private let textColor = MeloColors.Dark.textPrimary
+    private let pinkAccent = MeloColors.Dark.accent
+    private let timeColor = MeloColors.Dark.accent
     // 薄茶 DACDC4 → 薄灰 B6B6B6
-    private let secondaryText = MeloColors.Text.secondary
+    private let secondaryText = MeloColors.Dark.textSecondary
     // カード枠など stroke 用の柔らかい色 (旧 textColor を共有していた箇所)
-    private let cardStroke = MeloColors.Text.secondary  // 濃いグレー統一
+    private let cardStroke = MeloColors.Dark.cardStroke  // 濃いグレー統一
 
     var body: some View {
         ZStack {
             // 背景は白統一 (カード領域はピンクを避ける)
-            Color.white.ignoresSafeArea()
+            MeloColors.Dark.bg.ignoresSafeArea()
 
             VStack(spacing: 0) {
                 // Header (Figma node 559:1346)
@@ -147,7 +147,7 @@ struct ChatListView: View {
                 } label: {
                     ZStack {
                         Circle()
-                            .fill(Color.white.opacity(0.6))
+                            .fill(MeloColors.Dark.card)
                             .overlay(
                                 Circle().stroke(headerBorder, lineWidth: 1)
                             )
@@ -187,7 +187,7 @@ struct ChatListView: View {
             .font(MeloFonts.zenMaruOrFallback(13))
             .tracking(0.4)
             .foregroundColor(
-                limitManager.hasReachedLimit ? MeloColors.Brand.pinkDeep : textColor
+                limitManager.hasReachedLimit ? MeloColors.Dark.accentDeep : textColor
             )
             .lineLimit(1)
             .fixedSize(horizontal: true, vertical: false)
@@ -195,7 +195,7 @@ struct ChatListView: View {
             .frame(height: PremiumBadgeButton.height)
             .background(
                 Capsule()
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.bgElevated)
             )
     }
 
@@ -208,11 +208,11 @@ struct ChatListView: View {
             HStack(spacing: 6) {
                 Image(systemName: "crown.fill")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
                 Text(String(localized: "Premium", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruOrFallback(15))
                     .tracking(0.45)
-                    .foregroundColor(.white)
+                    .foregroundColor(MeloColors.Dark.onAccent)
                     .lineLimit(1)
                     .fixedSize(horizontal: true, vertical: false)
             }
@@ -240,11 +240,11 @@ struct ChatListView: View {
 
             Text(String(localized: "診断するとチャットできるよ", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(15))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
 
             Text(String(localized: "LINEのトーク履歴を取り込んで\n相手の性格をAIが再現します", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruRegular(13))
-                .foregroundColor(MeloColors.Gray.subButton)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .multilineTextAlignment(.center)
 
             Spacer()
@@ -345,7 +345,7 @@ struct ChatListView: View {
                                 .frame(width: 21, height: 21)
                             Text("\(unreadCount)")
                                 .font(MeloFonts.zenMaruOrFallback(12))
-                                .foregroundColor(.white)
+                                .foregroundColor(MeloColors.Dark.onAccent)
                         }
                     }
                 }
@@ -356,7 +356,7 @@ struct ChatListView: View {
             .frame(maxWidth: .infinity)
             .background(
                 RoundedRectangle(cornerRadius: 15)
-                    .fill(Color.white)
+                    .fill(MeloColors.Dark.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: 15)
                             .stroke(cardStroke, lineWidth: 1)
@@ -377,7 +377,7 @@ struct ChatListView: View {
         let avatarName = ConsultationPartnerAvatarStore.avatarName(for: result.sessionId) ?? "char_meromaru_3d"
         return ZStack {
             Circle()
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
             if let data = customImageData, let uiImage = UIImage(data: data) {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -392,7 +392,7 @@ struct ChatListView: View {
         }
         .overlay(
             Circle()
-                .stroke(MeloColors.Brand.pink.opacity(0.35), lineWidth: 1)
+                .stroke(MeloColors.Dark.accent.opacity(0.35), lineWidth: 1)
         )
     }
 
@@ -463,10 +463,10 @@ private struct ChatHelpSheet: View {
                     HStack(spacing: 10) {
                         Image(systemName: "sparkles")
                             .font(.system(size: 20))
-                            .foregroundColor(MeloColors.Brand.pink)
+                            .foregroundColor(MeloColors.Dark.accent)
                         Text(String(localized: "AIチャットについて", bundle: LanguageManager.appBundle))
                             .font(MeloFonts.zenMaruOrFallback(18))
-                            .foregroundColor(MeloColors.Text.primary)
+                            .foregroundColor(MeloColors.Dark.textPrimary)
                     }
 
                     VStack(alignment: .leading, spacing: 12) {
@@ -495,14 +495,14 @@ private struct ChatHelpSheet: View {
                 }
                 .padding(20)
             }
-            .background(Color.white)
+            .background(MeloColors.Dark.bg)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(String(localized: "閉じる", bundle: LanguageManager.appBundle)) {
                         dismiss()
                     }
-                    .foregroundColor(MeloColors.Text.primary)
+                    .foregroundColor(MeloColors.Dark.accent)
                 }
             }
         }
@@ -512,20 +512,20 @@ private struct ChatHelpSheet: View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
                 .font(MeloFonts.zenMaruOrFallback(14))
-                .foregroundColor(MeloColors.Text.primary)
+                .foregroundColor(MeloColors.Dark.textPrimary)
             Text(body)
                 .font(MeloFonts.zenMaruRegular(13))
-                .foregroundColor(MeloColors.Text.secondary)
+                .foregroundColor(MeloColors.Dark.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white)
+                .fill(MeloColors.Dark.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(MeloColors.Surface.pinkPale, lineWidth: 1)
+                        .stroke(MeloColors.Dark.cardStroke, lineWidth: 1)
                 )
         )
     }

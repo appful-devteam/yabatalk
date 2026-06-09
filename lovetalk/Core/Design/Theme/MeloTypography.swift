@@ -41,7 +41,7 @@ struct MeloTextStyle: ViewModifier {
 }
 
 extension View {
-    func meloTextStyle(_ font: Font, color: Color = MeloColors.Text.primary) -> some View {
+    func meloTextStyle(_ font: Font, color: Color = MeloColors.Dark.textPrimary) -> some View {
         modifier(MeloTextStyle(font: font, color: color))
     }
 }

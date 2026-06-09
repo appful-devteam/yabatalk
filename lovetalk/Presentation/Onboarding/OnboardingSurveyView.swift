@@ -1,17 +1,17 @@
 import SwiftUI
 
-// MARK: - Survey Colors (NewHome tokens)
+// MARK: - Survey Colors (dark theme)
 private enum SurveyColors {
-    static let brandPink = MeloColors.Brand.pink
-    static let filledPink = MeloColors.Brand.pink
-    static let softPink = MeloColors.Brand.pinkLight
-    static let softFieldBg = MeloColors.Surface.pinkPale
-    static let brownStroke = MeloColors.Text.primary
-    static let textPrimary = MeloColors.Text.primary
-    static let textBody = MeloColors.Text.primary
-    static let textMuted = MeloColors.Text.secondary
-    static let textFaint = MeloColors.Text.secondary
-    static let divider = MeloColors.Gray.subButtonLight
+    static let brandPink = MeloColors.Dark.accent
+    static let filledPink = MeloColors.Dark.accent
+    static let softPink = MeloColors.Dark.accentBright
+    static let softFieldBg = MeloColors.Dark.bgElevated
+    static let brownStroke = MeloColors.Dark.cardStroke
+    static let textPrimary = MeloColors.Dark.textPrimary
+    static let textBody = MeloColors.Dark.textPrimary
+    static let textMuted = MeloColors.Dark.textSecondary
+    static let textFaint = MeloColors.Dark.textSecondary
+    static let divider = MeloColors.Dark.divider
 }
 
 // MARK: - Survey Option Models
@@ -110,8 +110,8 @@ struct OnboardingSurveyView: View {
 
     var body: some View {
         ZStack {
-            // Background — フラット白
-            Color.white.ignoresSafeArea()
+            // Background — フラット黒地
+            MeloColors.Dark.bg.ignoresSafeArea()
 
             VStack(spacing: 0) {
                 Spacer().frame(height: 20)
@@ -208,7 +208,7 @@ struct OnboardingSurveyView: View {
                             Text(String(localized: "survey_start_button", bundle: LanguageManager.appBundle))
                                 .font(MeloFonts.zenMaruMedium(16))
                         }
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                         .background(
@@ -266,21 +266,21 @@ struct OnboardingSurveyView: View {
             HStack {
                 Text(title)
                     .font(MeloFonts.zenMaruMedium(15))
-                    .foregroundColor(isSelected ? .white : SurveyColors.textPrimary)
+                    .foregroundColor(isSelected ? MeloColors.Dark.onAccent : SurveyColors.textPrimary)
 
                 Spacer()
 
                 if isSelected {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 17))
-                        .foregroundColor(.white)
+                        .foregroundColor(MeloColors.Dark.onAccent)
                 }
             }
             .padding(.horizontal, 18)
             .frame(height: 52)
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(isSelected ? SurveyColors.filledPink : Color.white)
+                    .fill(isSelected ? SurveyColors.filledPink : MeloColors.Dark.card)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
