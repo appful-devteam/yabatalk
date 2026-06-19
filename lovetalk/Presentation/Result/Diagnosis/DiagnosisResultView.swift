@@ -2276,7 +2276,7 @@ struct HarassmentSummaryTabView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
 
-                Text("Google Gemini AI を使用します。トーク履歴の一部（メッセージ本文・送信者名・送信日時）が Google LLC に送信されます。")
+                Text(String(format: String(localized: "%1$@ の生成AIを使用します。トーク履歴の一部（メッセージ本文・送信者名・送信日時）が %2$@ に送信されます。", bundle: LanguageManager.appBundle), RemoteConfigService.shared.currentAIProvider.serviceName, RemoteConfigService.shared.currentAIProvider.companyName))
                     .font(MeloFonts.mono(9))
                     .foregroundColor(MeloColors.Dark.textSecondary.opacity(0.85))
                     .multilineTextAlignment(.center)

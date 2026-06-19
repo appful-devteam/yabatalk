@@ -50827,6 +50827,306 @@
           }
         }
       }
+    },
+    "AI機能利用時はAlibaba Cloud Singapore Pte. Ltd.（Qwen API）へのデータ送信に別途同意が必要です" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Using AI features requires separate consent to send data to Alibaba Cloud Singapore Pte. Ltd. (Qwen API)"
+          }
+        }
+      }
+    },
+    "処理地域" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Processing region"
+          }
+        }
+      }
+    },
+    "AIサマリー機能、返信提案（相談）機能、および擬人化チャット機能では、Alibaba Cloud Singapore Pte. Ltd. が提供する生成AI「Qwen API」を利用しています。\n\n(1) 送信先\nAlibaba Cloud Singapore Pte. Ltd.（Qwen API）\n所在地・処理地域: シンガポール\n\n(2) 送信されるデータ\nトーク履歴のメッセージ本文、送信者名、送信日時（画像・動画・スタンプ等のメディアデータは送信されません）。\n\n(3) データの取り扱い\n送信されたデータの取り扱いは、Alibaba Cloud の利用規約およびプライバシーポリシーに従います。詳細は下記のリンクをご参照ください。\n\n(4) 同意の取得\n本機能はユーザーの明示的な同意を得た場合のみ有効になります。各AI機能の初回利用時に、送信されるデータの内容・送信先・データの取り扱いを明記した同意画面が表示され、ユーザーが明示的に同意した場合のみデータが送信されます。\n\n(5) 詳細\nAlibaba Cloud プライバシーポリシー: https://www.alibabacloud.com/help/en/legal/latest/alibaba-cloud-international-website-privacy-policy\nQwen API 利用規約: https://qwen.ai/termsservice" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The AI Summary feature, Reply Suggestion (Consultation) feature, and Persona Chat feature use \"Qwen API,\" a generative AI provided by Alibaba Cloud Singapore Pte. Ltd.\n\n(1) Recipient\nAlibaba Cloud Singapore Pte. Ltd. (Qwen API)\nLocation / Processing region: Singapore\n\n(2) Data sent\nThe message body, sender name, and timestamp from your chat history (media data such as images, videos, and stickers is not sent).\n\n(3) Data handling\nThe handling of the data sent is governed by Alibaba Cloud's terms of service and privacy policy. Please refer to the links below for details.\n\n(4) Obtaining consent\nThis feature is enabled only when the user's explicit consent has been obtained. When each AI feature is first used, a consent screen clearly stating the content of the data sent, the recipient, and how the data is handled is displayed, and data is sent only when the user explicitly consents.\n\n(5) Details\nAlibaba Cloud Privacy Policy: https://www.alibabacloud.com/help/en/legal/latest/alibaba-cloud-international-website-privacy-policy\nQwen API Terms of Service: https://qwen.ai/termsservice"
+          }
+        }
+      }
+    },
+    "1. 運営者は、以下の場合に、事前の通知なく本アプリの内容を変更、中断、または終了することができます：\n   • システムの保守・点検・更新を行う場合\n   • 天災、停電、通信障害等の不可抗力により提供が困難な場合\n   • 外部サービス（Qwen API 等）の提供停止・仕様変更があった場合\n   • その他、運営者が合理的に必要と判断した場合\n2. 本アプリの変更、中断、終了によってユーザーに生じた損害について、運営者は責任を負いません。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. The operator may modify, suspend, or terminate the content of this app without prior notice in the following cases:\n   • When performing system maintenance, inspection, or updates\n   • When provision becomes difficult due to force majeure such as natural disasters, power outages, or communication failures\n   • When an external service (such as Qwen API) is discontinued or has changed specifications\n   • In any other case the operator reasonably deems necessary\n2. The operator shall not be liable for any damages incurred by users as a result of the modification, suspension, or termination of this app."
+          }
+        }
+      }
+    },
+    "送信先: Alibaba Cloud Singapore Pte. Ltd.（Qwen API）" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recipient: Alibaba Cloud Singapore Pte. Ltd. (Qwen API)"
+          }
+        }
+      }
+    },
+    "%@ 利用規約" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Terms of Service"
+          }
+        }
+      }
+    },
+    "送信データは、AIによる回答生成のため %1$@ のサーバー（%2$@ リージョン）上で処理されます。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The data sent is processed on %1$@'s servers (%2$@ region) to generate AI responses."
+          }
+        }
+      }
+    },
+    "相談機能では、お客様がインポートしたLINEのトーク履歴を、%1$@ が提供する生成AI「%2$@」に送信し、相談への回答を生成します。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Consultation feature sends the LINE chat history you imported to \"%2$@,\" a generative AI provided by %1$@, to generate responses to your consultation."
+          }
+        }
+      }
+    },
+    "送信後のデータの保持・利用については、下記の利用規約・プライバシーポリシーをご確認ください。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For the retention and use of data after it is sent, please review the terms of service and privacy policy below."
+          }
+        }
+      }
+    },
+    "上記の内容をすべて確認し、トーク履歴の一部が %1$@（%2$@）に送信されることに同意します" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I have read all of the above and consent to a portion of my chat history being sent to %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "擬人化チャットでは、お客様がインポートしたLINEのトーク履歴を、%1$@ が提供する生成AI「%2$@」に送信し、相手の性格を再現したAIチャットを生成します。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Persona Chat sends the LINE chat history you imported to \"%2$@,\" a generative AI provided by %1$@, to generate an AI chat that recreates the other person's personality."
+          }
+        }
+      }
+    },
+    "本アプリの開発者は、%@ に送信されたデータの取り扱いについて責任を負いません" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The developer of this app is not responsible for the handling of data sent to %@"
+          }
+        }
+      }
+    },
+    "相手の性格をAIが再現したチャット体験を提供するため、%1$@ が提供する生成AI「%2$@」を使用しています。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To provide a chat experience in which an AI recreates the other person's personality, this feature uses \"%2$@,\" a generative AI provided by %1$@."
+          }
+        }
+      }
+    },
+    "データ送信後の取り扱いは %@ のプライバシーポリシーおよび利用規約に従います" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The handling of data after it is sent is governed by %@'s privacy policy and terms of service"
+          }
+        }
+      }
+    },
+    "あなたが送信したメッセージと、相手の性格再現に必要なトーク履歴の一部が%@のサーバーに送信されます。個人を特定する情報は送信されません。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The messages you send and the portion of chat history needed to recreate the other person's personality are sent to %@'s servers. No personally identifying information is sent."
+          }
+        }
+      }
+    },
+    "1. 本アプリが提供する診断結果、スコア、ハラスメント分類、AI生成サマリー、および返信提案は、すべて参考情報であり、その正確性、完全性、有用性、特定目的への適合性を保証するものではありません。\n2. 診断結果やAI生成コンテンツに基づくユーザーの判断や行動（人間関係に関する意思決定を含む）について、運営者は一切の責任を負いません。\n3. Qwen API に送信されたデータの取り扱いについて、運営者は責任を負いません。データ送信後の取り扱いは Alibaba Cloud Singapore Pte. Ltd. のプライバシーポリシーおよび利用規約に従います。\n4. 本アプリの利用により生じたいかなる損害（直接損害、間接損害、偶発的損害、特別損害、懲罰的損害、逸失利益を含むがこれらに限定されない）についても、運営者は法令上許容される最大限の範囲で責任を負いません。\n5. 本アプリは現状有姿（AS IS）で提供されます。\n6. 通信環境、デバイスの状態、外部サービスの障害等に起因する本アプリの動作不良について、運営者は責任を負いません。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. The diagnosis results, scores, harassment classifications, AI-generated summaries, and reply suggestions provided by this app are all reference information only, and their accuracy, completeness, usefulness, or fitness for a particular purpose is not guaranteed.\n2. The operator bears no responsibility whatsoever for any judgment or action taken by users (including decisions regarding personal relationships) based on diagnosis results or AI-generated content.\n3. The operator is not responsible for the handling of data sent to Qwen API. The handling of data after it is sent is governed by the privacy policy and terms of service of Alibaba Cloud Singapore Pte. Ltd.\n4. The operator shall not be liable, to the maximum extent permitted by law, for any damages arising from the use of this app (including but not limited to direct, indirect, incidental, special, or punitive damages, and lost profits).\n5. This app is provided AS IS.\n6. The operator is not responsible for any malfunction of this app caused by the communication environment, the state of the device, failures of external services, or the like."
+          }
+        }
+      }
+    },
+    "本アプリは %1$@ が提供する生成AI「%2$@」を利用しています。送信されたデータの取り扱いは、%1$@ の利用規約およびプライバシーポリシーに従います。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app uses \"%2$@,\" a generative AI provided by %1$@. The handling of data sent is governed by %1$@'s terms of service and privacy policy."
+          }
+        }
+      }
+    },
+    "本アプリの開発者は、送信後のデータ管理には関与しません。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The developer of this app is not involved in the management of data after it is sent."
+          }
+        }
+      }
+    },
+    "%1$@ の生成AI使用　ートーク履歴の一部が%2$@に送信されます" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uses %1$@'s generative AI — a portion of your chat history is sent to %2$@"
+          }
+        }
+      }
+    },
+    "本アプリは、以下の場合を除き、ユーザーの個人情報を第三者に提供することはありません：\n\n(1) ユーザーが明示的に同意した場合\nAIサマリー機能、返信提案（相談）機能、または擬人化チャット機能の初回利用時に表示される同意画面にて、データ送信に同意した場合。\n\n(2) 法令に基づく場合\n法律の規定に基づき、裁判所、警察その他の行政機関から開示を求められた場合。\n\n本アプリが利用する外部サービス：\n• Apple App Store（アプリ配信およびサブスクリプション決済）\n• Qwen API（AIサマリー・返信提案・擬人化チャット） — 運営: Alibaba Cloud Singapore Pte. Ltd.\n• Firebase（Firebase Analytics・Crashlytics・Cloud Functions・Cloud Firestore・Authentication・Remote Config・Cloud Messaging） — 運営: Google LLC\n• Google AdMob（広告配信） — 運営: Google LLC" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app does not provide users' personal information to third parties except in the following cases:\n\n(1) When the user has given explicit consent\nWhen the user has consented to data transmission on the consent screen displayed at the first use of the AI Summary feature, the Reply Suggestion (Consultation) feature, or the Persona Chat feature.\n\n(2) When required by law\nWhen disclosure is requested by a court, the police, or another administrative authority pursuant to legal provisions.\n\nExternal services used by this app:\n• Apple App Store (app distribution and subscription payments)\n• Qwen API (AI Summary, Reply Suggestion, Persona Chat) — Operated by: Alibaba Cloud Singapore Pte. Ltd.\n• Firebase (Firebase Analytics, Crashlytics, Cloud Functions, Cloud Firestore, Authentication, Remote Config, Cloud Messaging) — Operated by: Google LLC\n• Google AdMob (ad delivery) — Operated by: Google LLC"
+          }
+        }
+      }
+    },
+    "本アプリの一部のAI機能（AIサマリー・返信提案・擬人化チャット）では、お客様のトーク履歴の一部を Alibaba Cloud Singapore Pte. Ltd. が提供する Qwen API に送信します。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Some AI features of this app (AI Summary, Reply Suggestion, Persona Chat) send a portion of your chat history to Qwen API, provided by Alibaba Cloud Singapore Pte. Ltd."
+          }
+        }
+      }
+    },
+    "1. ユーザーがインポートしたトーク履歴データは、原則としてユーザーのデバイス内にのみ保存されます。\n2. AIサマリー機能、返信提案（相談）機能、または擬人化チャット機能を利用する場合、トーク履歴の一部（メッセージ本文、送信者名、送信日時）がAlibaba Cloud Singapore Pte. Ltd.（Qwen API）のサーバー（シンガポール）に送信されます。画像・動画・スタンプ等のメディアデータは送信されません。\n3. ユーザーは、これらのAI機能の初回利用時に、データの外部送信に関する明示的な同意を行う必要があります。各機能の初回利用時に、送信されるデータの内容、送信先（Alibaba Cloud Singapore Pte. Ltd.）、およびAlibaba Cloud によるデータの取り扱いについて明記した同意画面が表示されます。\n4. Alibaba Cloud によるデータの取り扱いについては、Alibaba Cloud のプライバシーポリシー（https://www.alibabacloud.com/help/en/legal/latest/alibaba-cloud-international-website-privacy-policy）およびQwen API利用規約（https://qwen.ai/termsservice）が適用されます。\n5. AI機能を利用しない場合、トーク履歴がデバイス外に送信されることはありません。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Chat history data imported by the user is, in principle, stored only within the user's device.\n2. When using the AI Summary feature, the Reply Suggestion (Consultation) feature, or the Persona Chat feature, a portion of the chat history (message body, sender name, timestamp) is sent to the servers (in Singapore) of Alibaba Cloud Singapore Pte. Ltd. (Qwen API). Media data such as images, videos, and stickers is not sent.\n3. Users must give explicit consent to the external transmission of data when first using these AI features. At the first use of each feature, a consent screen is displayed that clearly states the content of the data sent, the recipient (Alibaba Cloud Singapore Pte. Ltd.), and how the data is handled by Alibaba Cloud.\n4. The handling of data by Alibaba Cloud is governed by the Alibaba Cloud Privacy Policy (https://www.alibabacloud.com/help/en/legal/latest/alibaba-cloud-international-website-privacy-policy) and the Qwen API Terms of Service (https://qwen.ai/termsservice).\n5. If you do not use the AI features, your chat history is never sent outside the device."
+          }
+        }
+      }
+    },
+    "%1$@（%2$@）へのデータ送信が許可されています" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data transmission to %1$@ (%2$@) is enabled"
+          }
+        }
+      }
+    },
+    "(1) ローカル保存（原則）\nトーク履歴データおよび解析結果は、原則としてユーザーのデバイス内にのみ保存されます（Apple SwiftData フレームワークを使用）。\n\n(2) 外部送信が発生する場合\n以下の機能を利用する場合に限り、データがデバイス外に送信されます：\n• AIサマリー機能：トーク履歴の一部が Alibaba Cloud のサーバー（Qwen API）に送信されます（詳細は第5条参照）\n• 返信提案（相談）機能：会話コンテキストの一部が Alibaba Cloud のサーバー（Qwen API）に送信されます\n• 擬人化チャット機能：トーク相手の性格を再現するため、トーク履歴の一部が Alibaba Cloud のサーバー（Qwen API）に送信されます\n• 匿名利用統計・エラーログ：匿名化された利用情報・エラー情報が Google LLC が提供する Firebase（Firebase Analytics・Crashlytics）に送信される場合があります\n• コミュニティ機能・通知機能：匿名 UID およびプッシュトークンが Firebase（Firestore／Cloud Functions）に保存されます\n\n(3) データの保持期間\nデバイス内のデータは、ユーザーがアプリを削除するか、設定画面の「すべてのデータを削除」を実行するまで保持されます。Firebase 上に保存される匿名識別子等は、運営者が運用上必要と判断する期間保管されます。\n\n(4) AI機能を利用しない場合、トーク履歴が外部に送信されることは一切ありません。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(1) Local storage (general rule)\nChat history data and analysis results are, in principle, stored only within the user's device (using Apple's SwiftData framework).\n\n(2) Cases where external transmission occurs\nData is sent outside the device only when the following features are used:\n• AI Summary feature: A portion of the chat history is sent to Alibaba Cloud's servers (Qwen API) (see Article 5 for details)\n• Reply Suggestion (Consultation) feature: A portion of the conversation context is sent to Alibaba Cloud's servers (Qwen API)\n• Persona Chat feature: To recreate the personality of the chat partner, a portion of the chat history is sent to Alibaba Cloud's servers (Qwen API)\n• Anonymous usage statistics / error logs: Anonymized usage information and error information may be sent to Firebase (Firebase Analytics, Crashlytics) provided by Google LLC\n• Community feature / notification feature: An anonymous UID and push token are stored in Firebase (Firestore / Cloud Functions)\n\n(3) Data retention period\nData on the device is retained until the user deletes the app or executes \"Delete All Data\" on the settings screen. Anonymous identifiers and the like stored on Firebase are retained for the period the operator deems operationally necessary.\n\n(4) If you do not use the AI features, your chat history is never sent externally."
+          }
+        }
+      }
+    },
+    "%@ によるデータの取り扱い" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data handling by %@"
+          }
+        }
+      }
+    },
+    "%@ を使用" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uses %@"
+          }
+        }
+      }
+    },
+    "%1$@ の生成AIを使用します。トーク履歴の一部（メッセージ本文・送信者名・送信日時）が %2$@ に送信されます。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uses %1$@'s generative AI. A portion of your chat history (message body, sender name, timestamp) is sent to %2$@."
+          }
+        }
+      }
+    },
+    "5. AI（生成AI）の利用について" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5. Use of AI (Generative AI)"
+          }
+        }
+      }
+    },
+    "1. トーク履歴にはユーザー以外の方（トーク相手）の発言、氏名、その他の個人情報が含まれています。\n2. 日本の個人情報保護法に基づき、第三者の個人情報を外部サービス（Qwen API を含む）に提供する際は、原則としてその方の同意が必要です。AI機能（AIサマリー・返信提案・擬人化チャット）を利用する場合、トーク相手の個人情報がAlibaba Cloud Singapore Pte. Ltd. のサーバーに送信されることをご理解ください。\n3. ユーザーは、本アプリの利用にあたり、トーク相手のプライバシーに十分配慮し、必要に応じてトーク相手の同意を得る等、法令を遵守するための適切な措置を講じる責任を負います。\n4. LINEの利用規約では、第三者の個人情報を不正に収集・開示・提供する行為が禁止されています。ユーザーは、LINEの利用規約を遵守した上で本アプリを利用してください。\n5. トーク相手のプライバシーに関して生じた紛争、損害、請求等について、運営者は一切の責任を負いません。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Chat history contains the statements, names, and other personal information of people other than the user (chat partners).\n2. Under Japan's Act on the Protection of Personal Information, providing a third party's personal information to an external service (including Qwen API) generally requires that person's consent. When using the AI features (AI Summary, Reply Suggestion, Persona Chat), please understand that your chat partner's personal information is sent to the servers of Alibaba Cloud Singapore Pte. Ltd.\n3. In using this app, the user is responsible for giving due consideration to the privacy of chat partners and for taking appropriate measures to comply with laws and regulations, such as obtaining the chat partner's consent where necessary.\n4. LINE's terms of service prohibit the unauthorized collection, disclosure, or provision of a third party's personal information. Users must use this app in compliance with LINE's terms of service.\n5. The operator bears no responsibility whatsoever for any dispute, damage, or claim arising in connection with a chat partner's privacy."
+          }
+        }
+      }
+    },
+    "%@ プライバシーポリシー" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Privacy Policy"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

@@ -160,6 +160,11 @@ enum Constants {
         /// ⚠️ darkめろとーくと同一 Firebase プロジェクトを共有するため、**やばトーク専用キー**。
         /// （RemoteConfig はプロジェクト単位 → アプリ別キーで独立制御。darkめろとーく=ads_enabled）
         static let adsEnabled = "ads_enabled_yabatalk"
+        /// AI データ送信先プロバイダ情報(JSON)。同意画面・開示文が参照する単一ソース。
+        /// 空 = 既定(Qwen / Alibaba Cloud Singapore)。モデル/プロバイダ変更時はこの値を更新するだけで
+        /// アプリ再提出なしに全開示文が追従する。3 アプリ(やばトーク/ヤミトーク/ハラスメントークDM)は
+        /// 同一 callQwen を共有するため**共通キー**(アプリ別サフィックス無し)。
+        static let aiProvider = "ai_provider"
     }
 
     // MARK: - Validation

@@ -473,7 +473,7 @@ struct SettingsView: View {
                     .foregroundColor(SettingsTokens.textDark)
 
                 Text(isAnyConsented
-                     ? String(localized: "Google LLC（Gemini API）へのデータ送信が許可されています", bundle: LanguageManager.appBundle)
+                     ? String(format: String(localized: "%1$@（%2$@）へのデータ送信が許可されています", bundle: LanguageManager.appBundle), RemoteConfigService.shared.currentAIProvider.companyName, RemoteConfigService.shared.currentAIProvider.serviceName)
                      : String(localized: "AI機能の利用時に再度同意が必要です", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruRegular(11))
                     .tracking(0.24)

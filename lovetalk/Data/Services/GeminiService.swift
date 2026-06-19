@@ -114,7 +114,9 @@ final class GeminiService: @unchecked Sendable {
         ]
 
         do {
-            let result = try await functions.httpsCallable("callGemini").call(payload)
+            // AI モデルは Qwen(qwen-plus) に移行。サーバ関数 callQwen が
+            // callGemini と同一契約({feature,prompt,maxTokens,temperature}→{text})で受ける。
+            let result = try await functions.httpsCallable("callQwen").call(payload)
             guard let dict = result.data as? [String: Any],
                   let text = dict["text"] as? String else {
                 throw GeminiError.parsingFailed

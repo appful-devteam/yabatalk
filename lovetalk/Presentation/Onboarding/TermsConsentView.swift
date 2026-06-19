@@ -88,7 +88,7 @@ struct TermsConsentView: View {
     private var summaryCard: some View {
         VStack(alignment: .leading, spacing: 14) {
             summaryRow(icon: "iphone", text: String(localized: "トーク履歴は端末内にのみ保存されます", bundle: LanguageManager.appBundle))
-            summaryRow(icon: "brain.head.profile", text: String(localized: "AI機能利用時はGoogle LLC（Gemini API）へのデータ送信に別途同意が必要です", bundle: LanguageManager.appBundle))
+            summaryRow(icon: "brain.head.profile", text: String(localized: "AI機能利用時はAlibaba Cloud Singapore Pte. Ltd.（Qwen API）へのデータ送信に別途同意が必要です", bundle: LanguageManager.appBundle))
             summaryRow(icon: "chart.bar.fill", text: String(localized: "アプリ改善のため匿名統計を収集します", bundle: LanguageManager.appBundle))
         }
         .padding(18)
@@ -116,13 +116,13 @@ struct TermsConsentView: View {
                     .foregroundColor(textPrimary)
             }
 
-            Text(String(localized: "本アプリの一部のAI機能（AIサマリー・返信提案・擬人化チャット）では、お客様のトーク履歴の一部を Google LLC が提供する Gemini API に送信します。", bundle: LanguageManager.appBundle))
+            Text(String(localized: "本アプリの一部のAI機能（AIサマリー・返信提案・擬人化チャット）では、お客様のトーク履歴の一部を Alibaba Cloud Singapore Pte. Ltd. が提供する Qwen API に送信します。", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruOrFallback(12))
                 .foregroundColor(textBody)
                 .lineSpacing(5)
 
             VStack(alignment: .leading, spacing: 6) {
-                aiDataRow(String(localized: "送信先: Google LLC（Gemini API）", bundle: LanguageManager.appBundle))
+                aiDataRow(String(localized: "送信先: Alibaba Cloud Singapore Pte. Ltd.（Qwen API）", bundle: LanguageManager.appBundle))
                 aiDataRow(String(localized: "送信データ: メッセージ本文・送信者名・送信日時", bundle: LanguageManager.appBundle))
                 aiDataRow(String(localized: "メディア（画像・動画・スタンプ）は送信されません", bundle: LanguageManager.appBundle))
                 aiDataRow(String(localized: "AI機能の初回利用時に別途同意が必要です", bundle: LanguageManager.appBundle))

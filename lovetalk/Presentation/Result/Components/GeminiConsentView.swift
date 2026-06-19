@@ -12,13 +12,16 @@ enum ConsentFeatureType {
         }
     }
 
-    var featureDescription: String {
+    /// 送信先プロバイダ名を差し込んだ機能説明（provider は Remote Config 駆動）。
+    func featureDescription(provider: AIProviderInfo) -> String {
+        let fmt: String
         switch self {
         case .consultation:
-            return String(localized: "相談機能では、お客様がインポートしたLINEのトーク履歴を、Google LLC が提供する生成AI「Gemini API」に送信し、相談への回答を生成します。", bundle: LanguageManager.appBundle)
+            fmt = String(localized: "相談機能では、お客様がインポートしたLINEのトーク履歴を、%1$@ が提供する生成AI「%2$@」に送信し、相談への回答を生成します。", bundle: LanguageManager.appBundle)
         case .personaChat:
-            return String(localized: "擬人化チャットでは、お客様がインポートしたLINEのトーク履歴を、Google LLC が提供する生成AI「Gemini API」に送信し、相手の性格を再現したAIチャットを生成します。", bundle: LanguageManager.appBundle)
+            fmt = String(localized: "擬人化チャットでは、お客様がインポートしたLINEのトーク履歴を、%1$@ が提供する生成AI「%2$@」に送信し、相手の性格を再現したAIチャットを生成します。", bundle: LanguageManager.appBundle)
         }
+        return String(format: fmt, provider.companyShort, provider.serviceName)
     }
 }
 
@@ -30,6 +33,9 @@ struct GeminiConsentView: View {
 
     let featureType: ConsentFeatureType
     let onAgree: () -> Void
+
+    /// AI データ送信先プロバイダ（Remote Config 駆動・既定 Qwen/Alibaba Cloud Singapore）。
+    private var provider: AIProviderInfo { RemoteConfigService.shared.currentAIProvider }
 
     /// 相談機能用の後方互換イニシャライザ
     init(onAgree: @escaping () -> Void) {
@@ -49,7 +55,7 @@ struct GeminiConsentView: View {
                     headerSection
                     dataRecipientBanner
                     dataTransmissionCard
-                    googleDataHandlingCard
+                    providerDataHandlingCard
                     privacyWarningCard
                     disclaimerCard
                     agreeToggle
@@ -102,11 +108,12 @@ struct GeminiConsentView: View {
                     .foregroundColor(.white.opacity(0.9))
             }
 
-            Text("Google LLC")
+            Text(provider.companyName)
                 .font(.system(size: 22, weight: .bold))
                 .foregroundColor(.white)
+                .multilineTextAlignment(.center)
 
-            Text("Gemini API (generativelanguage.googleapis.com)")
+            Text("\(provider.serviceName) (\(provider.endpoint))")
                 .font(.system(size: 12, weight: .medium))
                 .foregroundColor(.white.opacity(0.85))
 
@@ -128,6 +135,10 @@ struct GeminiConsentView: View {
                 recipientDetailRow(
                     label: String(localized: "非送信データ", bundle: LanguageManager.appBundle),
                     value: String(localized: "画像・動画・スタンプ等", bundle: LanguageManager.appBundle)
+                )
+                recipientDetailRow(
+                    label: String(localized: "処理地域", bundle: LanguageManager.appBundle),
+                    value: provider.region
                 )
             }
         }
@@ -169,35 +180,34 @@ struct GeminiConsentView: View {
             title: String(localized: "この機能について", bundle: LanguageManager.appBundle)
         ) {
             VStack(alignment: .leading, spacing: 10) {
-                consentText(featureType.featureDescription)
+                consentText(featureType.featureDescription(provider: provider))
             }
         }
     }
 
-    // MARK: - Google Data Handling Card
+    // MARK: - Provider Data Handling Card
 
-    private var googleDataHandlingCard: some View {
+    private var providerDataHandlingCard: some View {
         consentCard(
             icon: "server.rack",
             iconColor: .purple,
-            title: String(localized: "Google によるデータの取り扱い", bundle: LanguageManager.appBundle)
+            title: String(format: String(localized: "%@ によるデータの取り扱い", bundle: LanguageManager.appBundle), provider.companyShort)
         ) {
             VStack(alignment: .leading, spacing: 10) {
-                consentText(String(localized: "本アプリは Google Gemini API を使用しています。Google の利用規約（Gemini API Additional Terms of Service）に基づき、送信されたデータは以下のように取り扱われる可能性があります：", bundle: LanguageManager.appBundle))
+                consentText(String(format: String(localized: "本アプリは %1$@ が提供する生成AI「%2$@」を利用しています。送信されたデータの取り扱いは、%1$@ の利用規約およびプライバシーポリシーに従います。", bundle: LanguageManager.appBundle), provider.companyShort, provider.serviceName))
 
-                bulletItem(String(localized: "Google の製品・サービスおよび機械学習技術の改善・開発に利用される場合があります", bundle: LanguageManager.appBundle))
-                bulletItem(String(localized: "品質向上のため、Google の担当者がデータを閲覧・注釈付け・処理する場合があります", bundle: LanguageManager.appBundle))
-                bulletItem(String(localized: "閲覧時にはお客様の個人アカウント情報との紐付けは解除されます", bundle: LanguageManager.appBundle))
-                bulletItem(String(localized: "不正利用検出のため、送信データは一定期間（最大55日間）Google のサーバーに保持されます", bundle: LanguageManager.appBundle))
+                bulletItem(String(format: String(localized: "送信データは、AIによる回答生成のため %1$@ のサーバー（%2$@ リージョン）上で処理されます。", bundle: LanguageManager.appBundle), provider.companyShort, provider.region))
+                bulletItem(String(localized: "送信後のデータの保持・利用については、下記の利用規約・プライバシーポリシーをご確認ください。", bundle: LanguageManager.appBundle))
+                bulletItem(String(localized: "本アプリの開発者は、送信後のデータ管理には関与しません。", bundle: LanguageManager.appBundle))
 
                 linkButton(
-                    title: String(localized: "Gemini API 利用規約（英語）", bundle: LanguageManager.appBundle),
-                    url: "https://ai.google.dev/gemini-api/terms"
+                    title: String(format: String(localized: "%@ 利用規約", bundle: LanguageManager.appBundle), provider.serviceName),
+                    url: provider.termsURL
                 )
 
                 linkButton(
-                    title: String(localized: "Google プライバシーポリシー", bundle: LanguageManager.appBundle),
-                    url: "https://policies.google.com/privacy"
+                    title: String(format: String(localized: "%@ プライバシーポリシー", bundle: LanguageManager.appBundle), provider.companyShort),
+                    url: provider.privacyURL
                 )
             }
         }
@@ -239,8 +249,8 @@ struct GeminiConsentView: View {
             title: String(localized: "免責事項", bundle: LanguageManager.appBundle)
         ) {
             VStack(alignment: .leading, spacing: 10) {
-                bulletItem(String(localized: "本アプリの開発者は、Google Gemini API に送信されたデータの取り扱いについて責任を負いません", bundle: LanguageManager.appBundle))
-                bulletItem(String(localized: "データ送信後の取り扱いは Google LLC のプライバシーポリシーおよび利用規約に従います", bundle: LanguageManager.appBundle))
+                bulletItem(String(format: String(localized: "本アプリの開発者は、%@ に送信されたデータの取り扱いについて責任を負いません", bundle: LanguageManager.appBundle), provider.serviceName))
+                bulletItem(String(format: String(localized: "データ送信後の取り扱いは %@ のプライバシーポリシーおよび利用規約に従います", bundle: LanguageManager.appBundle), provider.companyName))
                 bulletItem(String(localized: "本機能の利用により生じたいかなる損害（トーク相手との関係悪化、プライバシー侵害に関する紛争等を含む）についても、本アプリの開発者は一切の責任を負いません", bundle: LanguageManager.appBundle))
                 bulletItem(String(localized: "本同意は、設定画面の「AIデータ共有」から、データを削除せずにいつでも取り消すことができます", bundle: LanguageManager.appBundle))
             }
@@ -259,7 +269,7 @@ struct GeminiConsentView: View {
                     .font(.system(size: 22))
                     .foregroundColor(isAgreed ? MeloColors.Dark.accent : MeloColors.Dark.textSecondary)
 
-                Text(String(localized: "上記の内容をすべて確認し、トーク履歴の一部がGoogle LLC（Gemini API）に送信されることに同意します", bundle: LanguageManager.appBundle))
+                Text(String(format: String(localized: "上記の内容をすべて確認し、トーク履歴の一部が %1$@（%2$@）に送信されることに同意します", bundle: LanguageManager.appBundle), provider.companyName, provider.serviceName))
                     .font(MeloFonts.zenMaruOrFallback(13))
                     .foregroundColor(MeloColors.Dark.textPrimary)
                     .multilineTextAlignment(.leading)

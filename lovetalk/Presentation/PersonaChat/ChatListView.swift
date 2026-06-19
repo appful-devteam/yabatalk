@@ -257,8 +257,8 @@ struct ChatListView: View {
     private var chatList: some View {
         ScrollView(showsIndicators: false) {
             LazyVStack(spacing: 10) {
-                // Gemini AI 注意文 (旧ヘッダー下段から移動) — 一番上に配置
-                Text(String(localized: "Google Gemini AI使用　ートーク履歴の一部がGoogle LLCに送信されます", bundle: LanguageManager.appBundle))
+                // AI 注意文 (旧ヘッダー下段から移動) — 一番上に配置（送信先プロバイダは Remote Config 駆動）
+                Text(String(format: String(localized: "%1$@ の生成AI使用　ートーク履歴の一部が%2$@に送信されます", bundle: LanguageManager.appBundle), RemoteConfigService.shared.currentAIProvider.serviceName, RemoteConfigService.shared.currentAIProvider.companyName))
                     .font(MeloFonts.zenMaruOrFallback(10))
                     .tracking(0.3)
                     .foregroundColor(textColor)
@@ -472,13 +472,13 @@ private struct ChatHelpSheet: View {
 
                     VStack(alignment: .leading, spacing: 12) {
                         helpItem(
-                            title: String(localized: "Google Gemini AIを使用", bundle: LanguageManager.appBundle),
-                            body: String(localized: "相手の性格をAIが再現したチャット体験を提供するため、Google LLCが提供するGemini APIを使用しています。", bundle: LanguageManager.appBundle)
+                            title: String(format: String(localized: "%@ を使用", bundle: LanguageManager.appBundle), RemoteConfigService.shared.currentAIProvider.serviceName),
+                            body: String(format: String(localized: "相手の性格をAIが再現したチャット体験を提供するため、%1$@ が提供する生成AI「%2$@」を使用しています。", bundle: LanguageManager.appBundle), RemoteConfigService.shared.currentAIProvider.companyShort, RemoteConfigService.shared.currentAIProvider.serviceName)
                         )
 
                         helpItem(
                             title: String(localized: "送信されるデータ", bundle: LanguageManager.appBundle),
-                            body: String(localized: "あなたが送信したメッセージと、相手の性格再現に必要なトーク履歴の一部がGoogle LLCのサーバーに送信されます。個人を特定する情報は送信されません。", bundle: LanguageManager.appBundle)
+                            body: String(format: String(localized: "あなたが送信したメッセージと、相手の性格再現に必要なトーク履歴の一部が%@のサーバーに送信されます。個人を特定する情報は送信されません。", bundle: LanguageManager.appBundle), RemoteConfigService.shared.currentAIProvider.companyName)
                         )
 
                         helpItem(
