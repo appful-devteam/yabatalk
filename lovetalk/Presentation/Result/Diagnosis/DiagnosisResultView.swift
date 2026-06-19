@@ -272,6 +272,19 @@ private struct LockedBody<Content: View>: View {
     }
 }
 
+extension View {
+    /// プレミアム未加入時、値（数値・本文・バー等）だけをぼかす。ラベルはぼかさない。
+    @ViewBuilder func lockedValueBlur(_ locked: Bool) -> some View {
+        if locked {
+            self.blur(radius: 7)
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
+        } else {
+            self
+        }
+    }
+}
+
 /// ロック領域の先頭に出す「プレミアムで全部見る」CTA バナー。
 /// ぼかし本文の上ではなく独立カードとして置くので、タップ判定がぼかしと競合しない。
 struct DiagnosisUnlockCTA: View {
@@ -926,19 +939,18 @@ struct DiagnosisTypeTab: View {
         LabCard {
             VStack(alignment: .leading, spacing: 10) {
                 LabCardHeader(jp: String(localized: "型の特性", bundle: LanguageManager.appBundle), en: "PROFILE")
-                LockedBody(locked: locked) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text(verdict.primaryType.structureSummary)
-                            .font(MeloFonts.zenMaruMedium(14))
-                            .foregroundColor(MeloColors.Dark.textPrimary)
-                            .fixedSize(horizontal: false, vertical: true)
-                        Text(verdict.primaryType.darkHumorAdvice)
-                            .font(MeloFonts.zenMaruRegular(13))
-                            .foregroundColor(MeloColors.Dark.textSecondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(verdict.primaryType.structureSummary)
+                        .font(MeloFonts.zenMaruMedium(14))
+                        .foregroundColor(MeloColors.Dark.textPrimary)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text(verdict.primaryType.darkHumorAdvice)
+                        .font(MeloFonts.zenMaruRegular(13))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .lockedValueBlur(locked)
             }
         }
     }
@@ -947,25 +959,24 @@ struct DiagnosisTypeTab: View {
         LabCard {
             VStack(alignment: .leading, spacing: 14) {
                 LabCardHeader(jp: String(localized: "カテゴリ別の強さ", bundle: LanguageManager.appBundle), en: "BREAKDOWN")
-                LockedBody(locked: locked) {
-                    VStack(alignment: .leading, spacing: 12) {
-                        ForEach(HarassmentCategory.allCases, id: \.self) { cat in
-                            perPersonCategoryRow(verdict, cat: cat)
-                        }
-                        if !verdict.topFactors.isEmpty {
-                            Text(String(format: String(localized: "主な成分: %@", bundle: LanguageManager.appBundle), verdict.topFactors.prefix(4).map { "\($0.factor.displayName) \($0.score)%" }.joined(separator: " ・ ")))
-                                .font(MeloFonts.mono(11))
-                                .foregroundColor(MeloColors.Dark.textSecondary.opacity(0.85))
-                                .fixedSize(horizontal: false, vertical: true)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(HarassmentCategory.allCases, id: \.self) { cat in
+                        perPersonCategoryRow(verdict, cat: cat, locked: locked)
+                    }
+                    if !verdict.topFactors.isEmpty {
+                        Text(String(format: String(localized: "主な成分: %@", bundle: LanguageManager.appBundle), verdict.topFactors.prefix(4).map { "\($0.factor.displayName) \($0.score)%" }.joined(separator: " ・ ")))
+                            .font(MeloFonts.mono(11))
+                            .foregroundColor(MeloColors.Dark.textSecondary.opacity(0.85))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .lockedValueBlur(locked)
                     }
                 }
             }
         }
     }
 
-    private func perPersonCategoryRow(_ verdict: SpeakerVerdict, cat: HarassmentCategory) -> some View {
+    private func perPersonCategoryRow(_ verdict: SpeakerVerdict, cat: HarassmentCategory, locked: Bool) -> some View {
         let score = verdict.categoryScores[cat] ?? 0
         let c = labSeverityColor(score)
         return VStack(alignment: .leading, spacing: 6) {
@@ -978,8 +989,10 @@ struct DiagnosisTypeTab: View {
                 Text("\(score)%")
                     .font(MeloFonts.monoMedium(14))
                     .foregroundColor(c)
+                    .lockedValueBlur(locked)
             }
             LabBar(pct: score, color: c)
+                .lockedValueBlur(locked)
         }
     }
 
@@ -1119,19 +1132,18 @@ struct DiagnosisTypeTab: View {
         LabCard {
             VStack(alignment: .leading, spacing: 10) {
                 LabCardHeader(jp: String(localized: "型の特性", bundle: LanguageManager.appBundle), en: "PROFILE")
-                LockedBody(locked: locked) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text(result.primaryType.structureSummary)
-                            .font(MeloFonts.zenMaruMedium(14))
-                            .foregroundColor(MeloColors.Dark.textPrimary)
-                            .fixedSize(horizontal: false, vertical: true)
-                        Text(result.primaryType.darkHumorAdvice)
-                            .font(MeloFonts.zenMaruRegular(13))
-                            .foregroundColor(MeloColors.Dark.textSecondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(result.primaryType.structureSummary)
+                        .font(MeloFonts.zenMaruMedium(14))
+                        .foregroundColor(MeloColors.Dark.textPrimary)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text(result.primaryType.darkHumorAdvice)
+                        .font(MeloFonts.zenMaruRegular(13))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .lockedValueBlur(locked)
             }
         }
     }
@@ -1140,13 +1152,11 @@ struct DiagnosisTypeTab: View {
         LabCard {
             VStack(alignment: .leading, spacing: 14) {
                 LabCardHeader(jp: String(localized: "カテゴリ別の根拠", bundle: LanguageManager.appBundle), en: "BASIS")
-                LockedBody(locked: locked) {
-                    VStack(alignment: .leading, spacing: 14) {
-                        ForEach(result.categoryBreakdowns) { breakdown in
-                            breakdownRow(breakdown: breakdown)
-                            if breakdown.id != result.categoryBreakdowns.last?.id {
-                                Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
-                            }
+                VStack(alignment: .leading, spacing: 14) {
+                    ForEach(result.categoryBreakdowns) { breakdown in
+                        breakdownRow(breakdown: breakdown, locked: locked)
+                        if breakdown.id != result.categoryBreakdowns.last?.id {
+                            Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
                         }
                     }
                 }
@@ -1154,7 +1164,7 @@ struct DiagnosisTypeTab: View {
         }
     }
 
-    private func breakdownRow(breakdown: CategoryBreakdown) -> some View {
+    private func breakdownRow(breakdown: CategoryBreakdown, locked: Bool) -> some View {
         let c = labSeverityColor(breakdown.score)
         return VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 10) {
@@ -1166,16 +1176,19 @@ struct DiagnosisTypeTab: View {
                 Text("\(breakdown.score)%")
                     .font(MeloFonts.monoMedium(14))
                     .foregroundColor(c)
+                    .lockedValueBlur(locked)
             }
             Text(breakdown.narrative)
                 .font(MeloFonts.zenMaruRegular(12))
                 .foregroundColor(MeloColors.Dark.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
+                .lockedValueBlur(locked)
             if !breakdown.contributingFactors.isEmpty {
                 Text(breakdown.contributingFactors.map { "\($0.factor.displayName) \($0.score)%" }.joined(separator: "  ・  "))
                     .font(MeloFonts.mono(11))
                     .foregroundColor(MeloColors.Dark.textSecondary.opacity(0.8))
                     .fixedSize(horizontal: false, vertical: true)
+                    .lockedValueBlur(locked)
             }
         }
     }
@@ -1235,34 +1248,33 @@ struct DiagnosisDetectionDetailTab: View {
         return LabCard {
             VStack(alignment: .leading, spacing: 12) {
                 LabCardHeader(jp: String(localized: "検出ログ", bundle: LanguageManager.appBundle), en: "DETECTION LOG")
-                LockedBody(locked: locked) {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("検出されたヤバ要素を全部時系列で。誰がいつ何のパターンで引っかかったか、納得できなければ実際の発言と比べてください。")
-                            .font(MeloFonts.zenMaruRegular(11))
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("検出されたヤバ要素を全部時系列で。誰がいつ何のパターンで引っかかったか、納得できなければ実際の発言と比べてください。")
+                        .font(MeloFonts.zenMaruRegular(11))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                    if allDetections.isEmpty {
+                        Text("検出されたヤバ要素はありません。")
+                            .font(MeloFonts.zenMaruRegular(12))
                             .foregroundColor(MeloColors.Dark.textSecondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                        if allDetections.isEmpty {
-                            Text("検出されたヤバ要素はありません。")
-                                .font(MeloFonts.zenMaruRegular(12))
-                                .foregroundColor(MeloColors.Dark.textSecondary)
-                        } else {
-                            ForEach(Array(allDetections.enumerated()), id: \.offset) { idx, det in
-                                detectionLogRow(
-                                    speakerName: det.speakerName,
-                                    timestamp: det.timestamp,
-                                    factor: det.factor,
-                                    evidence: det.evidence,
-                                    matchedPattern: det.matchedPattern,
-                                    severity: det.severity
-                                )
-                                if idx < allDetections.count - 1 {
-                                    Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
-                                }
+                    } else {
+                        ForEach(Array(allDetections.enumerated()), id: \.offset) { idx, det in
+                            detectionLogRow(
+                                speakerName: det.speakerName,
+                                timestamp: det.timestamp,
+                                factor: det.factor,
+                                evidence: det.evidence,
+                                matchedPattern: det.matchedPattern,
+                                severity: det.severity,
+                                locked: locked
+                            )
+                            if idx < allDetections.count - 1 {
+                                Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
                             }
                         }
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
@@ -1273,7 +1285,8 @@ struct DiagnosisDetectionDetailTab: View {
         factor: HarassmentFactor,
         evidence: String,
         matchedPattern: String,
-        severity: FactorSeverity
+        severity: FactorSeverity,
+        locked: Bool
     ) -> some View {
         let c = severityColor(for: severity)
         return VStack(alignment: .leading, spacing: 4) {
@@ -1292,12 +1305,14 @@ struct DiagnosisDetectionDetailTab: View {
                 .foregroundColor(MeloColors.Dark.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
+                .lockedValueBlur(locked)
             Text("PATTERN: \(matchedPattern)")
                 .font(MeloFonts.mono(9))
                 .foregroundColor(MeloColors.Dark.textSecondary.opacity(0.8))
                 .lineLimit(1)
                 .truncationMode(.tail)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .lockedValueBlur(locked)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -1361,29 +1376,27 @@ struct DiagnosisDetectionDetailTab: View {
         LabCard {
             VStack(alignment: .leading, spacing: 10) {
                 LabCardHeader(jp: String(localized: "検査統計", bundle: LanguageManager.appBundle), en: "STATISTICS")
-                LockedBody(locked: locked) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        statRow(label: String(localized: "総発言数", bundle: LanguageManager.appBundle), value: "\(result.stats.totalMessages)", color: MeloColors.Dark.textPrimary)
-                        statRow(label: String(localized: "テキスト発言", bundle: LanguageManager.appBundle), value: "\(result.stats.totalTextMessages)", color: MeloColors.Dark.textPrimary)
-                        statRow(label: String(localized: "ヤバ発言の割合", bundle: LanguageManager.appBundle), value: String(format: String(localized: "%1$lld%%", bundle: LanguageManager.appBundle), result.stats.detectionRatePercent), color: labSeverityColor(result.stats.detectionRatePercent))
-                        statRow(label: String(localized: "検出された構成要素", bundle: LanguageManager.appBundle), value: String(format: String(localized: "%1$lld 件", bundle: LanguageManager.appBundle), result.stats.detectedFactorCount), color: MeloColors.Dark.accent)
-                        if result.stats.nightDetectionCount > 0 {
-                            statRow(label: String(localized: "深夜ヤバ発言", bundle: LanguageManager.appBundle), value: String(format: String(localized: "%1$lld 件", bundle: LanguageManager.appBundle), result.stats.nightDetectionCount), color: MeloColors.Dark.caution)
-                        }
-                        if let first = result.stats.firstDetectionAt {
-                            statRow(label: String(localized: "最初のヤバ発言", bundle: LanguageManager.appBundle), value: first.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened).locale(LanguageManager.appLocale)), color: MeloColors.Dark.textSecondary)
-                        }
-                        if let last = result.stats.lastDetectionAt {
-                            statRow(label: String(localized: "最新のヤバ発言", bundle: LanguageManager.appBundle), value: last.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened).locale(LanguageManager.appLocale)), color: MeloColors.Dark.textSecondary)
-                        }
+                VStack(alignment: .leading, spacing: 10) {
+                    statRow(label: String(localized: "総発言数", bundle: LanguageManager.appBundle), value: "\(result.stats.totalMessages)", color: MeloColors.Dark.textPrimary, locked: locked)
+                    statRow(label: String(localized: "テキスト発言", bundle: LanguageManager.appBundle), value: "\(result.stats.totalTextMessages)", color: MeloColors.Dark.textPrimary, locked: locked)
+                    statRow(label: String(localized: "ヤバ発言の割合", bundle: LanguageManager.appBundle), value: String(format: String(localized: "%1$lld%%", bundle: LanguageManager.appBundle), result.stats.detectionRatePercent), color: labSeverityColor(result.stats.detectionRatePercent), locked: locked)
+                    statRow(label: String(localized: "検出された構成要素", bundle: LanguageManager.appBundle), value: String(format: String(localized: "%1$lld 件", bundle: LanguageManager.appBundle), result.stats.detectedFactorCount), color: MeloColors.Dark.accent, locked: locked)
+                    if result.stats.nightDetectionCount > 0 {
+                        statRow(label: String(localized: "深夜ヤバ発言", bundle: LanguageManager.appBundle), value: String(format: String(localized: "%1$lld 件", bundle: LanguageManager.appBundle), result.stats.nightDetectionCount), color: MeloColors.Dark.caution, locked: locked)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    if let first = result.stats.firstDetectionAt {
+                        statRow(label: String(localized: "最初のヤバ発言", bundle: LanguageManager.appBundle), value: first.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened).locale(LanguageManager.appLocale)), color: MeloColors.Dark.textSecondary, locked: locked)
+                    }
+                    if let last = result.stats.lastDetectionAt {
+                        statRow(label: String(localized: "最新のヤバ発言", bundle: LanguageManager.appBundle), value: last.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened).locale(LanguageManager.appLocale)), color: MeloColors.Dark.textSecondary, locked: locked)
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
 
-    private func statRow(label: String, value: String, color: Color) -> some View {
+    private func statRow(label: String, value: String, color: Color, locked: Bool) -> some View {
         HStack {
             Text(label)
                 .font(MeloFonts.mono(12))
@@ -1392,6 +1405,7 @@ struct DiagnosisDetectionDetailTab: View {
             Text(value)
                 .font(MeloFonts.monoMedium(12))
                 .foregroundColor(color)
+                .lockedValueBlur(locked)
         }
     }
 
@@ -1399,13 +1413,11 @@ struct DiagnosisDetectionDetailTab: View {
         LabCard {
             VStack(alignment: .leading, spacing: 14) {
                 LabCardHeader(jp: String(localized: "成分詳細", bundle: LanguageManager.appBundle), en: "COMPONENT DETAIL")
-                LockedBody(locked: locked) {
-                    VStack(alignment: .leading, spacing: 14) {
-                        ForEach(result.factorDeepDives) { dive in
-                            deepDiveRow(dive: dive)
-                            if dive.id != result.factorDeepDives.last?.id {
-                                Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
-                            }
+                VStack(alignment: .leading, spacing: 14) {
+                    ForEach(result.factorDeepDives) { dive in
+                        deepDiveRow(dive: dive, locked: locked)
+                        if dive.id != result.factorDeepDives.last?.id {
+                            Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
                         }
                     }
                 }
@@ -1413,7 +1425,7 @@ struct DiagnosisDetectionDetailTab: View {
         }
     }
 
-    private func deepDiveRow(dive: FactorDeepDive) -> some View {
+    private func deepDiveRow(dive: FactorDeepDive, locked: Bool) -> some View {
         let c = labSeverityColor(dive.score)
         return VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
@@ -1425,14 +1437,17 @@ struct DiagnosisDetectionDetailTab: View {
                 Text("検出 \(dive.detectionCount)")
                     .font(MeloFonts.mono(10))
                     .foregroundColor(MeloColors.Dark.textSecondary)
+                    .lockedValueBlur(locked)
                 Text("\(dive.score)%")
                     .font(MeloFonts.monoMedium(14))
                     .foregroundColor(c)
+                    .lockedValueBlur(locked)
             }
             Text(dive.detail)
                 .font(MeloFonts.zenMaruRegular(12))
                 .foregroundColor(MeloColors.Dark.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
+                .lockedValueBlur(locked)
             if !dive.sampleEvidences.isEmpty {
                 LabWell {
                     Text("根拠サンプル (\(dive.sampleEvidences.count))")
@@ -1442,6 +1457,7 @@ struct DiagnosisDetectionDetailTab: View {
                         evidenceSampleRow(sample: sample)
                     }
                 }
+                .lockedValueBlur(locked)
             }
         }
     }
@@ -1463,41 +1479,43 @@ struct DiagnosisDetectionDetailTab: View {
         LabCard {
             VStack(alignment: .leading, spacing: 14) {
                 LabCardHeader(jp: String(localized: "証拠サンプル", bundle: LanguageManager.appBundle), en: "EVIDENCE")
-                LockedBody(locked: locked) {
-                    VStack(alignment: .leading, spacing: 14) {
-                        if result.quotedEvidences.isEmpty {
-                            Text("引用に値する強い表現は検出されませんでした。")
-                                .font(MeloFonts.zenMaruRegular(12))
-                                .foregroundColor(MeloColors.Dark.textSecondary)
-                        } else {
-                            ForEach(result.quotedEvidences) { q in
-                                quoteRow(quote: q)
-                                if q.id != result.quotedEvidences.last?.id {
-                                    Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
-                                }
+                VStack(alignment: .leading, spacing: 14) {
+                    if result.quotedEvidences.isEmpty {
+                        Text("引用に値する強い表現は検出されませんでした。")
+                            .font(MeloFonts.zenMaruRegular(12))
+                            .foregroundColor(MeloColors.Dark.textSecondary)
+                            .lockedValueBlur(locked)
+                    } else {
+                        ForEach(result.quotedEvidences) { q in
+                            quoteRow(quote: q, locked: locked)
+                            if q.id != result.quotedEvidences.last?.id {
+                                Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
                             }
                         }
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
 
-    private func quoteRow(quote: QuotedEvidence) -> some View {
+    private func quoteRow(quote: QuotedEvidence, locked: Bool) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             LabCodeChip(text: quote.factor.displayName, color: MeloColors.Dark.danger)
             Text("「\(quote.quote)」")
                 .font(MeloFonts.zenMaru(13))
                 .foregroundColor(MeloColors.Dark.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)
+                .lockedValueBlur(locked)
             Text("→ \(quote.explanation)")
                 .font(MeloFonts.zenMaruRegular(11))
                 .foregroundColor(MeloColors.Dark.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
+                .lockedValueBlur(locked)
             Text("\(quote.speakerName) · \(quote.timestamp.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened).locale(LanguageManager.appLocale)))")
                 .font(MeloFonts.mono(9))
                 .foregroundColor(MeloColors.Dark.textSecondary.opacity(0.7))
+                .lockedValueBlur(locked)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -1828,36 +1846,38 @@ struct DiagnosisDataTab: View {
         return LabCard {
             VStack(alignment: .leading, spacing: 14) {
                 LabCardHeader(jp: String(localized: "振る舞いの癖", bundle: LanguageManager.appBundle), en: "BEHAVIOR")
-                LockedBody(locked: locked) {
-                    VStack(alignment: .leading, spacing: 14) {
-                        Text("返信の速さの差・深夜の連絡・既読スルーの偏りは、追う／逃げるの非対称さを映す。")
-                            .font(MeloFonts.zenMaruRegular(11))
-                            .foregroundColor(MeloColors.Dark.textSecondary)
-                            .fixedSize(horizontal: false, vertical: true)
+                VStack(alignment: .leading, spacing: 14) {
+                    Text("返信の速さの差・深夜の連絡・既読スルーの偏りは、追う／逃げるの非対称さを映す。")
+                        .font(MeloFonts.zenMaruRegular(11))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
 
-                        // 最速返信タイム（自分 vs 相手）
-                        funStatBlock(title: String(localized: "最速返信タイム", bundle: LanguageManager.appBundle)) {
-                            versusRow(
-                                selfText: formatReplyTime(r?.fastestSelfReply),
-                                partnerText: formatReplyTime(r?.fastestPartnerReply)
-                            )
+                    // 最速返信タイム（自分 vs 相手）
+                    funStatBlock(title: String(localized: "最速返信タイム", bundle: LanguageManager.appBundle)) {
+                        versusRow(
+                            selfText: formatReplyTime(r?.fastestSelfReply),
+                            partnerText: formatReplyTime(r?.fastestPartnerReply)
+                        )
+                        .lockedValueBlur(locked)
+                    }
+
+                    // 深夜トーク率
+                    funStatBlock(title: String(localized: "深夜トーク率（0-5時）", bundle: LanguageManager.appBundle)) {
+                        VStack(spacing: 4) {
+                            Text("\(Int((lateRate * 100).rounded()))%")
+                                .font(MeloFonts.anton(28))
+                                .foregroundColor(lateRate >= 0.20 ? MeloColors.Dark.danger : MeloColors.Dark.accent)
+                            Text(lateNightComment(lateRate))
+                                .font(MeloFonts.zenMaruRegular(11))
+                                .foregroundColor(MeloColors.Dark.textSecondary)
                         }
+                        .frame(maxWidth: .infinity)
+                        .lockedValueBlur(locked)
+                    }
 
-                        // 深夜トーク率
-                        funStatBlock(title: String(localized: "深夜トーク率（0-5時）", bundle: LanguageManager.appBundle)) {
-                            VStack(spacing: 4) {
-                                Text("\(Int((lateRate * 100).rounded()))%")
-                                    .font(MeloFonts.anton(28))
-                                    .foregroundColor(lateRate >= 0.20 ? MeloColors.Dark.danger : MeloColors.Dark.accent)
-                                Text(lateNightComment(lateRate))
-                                    .font(MeloFonts.zenMaruRegular(11))
-                                    .foregroundColor(MeloColors.Dark.textSecondary)
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-
-                        // 既読スルー（推定）
-                        funStatBlock(title: String(localized: "既読スルー（推定）", bundle: LanguageManager.appBundle)) {
+                    // 既読スルー（推定）
+                    funStatBlock(title: String(localized: "既読スルー（推定）", bundle: LanguageManager.appBundle)) {
+                        Group {
                             if si + pi > 0 {
                                 versusRow(selfText: String(format: String(localized: "%1$lld回", bundle: LanguageManager.appBundle), si), partnerText: String(format: String(localized: "%1$lld回", bundle: LanguageManager.appBundle), pi))
                             } else {
@@ -1867,9 +1887,10 @@ struct DiagnosisDataTab: View {
                                     .frame(maxWidth: .infinity)
                             }
                         }
+                        .lockedValueBlur(locked)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
@@ -1925,22 +1946,20 @@ struct DiagnosisDataTab: View {
         return LabCard {
             VStack(alignment: .leading, spacing: 14) {
                 LabCardHeader(jp: String(localized: "よく使うフレーズ", bundle: LanguageManager.appBundle), en: "SIGNATURE PHRASES")
-                LockedBody(locked: locked) {
-                    VStack(alignment: .leading, spacing: 14) {
-                        phraseBlock(title: String(localized: "あなたがよく使う", bundle: LanguageManager.appBundle), phrases: p.selfTopPhrases, color: selfColor)
-                        phraseBlock(title: String(localized: "相手がよく使う", bundle: LanguageManager.appBundle), phrases: p.partnerTopPhrases, color: partnerColor)
-                        if !p.commonPhrases.isEmpty {
-                            Rectangle().fill(MeloColors.Dark.divider).frame(height: 1)
-                            phraseBlock(title: String(localized: "ふたりの共通フレーズ", bundle: LanguageManager.appBundle), phrases: p.commonPhrases, color: MeloColors.Dark.textSecondary)
-                        }
+                VStack(alignment: .leading, spacing: 14) {
+                    phraseBlock(title: String(localized: "あなたがよく使う", bundle: LanguageManager.appBundle), phrases: p.selfTopPhrases, color: selfColor, locked: locked)
+                    phraseBlock(title: String(localized: "相手がよく使う", bundle: LanguageManager.appBundle), phrases: p.partnerTopPhrases, color: partnerColor, locked: locked)
+                    if !p.commonPhrases.isEmpty {
+                        Rectangle().fill(MeloColors.Dark.divider).frame(height: 1)
+                        phraseBlock(title: String(localized: "ふたりの共通フレーズ", bundle: LanguageManager.appBundle), phrases: p.commonPhrases, color: MeloColors.Dark.textSecondary, locked: locked)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
 
-    private func phraseBlock(title: String, phrases: [PhraseCount], color: Color) -> some View {
+    private func phraseBlock(title: String, phrases: [PhraseCount], color: Color, locked: Bool) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
                 .font(MeloFonts.monoMedium(10))
@@ -1949,12 +1968,14 @@ struct DiagnosisDataTab: View {
                 Text("データがありません")
                     .font(MeloFonts.zenMaruRegular(12))
                     .foregroundColor(MeloColors.Dark.textSecondary)
+                    .lockedValueBlur(locked)
             } else {
                 PhraseFlowLayout(spacing: 6) {
                     ForEach(phrases) { pc in
                         LabCodeChip(text: "\(pc.phrase) ×\(pc.count)", color: color)
                     }
                 }
+                .lockedValueBlur(locked)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
