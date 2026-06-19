@@ -334,16 +334,23 @@ struct UsageGuideView: View {
     }
 
     /// LINE アプリを開く (NewHomeView.openLineForExport() と同じ URL scheme パターン)。
-    /// アプリが未インストールなら何もしない (誤って App Store に遷移しない)。
+    /// LINE 未インストールなら App Store の LINE ページへ誘導する
+    /// (https://line.me を canOpenURL に渡すと未インストールでも true になり Safari へ離脱するため使わない)。
     private func openLineApp() {
         AnalyticsManager.shared.track("usage_guide_open_line_tap")
-        let candidates = ["line://", "line://nv/chat", "https://line.me/R/"]
+        // LINE アプリの URL scheme のみ。https フォールバック (line.me) は LINE 未インストール端末
+        // (iPad 等) で Safari に飛んでアプリから離脱するため使わない。
+        let candidates = ["line://nv/chat", "line://"]
         for raw in candidates {
             guard let url = URL(string: raw) else { continue }
             if UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url)
                 return
             }
+        }
+        // LINE 未インストール → App Store の LINE ページへ誘導。
+        if let storeURL = URL(string: "https://apps.apple.com/jp/app/id443904275") {
+            UIApplication.shared.open(storeURL)
         }
     }
 

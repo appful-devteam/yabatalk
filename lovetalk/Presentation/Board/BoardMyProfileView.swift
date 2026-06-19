@@ -202,7 +202,7 @@ struct BoardMyProfileView: View {
                 quotePost = nil
             }) {
                 BoardComposeViewV2(
-                    onPosted: {
+                    onPosted: { _ in
                         toastIsError = false
                         toastMessage = String(localized: "投稿しました！", bundle: LanguageManager.appBundle)
                         Task {

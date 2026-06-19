@@ -73,6 +73,9 @@ services:
       - id: yaba.plus.yearly  # Premium+ 年額  ¥12,800
   analytics: []
   crashReporting: null
+  appStoreConnect:
+    appleAppId: "6778561704"   # ハラスメントーク (App Store Connect)
+    primaryLocale: ja
 
 features:
   signInWithApple: false
@@ -84,6 +87,24 @@ features:
   ar: false
   appClip: false
   widget: false
+  inAppReviewPrompt: true   # skill: inapp-review-prompt（2段プロンプト）
+
+# アプリ内評価（2段プロンプト）。初回診断完了→ホーム復帰で表示。
+# トリガは ReviewManager.shouldShowPreReviewPrompt（count==1）、UI は InAppReviewPromptView。
+review:
+  triggerEvent: diagnosisCompleted
+  triggerCount: 1
+  feedbackChannel:
+    type: mailto
+    to: info@appful.tokyo
+    subject: "【ハラスメントーク】フィードバック"
+  feedbackCategories:
+    - "診断結果が分かりにくい"
+    - "バグや不具合"
+    - "UI が分かりにくい"
+    - "機能が足りない"
+    - "動作が重い"
+    - "その他"
 
 conventions:
   views: lovetalk/Presentation/{feature}

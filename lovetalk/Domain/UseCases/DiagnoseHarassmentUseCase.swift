@@ -85,6 +85,17 @@ struct DiagnoseHarassmentUseCase: Sendable {
             relationship: relationship
         )
 
+        // 9. データタブ用の詳細統計を診断と同じバックグラウンドで先に計算しておく
+        //    （結果画面で開いた瞬間に再計算して重くなるのを防ぐ）。
+        let selfName = session.estimatedSelfName ?? ""
+        let partnerName = session.partnerName(selfName: selfName) ?? ""
+        let detailedStatistics = DetailedStatisticsAnalyzer().analyze(
+            messages: session.messages,
+            selfName: selfName,
+            partnerName: partnerName,
+            allParticipantNames: session.participants.map(\.name)
+        )
+
         return DiagnosisResult(
             sessionId: session.id,
             sessionTitle: session.title,
@@ -109,7 +120,8 @@ struct DiagnoseHarassmentUseCase: Sendable {
             speakerVerdicts: speakerVerdicts,
             quotedEvidences: bundle.quotedEvidences,
             darkHumorAdvice: bundle.darkHumorAdvice,
-            nextSteps: bundle.nextSteps
+            nextSteps: bundle.nextSteps,
+            detailedStatistics: detailedStatistics
         )
     }
 

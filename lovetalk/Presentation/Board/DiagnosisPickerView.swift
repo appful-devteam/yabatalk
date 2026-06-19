@@ -81,6 +81,8 @@ struct DiagnosisPickerView: View {
                         let toxicity = result.diagnosisResult
                         let rowScore = toxicity?.overallRiskScore ?? baseCard.totalScore
                         let rowTypeName = toxicity?.primaryType.typeName ?? baseCard.typeName
+                        // 右端バッジは「相手のハラスメント割合」を優先表示（算出不可なら従来のスコア）。
+                        let partnerShare = partnerHarassmentShare(for: result)
 
                         VStack(spacing: 0) {
                             // 診断結果カード — タップで展開
@@ -110,7 +112,7 @@ struct DiagnosisPickerView: View {
                                             .lineLimit(1)
 
                                         HStack(spacing: 6) {
-                                            Text("\(rowScore)点")
+                                            Text(partnerShare.map { "相手 \($0)%" } ?? "\(rowScore)点")
                                                 .font(MeloFonts.zenMaruMedium(11))
                                                 .foregroundColor(toxicity != nil ? MeloColors.Dark.onAccent : .white)
                                                 .padding(.horizontal, 8)
@@ -372,6 +374,17 @@ struct DiagnosisPickerView: View {
         )
     }
 
+    // MARK: - Partner Harassment Share
+
+    /// カード右端に出す「相手のハラスメント割合」（自分 + 相手 = 100）。
+    /// スコアページ最上部の二者比較カードと完全に同じ値を出すため、DiagnosisResult 側の
+    /// 共有ロジックに委譲する。保存時 selfParticipant == session.estimatedSelfName のため、
+    /// スコアページが受け取る selfName と同一入力になり、表示値が一致する。
+    /// 算出不能（話者 2 人未満 / 旧データ）の場合は nil（呼び出し側でスコア表示にフォールバック）。
+    private func partnerHarassmentShare(for result: StoredAnalysisResult) -> Int? {
+        result.diagnosisResult?.partnerHarassmentShare(selfName: result.selfParticipant)
+    }
+
     // MARK: - Available Styles
 
     private func availableStyles(for result: StoredAnalysisResult) -> [DiagnosisCard.CardStyle] {
@@ -440,7 +453,9 @@ struct DiagnosisPickerView: View {
         case .toxicity:
             // yabatalk: 保存済み DiagnosisResult から毒性鑑定フィールドを埋める。
             if let dr = result.diagnosisResult {
-                card.toxicityScore = dr.overallRiskScore
+                // カード数値は「相手のハラスメント割合」(ホーム履歴 / スコアページ上部と同値)。
+                // 二者比較できない旧データは会話全体スコアにフォールバック。
+                card.toxicityScore = dr.partnerHarassmentShare(selfName: result.selfParticipant) ?? dr.overallRiskScore
                 card.toxicityLevel = dr.riskLevel.rawValue
                 card.toxicityDangerLabel = dr.dangerLabel
                 card.toxicityCatchCopy = dr.catchCopy

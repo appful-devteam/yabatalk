@@ -463,7 +463,7 @@ struct CommunityRoomDetailView: View {
         }
         .sheet(isPresented: $showingCompose) {
             BoardComposeViewV2(
-                onPosted: {
+                onPosted: { _ in
                     Task { await loadBoardPosts() }
                 },
                 preselectedCommunityRoom: displayedRoom

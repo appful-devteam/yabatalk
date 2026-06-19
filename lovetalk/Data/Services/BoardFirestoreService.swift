@@ -307,6 +307,10 @@ final class BoardFirestoreService: ObservableObject {
     // MARK: - Create Post
 
     func createPost(content: String, authorId: String, authorName: String, authorProfileImageURL: String? = nil, badge: LoveTypeBadge?, diagnosisCard: DiagnosisCard?, quotedPost: QuotedPostInfo? = nil, postType: BoardPostType = .normal, pollOptions: [PollOption]? = nil, isAnonymous: Bool = false, authorIsPrivate: Bool = false, themes: [String] = [], communityRoomId: String? = nil, communityRoomTitle: String? = nil) async throws -> BoardPost {
+        // App Store Guideline 1.2: 客観的に不適切なコンテンツを投稿時点でフィルタ
+        guard !content.containsObjectionableContent else {
+            throw ContentModeration.ModerationError.objectionableContent
+        }
         let now = Timestamp(date: Date())
 
         var data: [String: Any] = [
@@ -456,6 +460,10 @@ final class BoardFirestoreService: ObservableObject {
     }
 
     func createReply(postId: String, content: String, authorId: String, authorName: String, authorProfileImageURL: String? = nil, badge: LoveTypeBadge?, imageURLs: [String] = [], mention: ReplyMentionInfo? = nil) async throws -> BoardReply {
+        // App Store Guideline 1.2: 客観的に不適切なコンテンツを投稿時点でフィルタ
+        guard !content.containsObjectionableContent else {
+            throw ContentModeration.ModerationError.objectionableContent
+        }
         let now = Timestamp(date: Date())
 
         var data: [String: Any] = [
@@ -955,6 +963,10 @@ final class BoardFirestoreService: ObservableObject {
     // MARK: - Create Post with Images
 
     func createPostWithImages(content: String, authorId: String, authorName: String, authorProfileImageURL: String? = nil, badge: LoveTypeBadge?, diagnosisCard: DiagnosisCard?, quotedPost: QuotedPostInfo? = nil, postType: BoardPostType = .normal, pollOptions: [PollOption]? = nil, isAnonymous: Bool = false, authorIsPrivate: Bool = false, themes: [String] = [], communityRoomId: String? = nil, communityRoomTitle: String? = nil, images: [Data]) async throws -> BoardPost {
+        // App Store Guideline 1.2: 客観的に不適切なコンテンツを投稿時点でフィルタ
+        guard !content.containsObjectionableContent else {
+            throw ContentModeration.ModerationError.objectionableContent
+        }
         let tempId = UUID().uuidString
         var imageURLs: [String] = []
         var uploadedKeys: [String] = []
@@ -2282,6 +2294,14 @@ private struct FirestoreDiagnosisCard: Codable {
     let partnerLoveWords: [FirestorePhraseCount]?
     let selfLoveTotal: Int?
     let partnerLoveTotal: Int?
+    // yabatalk 毒性鑑定カード用（全て Optional・後方互換）
+    let toxicityScore: Int?
+    let toxicityLevel: String?
+    let toxicityDangerLabel: String?
+    let toxicityCatchCopy: String?
+    let toxicityCategoryCode: String?
+    let toxicitySpecimenNo: String?
+    let toxicityTitle: String?
 
     func toDiagnosisCard() -> DiagnosisCard {
         var card = DiagnosisCard(
@@ -2307,6 +2327,13 @@ private struct FirestoreDiagnosisCard: Codable {
         card.partnerLoveWords = partnerLoveWords?.map { SharedPhraseCount(phrase: $0.phrase, count: $0.count) }
         card.selfLoveTotal = selfLoveTotal
         card.partnerLoveTotal = partnerLoveTotal
+        card.toxicityScore = toxicityScore
+        card.toxicityLevel = toxicityLevel
+        card.toxicityDangerLabel = toxicityDangerLabel
+        card.toxicityCatchCopy = toxicityCatchCopy
+        card.toxicityCategoryCode = toxicityCategoryCode
+        card.toxicitySpecimenNo = toxicitySpecimenNo
+        card.toxicityTitle = toxicityTitle
         return card
     }
 }

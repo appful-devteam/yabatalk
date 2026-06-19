@@ -52,6 +52,20 @@ final class BoardAuthService: ObservableObject {
     // MARK: - Anonymous Sign In
 
     func signInAnonymously() async {
+        // 🔴 復元ガード（リビルド/cold launch 毎ログアウトの修正）:
+        // Firebase が Keychain から既存ユーザー(Apple 連携 or 匿名)を復元済みなら、
+        // それを採用して新規匿名サインインしない。これが無いと、起動直後に掲示板の
+        // ensureSignedIn() が状態リスナー(@Published isSignedIn を非同期で立てる)の発火前に
+        // 走り、signInAnonymously() が復元された既存ユーザーを新しい匿名ユーザーで
+        // 上書き → 毎回ログアウト扱い & Firebase に匿名アカウントが量産される。
+        // Auth.auth().currentUser は復元直後から同期的に参照できるためこれで判定する。
+        if let existing = Auth.auth().currentUser {
+            currentUser = BoardUser(firebaseUser: existing)
+            isSignedIn = true
+            print("[BoardAuth] signInAnonymously: reuse restored uid=\(existing.uid) anon=\(existing.isAnonymous)")
+            return
+        }
+
         isLoading = true
         error = nil
 

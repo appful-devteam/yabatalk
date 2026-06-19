@@ -102,6 +102,8 @@ struct BoardComposeViewV2: View {
     @State private var showMbtiPicker = false
     @State private var photoItems: [PhotosPickerItem] = []
     @State private var isSubmitting = false
+    /// App Store Guideline 1.2: 不適切表現で投稿がブロックされた時のアラート文言
+    @State private var moderationAlertMessage: String?
     @State private var joinedRooms: [CommunityRoom] = []
     @State private var selectedCommunityRoom: CommunityRoom?
 
@@ -142,9 +144,9 @@ struct BoardComposeViewV2: View {
     /// （コミュニティルームなど独自の書き込み先を持つ呼び出し側向け）
     var onSubmit: ((BoardComposeDraft) -> Void)? = nil
 
-    /// Firestore への投稿が成功した後に呼ばれる通知コールバック（任意）。
-    /// onSubmit を使わず V2 内蔵の投稿経路を使うケースで、トースト表示などに利用する。
-    var onPosted: (() -> Void)? = nil
+    /// Firestore への投稿が成功した後に、作成された投稿を渡して呼ばれるコールバック（任意）。
+    /// onSubmit を使わず V2 内蔵の投稿経路を使うケースで、フィードへの楽観的挿入やトースト表示に利用する。
+    var onPosted: ((BoardPost) -> Void)? = nil
 
     /// 「新規参加」メニュー項目から相談部屋タブを開きたい時に呼ばれる。
     /// nil の場合は「新規参加…」項目自体を出さない（部屋詳細など、相談部屋切替が文脈上不自然な提示元向け）。
@@ -152,7 +154,7 @@ struct BoardComposeViewV2: View {
 
     init(
         onSubmit: ((BoardComposeDraft) -> Void)? = nil,
-        onPosted: (() -> Void)? = nil,
+        onPosted: ((BoardPost) -> Void)? = nil,
         onRequestOpenConsultRoom: (() -> Void)? = nil,
         quotedPost: QuotedPostInfo? = nil,
         preselectedCommunityRoom: CommunityRoom? = nil
@@ -199,6 +201,17 @@ struct BoardComposeViewV2: View {
                 #selector(UIResponder.resignFirstResponder),
                 to: nil, from: nil, for: nil
             )
+        }
+        .alert(
+            String(localized: "投稿できません", bundle: LanguageManager.appBundle),
+            isPresented: Binding(
+                get: { moderationAlertMessage != nil },
+                set: { if !$0 { moderationAlertMessage = nil } }
+            )
+        ) {
+            Button(String(localized: "OK", bundle: LanguageManager.appBundle), role: .cancel) {}
+        } message: {
+            Text(moderationAlertMessage ?? "")
         }
         .sheet(isPresented: $showMbtiPicker) {
             mbtiPickerSheet
@@ -555,6 +568,14 @@ struct BoardComposeViewV2: View {
             }
         }
 
+        // App Store Guideline 1.2: 投稿前に不適切表現をチェックし、ブロック時はアラート表示。
+        // データ層 (createPost) でも guard しているが、ここで弾くと reviewer に即フィードバックできる。
+        if content.containsObjectionableContent {
+            moderationAlertMessage = ContentModeration.ModerationError.objectionableContent.errorDescription
+            HapticManager.error()
+            return
+        }
+
         // onSubmit クロージャがあれば投稿処理はそちらに委譲。
         // 診断カード / アンケート情報は draft に詰め直してから渡す (相談部屋等の外部経路で必要)。
         if let onSubmit {
@@ -597,8 +618,9 @@ struct BoardComposeViewV2: View {
         let postType: BoardPostType = (pollOptions != nil) ? .poll : .normal
 
         do {
+            let createdPost: BoardPost
             if draft.imagesData.isEmpty {
-                _ = try await firestoreService.createPost(
+                createdPost = try await firestoreService.createPost(
                     content: content,
                     authorId: user.id,
                     authorName: user.displayName,
@@ -615,7 +637,7 @@ struct BoardComposeViewV2: View {
                     communityRoomTitle: resolvedRoomTitle
                 )
             } else {
-                _ = try await firestoreService.createPostWithImages(
+                createdPost = try await firestoreService.createPostWithImages(
                     content: content,
                     authorId: user.id,
                     authorName: user.displayName,
@@ -652,10 +674,22 @@ struct BoardComposeViewV2: View {
 
             // dismiss 後の onDisappear で自動保存が走らないようフラグを立てる
             didSubmitSuccessfully = true
-            onPosted?()
+            // 作成した投稿を呼び出し側に渡し、フィードへ即時反映（楽観的挿入）させる。
+            // リスナー到達を待たずに「投稿が反映されない」状態を防ぐ（2.1(a) 対策）。
+            onPosted?(createdPost)
             dismiss()
+        } catch let error as ContentModeration.ModerationError {
+            // データ層フィルタで弾かれた場合のフォールバック表示
+            moderationAlertMessage = error.errorDescription
+            HapticManager.error()
         } catch {
+            // 投稿失敗を握り潰さず必ずユーザーに伝える（黙って失敗＝「投稿したのに反映されない」を防ぐ）
             print("[ComposeV2] Post failed: \(error)")
+            moderationAlertMessage = String(
+                localized: "投稿に失敗しました。通信環境を確認して、もう一度お試しください。",
+                bundle: LanguageManager.appBundle
+            )
+            HapticManager.error()
         }
     }
 

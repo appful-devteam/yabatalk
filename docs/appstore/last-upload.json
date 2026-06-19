@@ -1,0 +1,34 @@
+{
+  "appInfoId": "0f0d64b7-bd97-42d1-bb2c-0c3723965f5e",
+  "editableVersionId": "8cf6c86c-f639-482f-829a-940a2edaabaa",
+  "appInfoLocalizations": {
+    "ja": {
+      "id": "831d8dfc-208f-44e6-a3a9-7ac20741c38d",
+      "name": "ハラスメントーク",
+      "subtitle": "LINEトークを毒見。ハラスメント診断",
+      "privacyPolicyUrl": "https://darkmerotalk.com/privacy"
+    }
+  },
+  "versionLocalizations": {
+    "ja": {
+      "id": "c45dc970-a023-49a8-a2b1-320d67da7ec4",
+      "description": "あのトーク、やばくない？ 貼るだけで診断。\n\nハラスメントーク は、LINE のトーク履歴（テキスト）を読み込むだけで、パワハラ・セクハラ・モラハラ・その他ハラスメントの傾向を分析するアプリです。\n「これってハラスメントなの？」と感じたとき、まず毒見にかけてみてください。\n\n■ こんなことができます\n\n・LINE トーク履歴をインポートするだけで自動診断\n・パワハラ / セクハラ / モラハラ / その他の4大分類でスコア化\n・「やばさ」を数値とタイプ名で可視化（端末内処理・トーク本文はサーバに送信しません）\n・掲示板で同じ境遇の人と体験をシェア、ぶっちゃけ相談も可能\n・AI 相談（任意・同意制）: 気になる箇所を AI に相談できます\n\n■ 診断の仕組み\n\n18 種類の構成要素（優位性・人格否定・境界線侵害・ガスライティングなど）をルールベースで検出し、4 大分類ごとのスコアと根拠引用を提示します。診断結果は法的判断ではなく、あくまでテキスト構造の分析です。専門家への相談を代替するものではありません。\n\n■ AI 相談機能について（任意）\n\n相談機能を使う場合、トークの一部を Google Gemini（Google LLC）に送信します。送信前に同意確認画面が表示されます。同意しない場合は AI 機能を利用せず診断のみご利用いただけます。\n\n■ 掲示板（ユーザー投稿コンテンツ）\n\n匿名の掲示板でハラスメント体験や相談を投稿・共有できます。不適切な投稿は通報・ブロック機能で対応でき、通報されたコンテンツは運営が確認し、利用規約に基づき削除対応を行います。無料プランでは広告が表示されます。\n\n■ プレミアムサブスクリプション\n\n無料プランでも診断はご利用いただけます。プレミアム・プランでは診断回数が無制限になり、詳細データの閲覧や AI 相談の上限増加、広告非表示などの特典が利用できます。\n\nハラスメントーク Premium … 週額 ¥500 / 月額 ¥980 / 年額 ¥5,000\nハラスメントーク Premium+ … 週額 ¥980 / 月額 ¥1,980 / 年額 ¥12,800\n\n・お支払いは購入確定時に Apple ID アカウントに請求されます。\n・サブスクリプションは、期間終了の 24 時間前までにキャンセルしない限り自動更新され、同じ料金が請求されます。\n・キャンセルは「設定」>「Apple ID」>「サブスクリプション」からいつでも行えます。\n\n■ アカウントと診断データについて\n\n診断履歴はお使いの端末内にのみ保存されます。掲示板機能を使う場合は匿名アカウントが自動作成されます。アカウントおよびすべてのデータは「設定 > アカウント削除」から削除できます。\n\n■ お問い合わせ\n\nご質問・ご要望は下記サポートページよりお問い合わせください。\nhttps://darkmerotalk.com\n\nEULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/\nプライバシーポリシー: https://darkmerotalk.com/privacy",
+      "keywords": "ハラスメント,パワハラ,モラハラ,セクハラ,LINE診断,職場,人間関係,毒舌,チェック,相談",
+      "promotionalText": "トーク履歴を貼るだけ。パワハラ・モラハラ・セクハラを4分類で毒見診断。掲示板でみんなの経験をシェア。",
+      "supportUrl": "https://darkmerotalk.com",
+      "marketingUrl": "https://darkmerotalk.com"
+    }
+  },
+  "categories": {
+    "primary": "UTILITIES",
+    "secondary": "LIFESTYLE"
+  },
+  "copyright": "2026 appful Inc.",
+  "releaseType": "MANUAL",
+  "reviewContact": {
+    "contactFirstName": "Ryusei",
+    "contactLastName": "Okamoto",
+    "contactEmail": "info@appful.tokyo",
+    "contactPhone": "+8107064754676"
+  }
+}

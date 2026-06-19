@@ -372,6 +372,10 @@ final class CommunityRoomFirestoreService {
     // MARK: - Posts: Create
 
     func createPost(_ post: CommunityRoomPost) async throws {
+        // App Store Guideline 1.2: 客観的に不適切なコンテンツを投稿時点でフィルタ
+        guard !post.body.containsObjectionableContent else {
+            throw ContentModeration.ModerationError.objectionableContent
+        }
         var data: [String: Any] = [
             "roomId": post.roomId,
             "authorName": post.authorName,
@@ -502,6 +506,10 @@ final class CommunityRoomFirestoreService {
         badge: LoveTypeBadge?,
         mention: ReplyMentionInfo?
     ) async throws -> BoardReply {
+        // App Store Guideline 1.2: 客観的に不適切なコンテンツを投稿時点でフィルタ
+        guard !content.containsObjectionableContent else {
+            throw ContentModeration.ModerationError.objectionableContent
+        }
         let now = Timestamp(date: Date())
         var data: [String: Any] = [
             "authorId": authorId,

@@ -265,7 +265,7 @@ struct NewHomeView: View {
     /// 左右の padding を広めに取り、見た目の余白を確保する方式。
     private var headerSection: some View {
         HStack(spacing: 6) {
-            Text(String(localized: "ヤバ診断", bundle: LanguageManager.appBundle))
+            Text(String(localized: "ハラスメント診断", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaru(20))
                 .tracking(0.6)
                 .foregroundStyle(MeloColors.Dark.accentGradient)
@@ -453,16 +453,22 @@ struct NewHomeView: View {
     }
 
     // MARK: - History Card (Figma: 白オーバーレイ + 診断履歴 + 行 + ソート切替)
-    /// 診断結果を保持する履歴を「やばさスコア降順」でランキング化（1 位 = 最高スコア）。
+    /// カードに表示している「相手のハラスメント割合」(%)。ランキングのソートキーと表示で共有する。
+    /// 二者比較できない旧データは会話全体スコアにフォールバック（historyRow と同一ロジック）。
+    private func historyRankValue(stored: StoredAnalysisResult, result: DiagnosisResult) -> Int {
+        result.partnerHarassmentShare(selfName: stored.selfParticipant) ?? result.overallRiskScore
+    }
+
+    /// 診断結果を保持する履歴を「カード表示の相手ハラスメント% 降順」でランキング化（1 位 = 最高%）。
     private var diagnosisHistory: [(rank: Int, stored: StoredAnalysisResult, result: DiagnosisResult)] {
         let items = analysisHistory.compactMap { s -> (StoredAnalysisResult, DiagnosisResult)? in
             guard let dr = s.diagnosisResult else { return nil }
             return (s, dr)
         }
         .sorted { a, b in
-            a.1.overallRiskScore != b.1.overallRiskScore
-                ? a.1.overallRiskScore > b.1.overallRiskScore
-                : a.0.analyzedAt > b.0.analyzedAt
+            let av = historyRankValue(stored: a.0, result: a.1)
+            let bv = historyRankValue(stored: b.0, result: b.1)
+            return av != bv ? av > bv : a.0.analyzedAt > b.0.analyzedAt
         }
         return items.enumerated().map { (idx, e) in (idx + 1, e.0, e.1) }
     }
@@ -533,8 +539,15 @@ struct NewHomeView: View {
     private func historyRow(rank: Int, stored: StoredAnalysisResult, result: DiagnosisResult) -> some View {
         Button {
             HapticManager.light()
-            let s = ChatSession(title: result.sessionTitle, messages: [], participants: [])
-            coordinator.navigateToDiagnosis(result: result, session: s)
+            // 履歴から開くときも本物のトーク履歴を SwiftData から読み直して渡す。
+            // ここで空の ChatSession を渡すと、サマリー(AI月別鑑定)とデータタブ(詳細統計)が
+            // session.messages を空とみなして「データなし」になる。本体が破棄済み(容量対策で
+            // chatSessionData=nil)のときだけ空のプレースホルダーにフォールバックし、スコア/タイプは表示する。
+            Task {
+                let real = await loadChatSession(sessionId: result.sessionId)
+                let s = real ?? ChatSession(title: result.sessionTitle, messages: [], participants: [])
+                coordinator.navigateToDiagnosis(result: result, session: s)
+            }
         } label: {
             HStack(spacing: 0) {
                 // 1〜3 位はランクキャラ画像、4 位以降は数字。
@@ -559,13 +572,15 @@ struct NewHomeView: View {
 
                 Spacer(minLength: 8)
 
-                // やばさスコア（severity 色: 安全=ライム / 注意=黄 / 危険=ピンク）+ 警告アイコン
+                // 右端は「相手のハラスメント割合」（スコアページ上部の相手 % と同値）。
+                // ランキングのソートキーと同一値（historyRankValue）で、表示と順位が必ず一致する。
+                let rightValue = historyRankValue(stored: stored, result: result)
                 HStack(alignment: .firstTextBaseline, spacing: 2) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: 13, weight: .bold))
                         .foregroundColor(result.riskLevel.labColor)
                         .baselineOffset(-2)
-                    Text("\(result.overallRiskScore)")
+                    Text("\(rightValue)")
                         .font(MeloFonts.anton(28))
                         .foregroundColor(result.riskLevel.labColor)
                     Text("%")
@@ -622,21 +637,6 @@ struct NewHomeView: View {
     private func triggerPrimaryImport() {
         AnalyticsManager.shared.track("diagnose_cta_tap", properties: ["source": "new_home_card"])
         viewModel.isImporting = true
-    }
-
-    /// LINE アプリを開く (ユーザーがトーク履歴をエクスポートできるように)。
-    /// アプリが未インストールなら何もしない (誤って App Store に遷移しない)。
-    private func openLineForExport() {
-        AnalyticsManager.shared.track("diagnose_cta_tap", properties: ["source": "new_home_card_line"])
-        // LINE の代表的な URL scheme を順に試す。最初に canOpenURL で真が返る候補で open する。
-        let candidates = ["line://", "line://nv/chat", "https://line.me/R/"]
-        for raw in candidates {
-            guard let url = URL(string: raw) else { continue }
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-                return
-            }
-        }
     }
 
     /// 指定した診断履歴を SwiftData から削除する。
@@ -793,7 +793,8 @@ struct NewHomeView: View {
     /// false ならポップアップを表示し、ユーザー選択に応じて遷移を分岐する。
     private func handleCTATap() {
         if suppressUsageGuidePrompt {
-            openLineForExport()
+            // 中央 CTA は LINE アプリを開く（ファイル取込みは別途「ファイルから」導線が担う）。
+            openLineApp()
             return
         }
         usageGuidePromptSource = .ctaCard
@@ -813,6 +814,24 @@ struct NewHomeView: View {
         promptDontShowAgain = false
         withAnimation(.easeOut(duration: 0.2)) {
             showUsageGuidePrompt = true
+        }
+    }
+
+    /// LINE アプリを開く（UsageGuideView.openLineApp() と同じ安全パターン）。
+    /// line:// scheme のみ使用。https フォールバック (line.me) は LINE 未インストール端末で
+    /// Safari に飛んでアプリから離脱するため使わず、App Store の LINE ページへ誘導する。
+    private func openLineApp() {
+        AnalyticsManager.shared.track("home_cta_open_line_tap")
+        let candidates = ["line://nv/chat", "line://"]
+        for raw in candidates {
+            guard let url = URL(string: raw) else { continue }
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+                return
+            }
+        }
+        if let storeURL = URL(string: "https://apps.apple.com/jp/app/id443904275") {
+            UIApplication.shared.open(storeURL)
         }
     }
 
@@ -841,8 +860,11 @@ struct NewHomeView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             switch source {
             case .ctaCard:
-                openLineForExport()
+                // 中央 CTA「LINEで始める」は LINE アプリを開く。LINE 未インストール端末は
+                // line:// scheme が開けないので App Store の LINE ページへ誘導（Safari 離脱しない）。
+                openLineApp()
             case .fileOpen:
+                // 「ファイルから」導線は従来どおりファイル取込み。
                 viewModel.isImporting = true
             case .none:
                 break

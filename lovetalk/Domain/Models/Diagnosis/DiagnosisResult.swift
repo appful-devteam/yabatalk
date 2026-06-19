@@ -321,6 +321,9 @@ struct DiagnosisResult: Identifiable, Codable, Hashable, Sendable {
     let darkHumorAdvice: String
     let nextSteps: [String]
     let disclaimer: String
+    /// データタブ用の詳細統計。診断時（解析中画面の裏）に計算して持たせる。
+    /// 旧データとの後方互換のため optional（未計算なら View 側でフォールバック計算）。
+    let detailedStatistics: DetailedStatistics?
 
     init(
         id: UUID = UUID(),
@@ -359,7 +362,8 @@ struct DiagnosisResult: Identifiable, Codable, Hashable, Sendable {
         quotedEvidences: [QuotedEvidence],
         darkHumorAdvice: String,
         nextSteps: [String] = [],
-        disclaimer: String = "この結果はトーク内容から見た構造分析であり、法的な断定ではありません。"
+        disclaimer: String = "この結果はトーク内容から見た構造分析であり、法的な断定ではありません。",
+        detailedStatistics: DetailedStatistics? = nil
     ) {
         self.id = id
         self.createdAt = createdAt
@@ -388,7 +392,13 @@ struct DiagnosisResult: Identifiable, Codable, Hashable, Sendable {
         self.darkHumorAdvice = darkHumorAdvice
         self.nextSteps = nextSteps
         self.disclaimer = disclaimer
+        self.detailedStatistics = detailedStatistics
     }
+
+    // detailedStatistics は Hashable ではないため合成 Hashable が壊れる。
+    // 結果は id で一意なので、id ベースの同一性判定にする（NavigationPath 用）。
+    static func == (lhs: DiagnosisResult, rhs: DiagnosisResult) -> Bool { lhs.id == rhs.id }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
 
     /// 主分類 + 補助分類のラベル（表向き UI 用、例: 「セクハラ / パワハラ」）
     var harassmentLabel: String {
@@ -399,6 +409,35 @@ struct DiagnosisResult: Identifiable, Codable, Hashable, Sendable {
             return "\(first.displayName)\(first.trailingSuffix)"
         }
         return parts.joined(separator: " / ")
+    }
+
+    /// スコアページ最上部の二者比較カードと完全に同じロジックで「相手のハラスメント割合」(%) を返す。
+    /// 自分と相手の合計を 100 とした偏りで、selfShare + partnerShare = 100。
+    /// - selfName: 分析で同定した自分の名前（無ければ UserPreferredName へフォールバック）
+    /// - Returns: 相手の割合（0-100）。話者が 2 人未満で算出不能なら nil。
+    func partnerHarassmentShare(selfName: String?) -> Int? {
+        let verdicts = speakerVerdicts
+        guard verdicts.count >= 2 else { return nil }
+        let sn = (selfName?.isEmpty == false) ? selfName : UserPreferredName.resolve()
+
+        let selfV: SpeakerVerdict
+        let partnerV: SpeakerVerdict
+        if let sn, let me = verdicts.first(where: { $0.speakerName == sn }),
+           let other = verdicts.filter({ $0.id != me.id }).max(by: { $0.score < $1.score }) {
+            selfV = me
+            partnerV = other
+        } else {
+            // 自分が特定できない → スコア上位 2 人
+            let sorted = verdicts.sorted { $0.score > $1.score }
+            selfV = sorted[0]
+            partnerV = sorted[1]
+        }
+
+        let s = max(0, selfV.score)
+        let p = max(0, partnerV.score)
+        guard s + p > 0 else { return 50 }
+        let selfShare = Int((Double(s) / Double(s + p) * 100).rounded())
+        return 100 - selfShare
     }
 
     /// 闇成分ミックスを score 降順で並べた表示用配列（上位 N 件）

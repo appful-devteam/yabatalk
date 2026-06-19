@@ -293,7 +293,14 @@ struct BoardFeedView: View {
                 // onSubmit は渡さず V2 内部の Firestore 投稿経路に任せ、
                 // 投稿成功時のみ onPosted 経由でトーストを表示する。
                 BoardComposeViewV2(
-                    onPosted: {
+                    onPosted: { newPost in
+                        // 楽観的挿入: リスナー到達を待たずに即フィードへ反映（2.1(a)「投稿が反映されない」対策）。
+                        // 重複はリスナーの merge 側で in-place 更新されるため二重表示にならない。
+                        if !posts.contains(where: { $0.id == newPost.id }) {
+                            withAnimation(.easeOut(duration: 0.25)) {
+                                posts.insert(newPost, at: 0)
+                            }
+                        }
                         showToast(String(localized: "投稿しました！", bundle: LanguageManager.appBundle))
                     },
                     onRequestOpenConsultRoom: {

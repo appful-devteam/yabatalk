@@ -260,7 +260,8 @@ struct FactorDetector: Sendable {
                         messageId: head.id,
                         speakerName: head.senderName,
                         timestamp: head.timestamp,
-                        evidence: "（夜間連投 \(nightFromOther.count) 件）",
+                        // ラベルだけでなく実際の発言（最初の夜間メッセージ本文）を載せる。
+                        evidence: "（夜間連投 \(nightFromOther.count) 件）" + head.content,
                         matchedPattern: "night flood \(nightFromOther.count)",
                         severity: .high
                     )

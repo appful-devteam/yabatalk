@@ -192,4 +192,70 @@ extension String {
     var textLength: Int {
         count
     }
+
+    // MARK: - Content Moderation (App Store Guideline 1.2)
+
+    /// UGC（掲示板 / 相談部屋）投稿に客観的に不適切なコンテンツが含まれるか。
+    /// App Store Guideline 1.2 が要求する「objectionable content を filter する手段」。
+    /// 完全網羅ではなく一次フィルタ。残りは通報 / ブロック / 24h 運営対応でカバーする。
+    var containsObjectionableContent: Bool {
+        ContentModeration.isObjectionable(self)
+    }
+}
+
+// MARK: - Content Moderation
+
+/// UGC 投稿の一次自動フィルタ。差別語・性的露骨表現・暴力的脅迫・個人情報晒し等の
+/// 客観的に不適切な語を検出する。App Store Guideline 1.2 対応。
+/// 検出は語の単純包含。誤検出より見逃しを避けるため緩めだが、通報導線と併用する前提。
+enum ContentModeration {
+    /// データ層 chokepoint で投稿を拒否する際に投げるエラー。UI 側でユーザー向け文言を出す。
+    enum ModerationError: LocalizedError {
+        case objectionableContent
+
+        var errorDescription: String? {
+            String(
+                localized: "不適切な表現が含まれているため投稿できません。誹謗中傷・差別・性的・暴力的な内容は禁止されています。",
+                bundle: LanguageManager.appBundle
+            )
+        }
+    }
+
+    /// 投稿をブロックすべきか判定。正規化（小文字化 / 全角→半角 / 記号除去）後に語を照合。
+    static func isObjectionable(_ text: String) -> Bool {
+        let normalized = normalize(text)
+        guard !normalized.isEmpty else { return false }
+        return blocklist.contains { normalized.contains($0) }
+    }
+
+    /// 大文字小文字・記号・空白を吸収して照合精度を上げる。
+    private static func normalize(_ text: String) -> String {
+        let folded = text.folding(options: [.caseInsensitive, .widthInsensitive], locale: nil)
+        // 区切り回避（s.e.x 等）対策で記号・空白を除去
+        let stripped = folded.unicodeScalars.filter { scalar in
+            CharacterSet.alphanumerics.contains(scalar)
+                || (scalar.value >= 0x3040 && scalar.value <= 0x30FF)   // ひらがな・カタカナ
+                || (scalar.value >= 0x4E00 && scalar.value <= 0x9FFF)   // 漢字
+        }
+        return String(String.UnicodeScalarView(stripped)).lowercased()
+    }
+
+    /// ブロック対象語（正規化済みの小文字で保持）。差別・性的・暴力脅迫・自傷誘発・晒し系。
+    /// 日常会話で誤爆しやすい一般語は避け、客観的に不適切な語に絞る。
+    private static let blocklist: [String] = [
+        // 差別・侮蔑（日本語）
+        "死ね", "しね", "殺す", "ころす", "殺してやる", "きちがい", "気違い", "キチガイ",
+        "障害者死", "知障", "池沼", "土人", "在日死", "朝鮮人死", "部落民",
+        // 性的・露骨（日本語）
+        "セックスしよ", "ヤレる", "援交", "援助交際", "パパ活募集", "裏垢", "売春", "買春",
+        "child porn", "児童ポルノ", "ロリ画像", "わいせつ画像",
+        // 暴力・脅迫
+        "ぶっ殺", "刺し殺", "レイプ", "強姦", "リンチ",
+        // 自傷・自殺誘発
+        "自殺方法", "死に方教え", "一緒に死の", "首吊り方法",
+        // 個人情報晒し・晒し行為
+        "住所特定", "電話番号晒", "本名晒",
+        // 英語の代表的スラー / 露骨表現
+        "kill yourself", "kys", "rape", "child porn", "nigger", "faggot", "retard",
+    ]
 }

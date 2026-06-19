@@ -77,6 +77,25 @@ final class GeminiService: @unchecked Sendable {
         return try await callGeminiAPI(prompt: prompt, feature: .summary)
     }
 
+    /// 月別のハラスメント傾向サマリーを生成（ハラスメントーク専用）。
+    /// 文脈からハラスメント度合いを鑑定し、該当する発言を抜粋して月単位でまとめる。
+    func generateHarassmentSummary(
+        messages: [ChatMessage],
+        selfName: String,
+        partnerName: String,
+        yearMonth: String,
+        language: ChatLanguage = .japanese
+    ) async throws -> String {
+        let prompt = buildHarassmentSummaryPrompt(
+            messages: messages,
+            selfName: selfName,
+            partnerName: partnerName,
+            yearMonth: yearMonth,
+            language: language
+        )
+        return try await callGeminiAPI(prompt: prompt, maxTokens: 1600, temperature: 0.6, feature: .summary)
+    }
+
     // MARK: - Cloud Function Call
 
     private func callGeminiAPI(
@@ -249,6 +268,81 @@ final class GeminiService: @unchecked Sendable {
             - 只提及对话中实际出现的话题
 
             【聊天记录】
+            \(conversationText)
+            """
+        }
+    }
+
+    private func buildHarassmentSummaryPrompt(
+        messages: [ChatMessage],
+        selfName: String,
+        partnerName: String,
+        yearMonth: String,
+        language: ChatLanguage = .japanese
+    ) -> String {
+        let sampleMessages = messages.prefix(200)
+        var conversationText = ""
+        for message in sampleMessages where message.eventType == .text {
+            conversationText += "[\(message.senderName)]: \(message.content)\n"
+        }
+
+        switch language {
+        case .japanese:
+            return """
+            あなたはトークを読み解く毒見鑑定アシスタントです。
+            \(selfName)と\(partnerName)の\(yearMonth)のLINEトークを読み、その月のやりとりを鑑定してまとめてください。
+            ハラスメント（パワハラ/モラハラ/セクハラ等）の傾向があれば具体的に解説し、
+            ハラスメントらしい発言が無ければ、その月の会話内容を普通にやさしくまとめてください。
+
+            【出力形式】必ずこの順・この見出しで出力する（見出し語は変えない）:
+
+            ハラスメント度: 〇〇（その月の空気感を一言で。例「モラハラ寄りの圧が強め」「ときどき棘はあるが概ね穏やか」「ハラスメント要素はほぼ無し」）
+
+            気になった発言:
+            ・「実際の発言」→ どこがどう引っかかるのか、どんな心理や力関係が透けて見えるのかを2文程度でやわらかく解説（40〜90字）
+            ・「実際の発言」→ 同じ要領で解説
+
+            総評: その月の二人のやりとりの流れや関係性を、寄り添いながら3〜4文で振り返る。
+
+            【ルール】
+            - 引用する発言は実際にトークに登場したものだけ（捏造・改変は禁止）。多くても4件まで。
+            - 解説は決めつけず「〜の傾向がある」「〜と取れる」という言い回しにする。特定個人を断定的に「加害者」と呼ばない。
+            - これは医学的・心理学的診断ではなくエンタメ鑑定。やわらかい言葉で、でも具体的に書く。
+            - ★ハラスメントらしい発言が見当たらない月は、無理に粗探しをしないこと。その場合は
+              「気になった発言:」に「・この月は気になるハラスメント発言なし」と1行だけ書き、
+              「総評」をその月の“普通の会話サマリー”にする
+              （どんな話題で盛り上がったか、どんな雰囲気だったか、二人の距離感などを4〜6文で温かくまとめる）。
+            - 絵文字は使わない。余計な前置き・後書きは書かない。
+
+            【トーク履歴】
+            \(conversationText)
+            """
+
+        default:
+            return """
+            You are an entertainment-style "toxicity inspector" reading a chat.
+            Read the LINE chat between \(selfName) and \(partnerName) in \(yearMonth) and write a summary of that month's exchange.
+            If there are signs of harassment (power / moral / sexual harassment, etc.), explain them concretely.
+            If there are no harassment-like messages, simply write a warm, normal summary of what they talked about.
+
+            【Output format】Follow this order and these exact labels:
+
+            Harassment level: ___ (one short phrase capturing the month's mood, e.g. "Leans controlling / moral-harassment", "Occasionally barbed but mostly calm", "Almost no harassment")
+
+            Notable messages:
+            ・"actual message" -> explain in about 2 sentences what feels off and what psychology or power dynamic shows through
+            ・"actual message" -> same approach
+
+            Overall: look back on the month's exchange and the two people's relationship in 3-4 supportive sentences.
+
+            【Rules】
+            - Only quote messages that actually appear in the chat (no fabrication). At most 4.
+            - Don't be definitive; use "tends to", "could be read as". Never flatly call someone an "abuser".
+            - This is entertainment, not a medical or psychological diagnosis. Gentle wording, but concrete.
+            - ★ If no harassment-like messages stand out, do NOT force nitpicks. In that case write a single line under Notable messages: "・No notable harmful messages this month", and make "Overall" a normal, warm summary of the month's conversation (topics, mood, how close the two feel) in 4-6 sentences.
+            - No emojis. No extra preamble or postscript.
+
+            【Chat history】
             \(conversationText)
             """
         }

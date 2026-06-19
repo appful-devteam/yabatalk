@@ -266,7 +266,8 @@ struct ChatListView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.bottom, 4)
 
-                // バナー広告 (相手カードの一番上に配置)
+                // バナー広告（相手カードの一番上に配置）。非課金 & ads_enabled のときだけ表示され、
+                // それ以外は EmptyView なので隙間は生まれない（広告 ON 時のみ広告分の高さを取る）。
                 AdBannerContainer(adUnitID: AdUnitID.bannerChat)
                     .padding(.bottom, 4)
 
@@ -275,7 +276,7 @@ struct ChatListView: View {
                 }
             }
             .padding(.horizontal, 16)
-            .padding(.top, 12)
+            .padding(.top, 8)
             .padding(.bottom, 120)
         }
     }

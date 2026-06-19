@@ -65,6 +65,11 @@ enum MeloColors {
         )
         /// バーのトラック（未充填部）
         static let track = Color(hex: "23231C")
+
+        // 二者比較（自分 vs 相手）の固定色。スコアタブの相対比較・分割バーで使う。
+        // Figma 診断結果リデザイン（node 43:2）の値に合わせる。
+        static let selfTint    = Color(hex: "2E93FF") // 自分（ブルー）
+        static let partnerTint = Color(hex: "FF2E6B") // 相手（ピンク）
     }
 
     // MARK: - Text

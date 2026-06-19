@@ -1,4 +1,5 @@
 import SwiftUI
+import AppTrackingTransparency
 
 // MARK: - Main Tab
 /// 5タブ構成: ホーム / 相談部屋 / 診断する（中央） / 擬似チャット / マイページ
@@ -255,14 +256,23 @@ struct RootView: View {
     @StateObject private var versionGate = AppVersionGate.shared
     @Environment(\.modelContext) private var modelContext
     @Environment(\.openURL) private var openURL
+    @Environment(\.scenePhase) private var scenePhase
     // onboarding usage guide is now gated by NewHomeView's diagnose CTA / file open popup
     @State private var showSurvey = false
     @State private var showFirstLaunchPaywall = false
     @State private var isFirstLaunch = false
     @State private var showTermsConsent = false
     @State private var showNotificationPrompt = false
+    /// ATT 許可ダイアログを一度だけ要求するためのガード（2.1 対策）
+    @State private var didRequestATT = false
 
     private let hasLaunchedBeforeKey = "hasLaunchedBefore"
+
+    /// オンボーディングの全画面カバーが表示中か。これらが出ている間は ATT を要求しない
+    /// （fullScreenCover の上に ATT システムダイアログを出せず、無音で握り潰されるため）。
+    private var isOnboardingCoverShown: Bool {
+        showSurvey || showNotificationPrompt || showTermsConsent || showFirstLaunchPaywall
+    }
 
     var body: some View {
         // 強制アップデート: Supabase の minimum_supported_version より下なら全画面ロック。
@@ -306,8 +316,8 @@ struct RootView: View {
                                 case .analyzing(let session, let selfName):
                                     AnalyzingView(session: session, selfName: selfName)
 
-                                case .diagnosis(let result, _):
-                                    DiagnosisResultView(result: result)
+                                case .diagnosis(let result, let session):
+                                    DiagnosisResultView(result: result, session: session)
 
                                 case .personaChat(let result, let session):
                                     PersonaChatView(
@@ -384,23 +394,26 @@ struct RootView: View {
             .sheet(isPresented: $coordinator.showingSubscription) {
                 SubscriptionView(source: coordinator.subscriptionSource)
             }
-            .alert(
-                String(localized: "めろとーくを気に入りましたか？", bundle: LanguageManager.appBundle),
-                isPresented: $coordinator.showPreReviewAlert
-            ) {
-                Button(String(localized: "はい", bundle: LanguageManager.appBundle)) {
-                    ReviewManager.requestReview()
-                    AnalyticsManager.shared.track("pre_review_prompt", properties: ["action": "yes"])
-                }
-                Button(
-                    String(localized: "いいえ", bundle: LanguageManager.appBundle),
-                    role: .cancel
-                ) {
-                    ReviewManager.recordPromptShown()
-                    AnalyticsManager.shared.track("pre_review_prompt", properties: ["action": "no"])
-                }
-            } message: {
-                Text(String(localized: "よろしければApp Storeでの評価にご協力ください。", bundle: LanguageManager.appBundle))
+            // アプリ内評価（2段プロンプト）: 初回診断後にホーム復帰で表示（skill: inapp-review-prompt）。
+            // Page1 はい→OSのrequestReview / いいえ→フィードバック(mailto)。表示した時点で
+            // 連続表示防止のためリクエスト日を記録する。
+            .sheet(isPresented: $coordinator.showPreReviewAlert, onDismiss: {
+                ReviewManager.recordPromptShown()
+            }) {
+                InAppReviewPromptView(
+                    appName: Constants.App.name,
+                    feedbackChannel: MailtoFeedbackChannel(
+                        recipient: Constants.App.supportEmail,
+                        subject: String(localized: "【ハラスメントーク】フィードバック", bundle: LanguageManager.appBundle)),
+                    feedbackCategories: [
+                        String(localized: "診断結果が分かりにくい", bundle: LanguageManager.appBundle),
+                        String(localized: "バグや不具合", bundle: LanguageManager.appBundle),
+                        String(localized: "UI が分かりにくい", bundle: LanguageManager.appBundle),
+                        String(localized: "機能が足りない", bundle: LanguageManager.appBundle),
+                        String(localized: "動作が重い", bundle: LanguageManager.appBundle),
+                        String(localized: "その他", bundle: LanguageManager.appBundle)
+                    ]
+                )
             }
             // onboarding usage guide is now gated by NewHomeView's diagnose CTA / file open popup
             .fullScreenCover(isPresented: $showSurvey, onDismiss: {
@@ -494,6 +507,34 @@ struct RootView: View {
                 announcementManager.trigger(triggerName)
             }
         }
+        // ATT（App Tracking Transparency）要求は、オンボーディングの全画面カバーが全て閉じ、
+        // シーンが active になってから行う。起動直後 / カバー表示中に要求すると iOS が
+        // システムダイアログを表示できず無音で失敗する（2.1 リジェクトの原因だった）。
+        .onChange(of: scenePhase) { _ in requestATTIfReady() }
+        .onChange(of: isOnboardingCoverShown) { _ in requestATTIfReady() }
+    }
+
+    /// 条件（scene active / オンボカバー非表示 / 未要求 / 未決定）が揃った時のみ ATT を 1 度要求する。
+    private func requestATTIfReady() {
+        guard !didRequestATT else { return }
+        guard scenePhase == .active else { return }
+        guard !isOnboardingCoverShown else { return }
+        guard ATTrackingManager.trackingAuthorizationStatus == .notDetermined else {
+            didRequestATT = true
+            return
+        }
+        didRequestATT = true
+        // フルスクリーンカバーの dismiss アニメーション完了を待ってから要求する。
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            ATTrackingManager.requestTrackingAuthorization { _ in
+                Task { @MainActor in
+                    await AdGate.shared.refresh()
+                    if AdGate.shared.adsEnabled {
+                        AppOpenAdManager.shared.loadAd()
+                    }
+                }
+            }
+        }
     }
 
     private func checkFirstLaunch() {
@@ -582,6 +623,7 @@ enum YabatalkDebug {
         "2024/1/16(火)",
         "0:15\t田中課長\t返信遅いんだよ。お前みたいな価値ないやつ、ほんと存在が邪魔",
         "0:20\t自分\t申し訳ありません、すぐ対応します",
+        "0:22\t自分\tさすがにそれは言い過ぎじゃないですか。こっちも限界なんですけど",
         "0:21\t田中課長\tこのこと誰にも言うなよ。言ったらどうなるか分かってるよな",
         "7:00\t田中課長\tあと、この前の飲み会の写真、SNSに晒してやろうか笑"
     ].joined(separator: "\n")

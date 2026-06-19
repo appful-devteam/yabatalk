@@ -1,0 +1,69 @@
+{
+  "subscriptionGroups": [
+    {
+      "referenceName": "Premium",
+      "localizations": {
+        "ja": {
+          "name": "ハラスメントーク プレミアム",
+          "customAppName": "ハラスメントーク"
+        }
+      }
+    }
+  ],
+  "subscriptions": [
+    {
+      "productId": "yaba.weekly",
+      "localizations": {
+        "ja": {
+          "name": "プレミアム（週額）",
+          "description": "診断無制限・詳細データ・広告非表示"
+        }
+      }
+    },
+    {
+      "productId": "yaba.monthly",
+      "localizations": {
+        "ja": {
+          "name": "プレミアム（月額）",
+          "description": "診断無制限・詳細データ・広告非表示"
+        }
+      }
+    },
+    {
+      "productId": "yaba.yearly",
+      "localizations": {
+        "ja": {
+          "name": "プレミアム（年額）",
+          "description": "診断無制限・詳細データ・広告非表示。年額でお得"
+        }
+      }
+    },
+    {
+      "productId": "yaba.plus.weekly",
+      "localizations": {
+        "ja": {
+          "name": "プレミアム+（週額）",
+          "description": "全機能無制限。相談・AIチャットも大幅増"
+        }
+      }
+    },
+    {
+      "productId": "yaba.plus.monthly",
+      "localizations": {
+        "ja": {
+          "name": "プレミアム+（月額）",
+          "description": "全機能無制限。相談・AIチャットも大幅増"
+        }
+      }
+    },
+    {
+      "productId": "yaba.plus.yearly",
+      "localizations": {
+        "ja": {
+          "name": "プレミアム+（年額）",
+          "description": "全機能無制限。相談・AIチャットも大幅増。年額でお得"
+        }
+      }
+    }
+  ]
+}

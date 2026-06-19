@@ -1638,6 +1638,10 @@ struct BoardPostDetailView: View {
                     )
                 }
             }
+        } catch let error as ContentModeration.ModerationError {
+            // App Store Guideline 1.2: 不適切表現で返信がブロックされた
+            HapticManager.error()
+            showToast(error.errorDescription ?? "", isError: true)
         } catch {
             print("[Board] Failed to submit reply: \(error)")
             HapticManager.error()

@@ -33,6 +33,20 @@ enum HarassmentCategory: String, Codable, CaseIterable, Sendable {
         case .other: return "🌀"
         }
     }
+
+    /// この分類が「どういうハラスメントか」の一言説明（スコアタブの分類カードで展開表示）。
+    var explanation: String {
+        switch self {
+        case .power:
+            return "立場や力関係を使って、相手を追い詰めたり評価・居場所で脅したりするタイプ。"
+        case .sexual:
+            return "性的な話題・距離感の踏み込みや、恋愛と評価をくっつけて効かせるタイプ。"
+        case .moral:
+            return "罪悪感・束縛・「気のせい」での上書きなど、心理的にじわじわ削るタイプ。"
+        case .other:
+            return "役割の押しつけ・お酒・客の立場・プライバシー侵害など、上記に収まらない圧。"
+        }
+    }
 }
 
 /// その他のサブ分類

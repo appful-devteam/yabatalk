@@ -8,7 +8,6 @@
 import SwiftUI
 import SwiftData
 import GoogleMobileAds
-import AppTrackingTransparency
 
 @main
 struct lovetalkApp: App {
@@ -31,13 +30,10 @@ struct lovetalkApp: App {
                     fileImportManager.handleIncomingFile(url: url)
                 }
                 .task {
-                    // ① ATT（トラッキング許可）を最初の広告リクエスト前に要求。
-                    //    許可されれば IDFA を使ったパーソナライズ広告になる（任意・拒否でも広告は出る）。
-                    await requestTrackingAuthorizationIfNeeded()
-
-                    // ② Remote Config の ads_enabled を取得して広告ゲートを更新。
-                    //    init() 時点では gate=false で App Open ロードはスキップされているので、
-                    //    ここで true になった場合は改めてロードを試みる。
+                    // ATT（トラッキング許可）の要求は RootView 側で「オンボーディングの全画面カバーが
+                    // 閉じ、シーンが active になってから」行う（requestATTIfReady）。ここで起動直後に
+                    // 要求するとオンボの fullScreenCover と衝突してダイアログが無音で出ず、2.1 リジェクト
+                    // の原因になっていた。広告ゲートの更新も ATT 応答後に RootView 側で行う。
                     await AdGate.shared.refresh()
                     if AdGate.shared.adsEnabled {
                         AppOpenAdManager.shared.loadAd()
@@ -47,15 +43,6 @@ struct lovetalkApp: App {
         .modelContainer(SwiftDataContainer.shared.container)
     }
 
-    /// App Tracking Transparency の許可ダイアログを（未決定時のみ）表示する。
-    /// ポップアップはアプリが foreground active の時しか出ないため、起動直後は少し待ってから要求する。
-    @MainActor
-    private func requestTrackingAuthorizationIfNeeded() async {
-        guard ATTrackingManager.trackingAuthorizationStatus == .notDetermined else { return }
-        // 起動直後はまだ active になりきっていないことがあるので 0.5s 待機（待たないとダイアログが出ないことがある）。
-        try? await Task.sleep(nanoseconds: 500_000_000)
-        _ = await ATTrackingManager.requestTrackingAuthorization()
-    }
 }
 
 // MARK: - File Import Manager
