@@ -14,28 +14,28 @@ enum RelationshipContext: String, Codable, CaseIterable, Sendable {
 
     var displayName: String {
         switch self {
-        case .romantic:    return "恋人・配偶者"
-        case .exRomantic:  return "元恋人"
-        case .family:      return "家族"
-        case .friend:      return "友人・親友"
-        case .bossOverMe:  return "上司・先輩"
-        case .subToMe:     return "部下・後輩"
-        case .colleague:   return "同僚"
-        case .unknown:     return "指定しない"
+        case .romantic:    return String(localized: "恋人・配偶者", bundle: LanguageManager.appBundle)
+        case .exRomantic:  return String(localized: "元恋人", bundle: LanguageManager.appBundle)
+        case .family:      return String(localized: "家族", bundle: LanguageManager.appBundle)
+        case .friend:      return String(localized: "友人・親友", bundle: LanguageManager.appBundle)
+        case .bossOverMe:  return String(localized: "上司・先輩", bundle: LanguageManager.appBundle)
+        case .subToMe:     return String(localized: "部下・後輩", bundle: LanguageManager.appBundle)
+        case .colleague:   return String(localized: "同僚", bundle: LanguageManager.appBundle)
+        case .unknown:     return String(localized: "指定しない", bundle: LanguageManager.appBundle)
         }
     }
 
     /// UI で短く出す用
     var shortName: String {
         switch self {
-        case .romantic:    return "恋人"
-        case .exRomantic:  return "元恋人"
-        case .family:      return "家族"
-        case .friend:      return "友人"
-        case .bossOverMe:  return "上司"
-        case .subToMe:     return "部下"
-        case .colleague:   return "同僚"
-        case .unknown:     return "未指定"
+        case .romantic:    return String(localized: "恋人", bundle: LanguageManager.appBundle)
+        case .exRomantic:  return String(localized: "元恋人", bundle: LanguageManager.appBundle)
+        case .family:      return String(localized: "家族", bundle: LanguageManager.appBundle)
+        case .friend:      return String(localized: "友人", bundle: LanguageManager.appBundle)
+        case .bossOverMe:  return String(localized: "上司", bundle: LanguageManager.appBundle)
+        case .subToMe:     return String(localized: "部下", bundle: LanguageManager.appBundle)
+        case .colleague:   return String(localized: "同僚", bundle: LanguageManager.appBundle)
+        case .unknown:     return String(localized: "未指定", bundle: LanguageManager.appBundle)
         }
     }
 
@@ -55,28 +55,28 @@ enum RelationshipContext: String, Codable, CaseIterable, Sendable {
     /// アウトプットで「相手」を呼ぶときの一般化された主語
     var partnerNoun: String {
         switch self {
-        case .romantic:    return "パートナー"
-        case .exRomantic:  return "元パートナー"
-        case .family:      return "ご家族"
-        case .friend:      return "友達"
-        case .bossOverMe:  return "上司・先輩"
-        case .subToMe:     return "部下・後輩"
-        case .colleague:   return "同僚"
-        case .unknown:     return "相手"
+        case .romantic:    return String(localized: "パートナー", bundle: LanguageManager.appBundle)
+        case .exRomantic:  return String(localized: "元パートナー", bundle: LanguageManager.appBundle)
+        case .family:      return String(localized: "ご家族", bundle: LanguageManager.appBundle)
+        case .friend:      return String(localized: "友達", bundle: LanguageManager.appBundle)
+        case .bossOverMe:  return String(localized: "上司・先輩", bundle: LanguageManager.appBundle)
+        case .subToMe:     return String(localized: "部下・後輩", bundle: LanguageManager.appBundle)
+        case .colleague:   return String(localized: "同僚", bundle: LanguageManager.appBundle)
+        case .unknown:     return String(localized: "相手", bundle: LanguageManager.appBundle)
         }
     }
 
     /// 「〜から見て」を出すための短文
     var contextLabel: String {
         switch self {
-        case .romantic:    return "恋人視点"
-        case .exRomantic:  return "元恋人視点"
-        case .family:      return "家族視点"
-        case .friend:      return "友人視点"
-        case .bossOverMe:  return "上司→自分視点"
-        case .subToMe:     return "部下→自分視点"
-        case .colleague:   return "同僚視点"
-        case .unknown:     return "関係性指定なし"
+        case .romantic:    return String(localized: "恋人視点", bundle: LanguageManager.appBundle)
+        case .exRomantic:  return String(localized: "元恋人視点", bundle: LanguageManager.appBundle)
+        case .family:      return String(localized: "家族視点", bundle: LanguageManager.appBundle)
+        case .friend:      return String(localized: "友人視点", bundle: LanguageManager.appBundle)
+        case .bossOverMe:  return String(localized: "上司→自分視点", bundle: LanguageManager.appBundle)
+        case .subToMe:     return String(localized: "部下→自分視点", bundle: LanguageManager.appBundle)
+        case .colleague:   return String(localized: "同僚視点", bundle: LanguageManager.appBundle)
+        case .unknown:     return String(localized: "関係性指定なし", bundle: LanguageManager.appBundle)
         }
     }
 
@@ -171,21 +171,21 @@ enum RelationshipContext: String, Codable, CaseIterable, Sendable {
     var openingFlavor: String {
         switch self {
         case .romantic:
-            return "「恋人ならこのくらい」って言葉が刃物に変わる関係です。重さの基準を恋愛モードに合わせて読みます。"
+            return String(localized: "「恋人ならこのくらい」って言葉が刃物に変わる関係です。重さの基準を恋愛モードに合わせて読みます。", bundle: LanguageManager.appBundle)
         case .exRomantic:
-            return "別れたあとの残響は、現役の関係よりも一段重く響きます。脅し・束縛系は通常より強めに読みます。"
+            return String(localized: "別れたあとの残響は、現役の関係よりも一段重く響きます。脅し・束縛系は通常より強めに読みます。", bundle: LanguageManager.appBundle)
         case .family:
-            return "家族の関係は逃げ場が物理的に狭いので、罪悪感操作・ガスライティング系は通常より重く効きます。"
+            return String(localized: "家族の関係は逃げ場が物理的に狭いので、罪悪感操作・ガスライティング系は通常より重く効きます。", bundle: LanguageManager.appBundle)
         case .friend:
-            return "友達同士のイジリは「ノリ」と「圧」の境界が曖昧。境界線越えと集団排除を中心に読みます。"
+            return String(localized: "友達同士のイジリは「ノリ」と「圧」の境界が曖昧。境界線越えと集団排除を中心に読みます。", bundle: LanguageManager.appBundle)
         case .bossOverMe:
-            return "立場と評価をベースに会話が動くので、業務指導と人格攻撃の境界がそのまま結果に響きます。"
+            return String(localized: "立場と評価をベースに会話が動くので、業務指導と人格攻撃の境界がそのまま結果に響きます。", bundle: LanguageManager.appBundle)
         case .subToMe:
-            return "下から上への圧（逆パワハラ・カスハラ風）は通常の検出だと埋もれがち。集団排除・脅し系を強めに読みます。"
+            return String(localized: "下から上への圧（逆パワハラ・カスハラ風）は通常の検出だと埋もれがち。集団排除・脅し系を強めに読みます。", bundle: LanguageManager.appBundle)
         case .colleague:
-            return "横並び関係なので、性別役割の押し付け・お酒・グループ排除あたりが効きやすい構造です。"
+            return String(localized: "横並び関係なので、性別役割の押し付け・お酒・グループ排除あたりが効きやすい構造です。", bundle: LanguageManager.appBundle)
         case .unknown:
-            return "関係性プリオールはオフ。中立スコアで読みます。"
+            return String(localized: "関係性プリオールはオフ。中立スコアで読みます。", bundle: LanguageManager.appBundle)
         }
     }
 

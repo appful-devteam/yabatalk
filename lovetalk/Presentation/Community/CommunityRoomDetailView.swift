@@ -41,10 +41,10 @@ struct CommunityRoomPost: Identifiable, Hashable {
     /// 表示用相対時刻。
     func relativeTime(now: Date = Date()) -> String {
         let diff = now.timeIntervalSince(postedAt)
-        if diff < 60 { return "たった今" }
-        if diff < 3600 { return "\(Int(diff / 60))分" }
-        if diff < 86400 { return "\(Int(diff / 3600))時間" }
-        return "\(Int(diff / 86400))日"
+        if diff < 60 { return String(localized: "たった今", bundle: LanguageManager.appBundle) }
+        if diff < 3600 { return String(format: String(localized: "%lld分", bundle: LanguageManager.appBundle), Int(diff / 60)) }
+        if diff < 86400 { return String(format: String(localized: "%lld時間", bundle: LanguageManager.appBundle), Int(diff / 3600)) }
+        return String(format: String(localized: "%lld日", bundle: LanguageManager.appBundle), Int(diff / 86400))
     }
 
     /// 旧 CommunityRoomPost を新フローで描画する `BoardPost` に変換する。
@@ -308,7 +308,7 @@ final class CommunityRoomDetailViewModel: ObservableObject {
             id: UUID().uuidString,
             roomId: roomId,
             authorId: authorId,
-            authorName: authorName.isEmpty ? "あなた" : authorName,
+            authorName: authorName.isEmpty ? String(localized: "あなた", bundle: LanguageManager.appBundle) : authorName,
             authorAvatarSymbol: "person.fill",
             authorAvatarColor: "F19EC2",
             authorMbti: mbti,
@@ -698,7 +698,7 @@ struct CommunityRoomDetailView: View {
             .padding(.horizontal, 20)
             .padding(.top, 14)
 
-            Text(displayedRoom.subtitle.isEmpty ? "失恋して、きつい人。ここで一緒に元気になりましょ" : displayedRoom.subtitle)
+            Text(displayedRoom.subtitle.isEmpty ? String(localized: "失恋して、きつい人。ここで一緒に元気になりましょ", bundle: LanguageManager.appBundle) : displayedRoom.subtitle)
                 .font(MeloFonts.zenMaruRegular(10))
                 .tracking(0.3)
                 .foregroundColor(DetailPalette.subText)
@@ -1340,7 +1340,7 @@ private struct CommunityRoomComposeSheet: View {
                     roomBadge
                     nameField
                     tagSection(title: "MBTI", options: mbtiOptions, selection: $selectedMbti, color: DetailPalette.mbtiPill)
-                    tagSection(title: "関係性", options: relationshipOptions, selection: $selectedRelationship, color: DetailPalette.koiPink)
+                    tagSection(title: String(localized: "関係性", bundle: LanguageManager.appBundle), options: relationshipOptions, selection: $selectedRelationship, color: DetailPalette.koiPink)
                     bodyField
                     imageAttachToggle
                 }

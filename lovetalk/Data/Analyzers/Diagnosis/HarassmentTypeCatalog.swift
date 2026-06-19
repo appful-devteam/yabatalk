@@ -10,100 +10,100 @@ enum HarassmentTypeCatalog {
         HarassmentType(
             id: "boss_dragon",
             emoji: "🐉",
-            typeName: "上司ドラゴン型",
+            typeName: String(localized: "上司ドラゴン型", bundle: LanguageManager.appBundle),
             primaryCategories: [.power],
             subCategories: [],
-            structureSummary: "立場差と評価・仕事を使った圧",
+            structureSummary: String(localized: "立場差と評価・仕事を使った圧", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "肩書きを背負って炎を吐くタイプ。逃げ場が狭くなる会話です。",
-                "立場の重さで殴ってくるので、防御が間に合いません。",
+                String(localized: "肩書きを背負って炎を吐くタイプ。逃げ場が狭くなる会話です。", bundle: LanguageManager.appBundle),
+                String(localized: "立場の重さで殴ってくるので、防御が間に合いません。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.dominance, .workEvaluation, .disadvantageThreat],
-            darkHumorAdvice: "肩書きと指導の距離が遠すぎるとドラゴンになります。"
+            darkHumorAdvice: String(localized: "肩書きと指導の距離が遠すぎるとドラゴンになります。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "indoctrination_devil",
             emoji: "👹",
-            typeName: "指導の皮をかぶった鬼型",
+            typeName: String(localized: "指導の皮をかぶった鬼型", bundle: LanguageManager.appBundle),
             primaryCategories: [.power],
             subCategories: [],
-            structureSummary: "指導風の人格否定・精神的攻撃",
+            structureSummary: String(localized: "指導風の人格否定・精神的攻撃", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "これは指導ではなく、メンタルに紙やすりをかけるタイプの会話です。",
-                "指導の名のもとに、人格をすり減らしにきています。",
+                String(localized: "これは指導ではなく、メンタルに紙やすりをかけるタイプの会話です。", bundle: LanguageManager.appBundle),
+                String(localized: "指導の名のもとに、人格をすり減らしにきています。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.personalityDenial, .abilityDenial, .workEvaluation, .dominance],
-            darkHumorAdvice: "本当に必要な指導は、人格を燃やさなくてもできます。"
+            darkHumorAdvice: String(localized: "本当に必要な指導は、人格を燃やさなくてもできます。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "rank_swinger",
             emoji: "🪓",
-            typeName: "立場ブンブン丸型",
+            typeName: String(localized: "立場ブンブン丸型", bundle: LanguageManager.appBundle),
             primaryCategories: [.power],
             subCategories: [],
-            structureSummary: "権限を振りかざす、不利益示唆",
+            structureSummary: String(localized: "権限を振りかざす、不利益示唆", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "権限を振り回すたびに、相手の安全圏が削れていきます。",
-                "肩書きで人を黙らせるタイプ。会話の往復が成立していません。",
+                String(localized: "権限を振り回すたびに、相手の安全圏が削れていきます。", bundle: LanguageManager.appBundle),
+                String(localized: "肩書きで人を黙らせるタイプ。会話の往復が成立していません。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.dominance, .disadvantageThreat, .refusalImpossible],
-            darkHumorAdvice: "権限は振り回すものではなく、機能させるものです。"
+            darkHumorAdvice: String(localized: "権限は振り回すものではなく、機能させるものです。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "mental_mower",
             emoji: "🌱",
-            typeName: "メンタル草刈り機型",
+            typeName: String(localized: "メンタル草刈り機型", bundle: LanguageManager.appBundle),
             primaryCategories: [.power, .moral],
             subCategories: [],
-            structureSummary: "人格否定・能力否定・自己肯定感削り",
+            structureSummary: String(localized: "人格否定・能力否定・自己肯定感削り", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "話すたびに自己肯定感が一段ずつ刈り取られていきます。",
-                "丁寧に見えて、芯のところを削ってきます。",
+                String(localized: "話すたびに自己肯定感が一段ずつ刈り取られていきます。", bundle: LanguageManager.appBundle),
+                String(localized: "丁寧に見えて、芯のところを削ってきます。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.personalityDenial, .abilityDenial, .existenceDenial],
-            darkHumorAdvice: "自己肯定感を草扱いされる関係は、長続きしない方が健全です。"
+            darkHumorAdvice: String(localized: "自己肯定感を草扱いされる関係は、長続きしない方が健全です。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "task_dumper",
             emoji: "📦",
-            typeName: "仕事押しつけ倉庫型",
+            typeName: String(localized: "仕事押しつけ倉庫型", bundle: LanguageManager.appBundle),
             primaryCategories: [.power],
             subCategories: [],
-            structureSummary: "過大要求・無理な期限・休日深夜対応",
+            structureSummary: String(localized: "過大要求・無理な期限・休日深夜対応", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "段ボールごと仕事を投げてくるタイプ。受け取る前提で会話が進みます。",
-                "期限と量の感覚がバグっているので、こちらが壊れる前提です。",
+                String(localized: "段ボールごと仕事を投げてくるタイプ。受け取る前提で会話が進みます。", bundle: LanguageManager.appBundle),
+                String(localized: "期限と量の感覚がバグっているので、こちらが壊れる前提です。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.excessiveDemand, .workEvaluation, .refusalImpossible],
-            darkHumorAdvice: "倉庫業務は本来、人間に直接投げるものではありません。"
+            darkHumorAdvice: String(localized: "倉庫業務は本来、人間に直接投げるものではありません。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "place_revoker",
             emoji: "🚪",
-            typeName: "居場所はく奪マン型",
+            typeName: String(localized: "居場所はく奪マン型", bundle: LanguageManager.appBundle),
             primaryCategories: [.power],
             subCategories: [],
-            structureSummary: "「来なくていい」「外す」など所属否定",
+            structureSummary: String(localized: "「来なくていい」「外す」など所属否定", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "出口を見せながら従わせるタイプ。残るのも出るのもこちらの負担です。",
-                "ドアを開けたまま指示してくる、心理的に逃げにくい構造です。",
+                String(localized: "出口を見せながら従わせるタイプ。残るのも出るのもこちらの負担です。", bundle: LanguageManager.appBundle),
+                String(localized: "ドアを開けたまま指示してくる、心理的に逃げにくい構造です。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.existenceDenial, .disadvantageThreat, .dominance],
-            darkHumorAdvice: "居場所をちらつかせる人と居場所を共有しなくて大丈夫です。"
+            darkHumorAdvice: String(localized: "居場所をちらつかせる人と居場所を共有しなくて大丈夫です。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "info_freezer",
             emoji: "🧊",
-            typeName: "共有外し冷凍庫型",
+            typeName: String(localized: "共有外し冷凍庫型", bundle: LanguageManager.appBundle),
             primaryCategories: [.power, .other],
             subCategories: [.grouping],
-            structureSummary: "情報共有外し・孤立化・無視指示",
+            structureSummary: String(localized: "情報共有外し・孤立化・無視指示", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "情報の流れから少しずつ凍結させていくタイプです。",
-                "見えないところで距離を取られる、じわじわ冷える構造です。",
+                String(localized: "情報の流れから少しずつ凍結させていくタイプです。", bundle: LanguageManager.appBundle),
+                String(localized: "見えないところで距離を取られる、じわじわ冷える構造です。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.groupExclusion, .dominance, .workEvaluation],
-            darkHumorAdvice: "情報共有は感情の天気予報ではないので、ムラがあると困ります。"
+            darkHumorAdvice: String(localized: "情報共有は感情の天気予報ではないので、ムラがあると困ります。", bundle: LanguageManager.appBundle)
         ),
     ]
 
@@ -112,100 +112,100 @@ enum HarassmentTypeCatalog {
         HarassmentType(
             id: "distance_bugged_uncle",
             emoji: "🫥",
-            typeName: "距離感バグおじさん型",
+            typeName: String(localized: "距離感バグおじさん型", bundle: LanguageManager.appBundle),
             primaryCategories: [.sexual],
             subCategories: [],
-            structureSummary: "身体・恋愛への不要な踏み込み",
+            structureSummary: String(localized: "身体・恋愛への不要な踏み込み", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "距離感の解像度が壊れているタイプ。こちらの安全圏が狭まります。",
-                "親しみのつもりが、業務上不要な踏み込みになっています。",
+                String(localized: "距離感の解像度が壊れているタイプ。こちらの安全圏が狭まります。", bundle: LanguageManager.appBundle),
+                String(localized: "親しみのつもりが、業務上不要な踏み込みになっています。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.sexualContext, .privacyIntrusion],
-            darkHumorAdvice: "親しみと距離感のバグはアップデートで直しましょう。"
+            darkHumorAdvice: String(localized: "親しみと距離感のバグはアップデートで直しましょう。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "hidden_motive_skeleton",
             emoji: "💀",
-            typeName: "下心スケルトン型",
+            typeName: String(localized: "下心スケルトン型", bundle: LanguageManager.appBundle),
             primaryCategories: [.sexual],
             subCategories: [],
-            structureSummary: "下心が透ける誘い・性的ニュアンス",
+            structureSummary: String(localized: "下心が透ける誘い・性的ニュアンス", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "オブラートが薄すぎて、中身が透けています。",
-                "親しみの皮の下から、別の意図がはっきり見えます。",
+                String(localized: "オブラートが薄すぎて、中身が透けています。", bundle: LanguageManager.appBundle),
+                String(localized: "親しみの皮の下から、別の意図がはっきり見えます。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.sexualContext, .mockingLaughter],
-            darkHumorAdvice: "下心は装飾しても重量は減りません。"
+            darkHumorAdvice: String(localized: "下心は装飾しても重量は減りません。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "drink_zombie",
             emoji: "🧟",
-            typeName: "飲み誘いゾンビ型",
+            typeName: String(localized: "飲み誘いゾンビ型", bundle: LanguageManager.appBundle),
             primaryCategories: [.sexual],
             subCategories: [],
-            structureSummary: "拒否後も続く誘い、執拗な連絡",
+            structureSummary: String(localized: "拒否後も続く誘い、執拗な連絡", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "断っても断っても誘いが復活してくるタイプです。",
-                "「やめて」を聞いたあとから、誘いの回数が増えています。",
+                String(localized: "断っても断っても誘いが復活してくるタイプです。", bundle: LanguageManager.appBundle),
+                String(localized: "「やめて」を聞いたあとから、誘いの回数が増えています。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.sexualContext, .boundaryViolation, .persistentRepetition],
-            darkHumorAdvice: "誘いは何度も復活させるものではありません。"
+            darkHumorAdvice: String(localized: "誘いは何度も復活させるものではありません。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "quota_bundle_seller",
             emoji: "🎁",
-            typeName: "評価と下心の抱き合わせ販売型",
+            typeName: String(localized: "評価と下心の抱き合わせ販売型", bundle: LanguageManager.appBundle),
             primaryCategories: [.sexual, .power],
             subCategories: [],
-            structureSummary: "性的・恋愛的要求と評価の結合",
+            structureSummary: String(localized: "性的・恋愛的要求と評価の結合", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "下心と評価がセット販売されています。返品してください。",
-                "業務文脈に恋愛を混ぜ込む、抱き合わせ販売型の会話です。",
+                String(localized: "下心と評価がセット販売されています。返品してください。", bundle: LanguageManager.appBundle),
+                String(localized: "業務文脈に恋愛を混ぜ込む、抱き合わせ販売型の会話です。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.quotaPairing, .sexualContext, .workEvaluation, .disadvantageThreat],
-            darkHumorAdvice: "冗談に見せた圧は、冗談よりだいぶ重いです。"
+            darkHumorAdvice: String(localized: "冗談に見せた圧は、冗談よりだいぶ重いです。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "outfit_check_yokai",
             emoji: "👗",
-            typeName: "服装チェック妖怪型",
+            typeName: String(localized: "服装チェック妖怪型", bundle: LanguageManager.appBundle),
             primaryCategories: [.sexual, .other],
             subCategories: [.gender],
-            structureSummary: "服装・身体への過剰な言及",
+            structureSummary: String(localized: "服装・身体への過剰な言及", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "毎回服装に評価を入れてくる、視線の置き場がバグった会話です。",
-                "服装＝コミュニケーションだと思っているタイプ。境界が薄いです。",
+                String(localized: "毎回服装に評価を入れてくる、視線の置き場がバグった会話です。", bundle: LanguageManager.appBundle),
+                String(localized: "服装＝コミュニケーションだと思っているタイプ。境界が薄いです。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.sexualContext, .roleStereotype],
-            darkHumorAdvice: "服装は天気の話ではないので、毎回採点しなくて大丈夫です。"
+            darkHumorAdvice: String(localized: "服装は天気の話ではないので、毎回採点しなくて大丈夫です。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "sticky_compliment",
             emoji: "🧴",
-            typeName: "ねっとり褒め殺し型",
+            typeName: String(localized: "ねっとり褒め殺し型", bundle: LanguageManager.appBundle),
             primaryCategories: [.sexual],
             subCategories: [],
-            structureSummary: "褒めている風の性的評価",
+            structureSummary: String(localized: "褒めている風の性的評価", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "褒めているように見えて、評価の角度が私的すぎるタイプです。",
-                "褒め言葉の中に、業務上不要な観察が混ざっています。",
+                String(localized: "褒めているように見えて、評価の角度が私的すぎるタイプです。", bundle: LanguageManager.appBundle),
+                String(localized: "褒め言葉の中に、業務上不要な観察が混ざっています。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.sexualContext, .mockingLaughter],
-            darkHumorAdvice: "業務評価は褒め殺しの形式を取らないものです。"
+            darkHumorAdvice: String(localized: "業務評価は褒め殺しの形式を取らないものです。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "haha_humidifier",
             emoji: "🫧",
-            typeName: "笑でごまかす湿気型",
+            typeName: String(localized: "笑でごまかす湿気型", bundle: LanguageManager.appBundle),
             primaryCategories: [.sexual, .moral],
             subCategories: [],
-            structureSummary: "「笑」で圧や性的発言を軽く見せる",
+            structureSummary: String(localized: "「笑」で圧や性的発言を軽く見せる", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "「笑」で空気を軽くしているように見えて、内容は重いです。",
-                "ジョーク風の包装紙が、中身の重さを変えていません。",
+                String(localized: "「笑」で空気を軽くしているように見えて、内容は重いです。", bundle: LanguageManager.appBundle),
+                String(localized: "ジョーク風の包装紙が、中身の重さを変えていません。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.mockingLaughter, .sexualContext, .disadvantageThreat],
-            darkHumorAdvice: "「w」「笑」を足しても、不快の総量は変わりません。"
+            darkHumorAdvice: String(localized: "「w」「笑」を足しても、不快の総量は変わりません。", bundle: LanguageManager.appBundle)
         ),
     ]
 
@@ -214,100 +214,100 @@ enum HarassmentTypeCatalog {
         HarassmentType(
             id: "guilt_artisan",
             emoji: "🧵",
-            typeName: "罪悪感職人型",
+            typeName: String(localized: "罪悪感職人型", bundle: LanguageManager.appBundle),
             primaryCategories: [.moral],
             subCategories: [],
-            structureSummary: "相手に罪悪感を背負わせる",
+            structureSummary: String(localized: "相手に罪悪感を背負わせる", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "罪悪感を縫い付けてくるタイプ。会話のたびに重くなります。",
-                "感情の責任分担が完全にこちら側に寄っています。",
+                String(localized: "罪悪感を縫い付けてくるタイプ。会話のたびに重くなります。", bundle: LanguageManager.appBundle),
+                String(localized: "感情の責任分担が完全にこちら側に寄っています。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.guiltManipulation, .intimateRelationship],
-            darkHumorAdvice: "感情の責任は一人で背負うものでも、押し付けるものでもありません。"
+            darkHumorAdvice: String(localized: "感情の責任は一人で背負うものでも、押し付けるものでもありません。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "emotion_hostage",
             emoji: "🧸",
-            typeName: "感情人質型",
+            typeName: String(localized: "感情人質型", bundle: LanguageManager.appBundle),
             primaryCategories: [.moral],
             subCategories: [],
-            structureSummary: "愛情・関係継続を条件に支配",
+            structureSummary: String(localized: "愛情・関係継続を条件に支配", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "「好き」を担保に、相手の自由時間を差し押さえています。",
-                "愛情を条件付き販売しているタイプの関係です。",
+                String(localized: "「好き」を担保に、相手の自由時間を差し押さえています。", bundle: LanguageManager.appBundle),
+                String(localized: "愛情を条件付き販売しているタイプの関係です。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.intimateRelationship, .guiltManipulation, .refusalImpossible, .monitoringControl],
-            darkHumorAdvice: "恋愛はログインボーナスではないので、即レス義務はありません。"
+            darkHumorAdvice: String(localized: "恋愛はログインボーナスではないので、即レス義務はありません。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "memory_fraud_ghost",
             emoji: "👻",
-            typeName: "記憶改ざん妖怪型",
+            typeName: String(localized: "記憶改ざん妖怪型", bundle: LanguageManager.appBundle),
             primaryCategories: [.moral],
             subCategories: [],
-            structureSummary: "ガスライティング・感覚否定",
+            structureSummary: String(localized: "ガスライティング・感覚否定", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "覚えてないのではなく、こちらの記憶を書き換えにきています。",
-                "出来事ではなく、こちらの感覚そのものを否定してくるタイプです。",
+                String(localized: "覚えてないのではなく、こちらの記憶を書き換えにきています。", bundle: LanguageManager.appBundle),
+                String(localized: "出来事ではなく、こちらの感覚そのものを否定してくるタイプです。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.gaslighting, .guiltManipulation],
-            darkHumorAdvice: "あなたの記憶は、相手の都合で書き換わるものではありません。"
+            darkHumorAdvice: String(localized: "あなたの記憶は、相手の都合で書き換わるものではありません。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "read_watching_crow",
             emoji: "🐦‍⬛",
-            typeName: "既読監視カラス型",
+            typeName: String(localized: "既読監視カラス型", bundle: LanguageManager.appBundle),
             primaryCategories: [.moral, .other],
             subCategories: [.digital],
-            structureSummary: "既読責め・返信強要・監視",
+            structureSummary: String(localized: "既読責め・返信強要・監視", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "既読の有無で機嫌が決まるタイプ。返信は人質です。",
-                "通知を見るたびに、安全圏が削られていく構造です。",
+                String(localized: "既読の有無で機嫌が決まるタイプ。返信は人質です。", bundle: LanguageManager.appBundle),
+                String(localized: "通知を見るたびに、安全圏が削られていく構造です。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.monitoringControl, .persistentRepetition, .guiltManipulation],
-            darkHumorAdvice: "既読は感情の天気予報ではないので、機嫌の根拠にできません。"
+            darkHumorAdvice: String(localized: "既読は感情の天気予報ではないので、機嫌の根拠にできません。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "sulk_blackhole",
             emoji: "🕳",
-            typeName: "不機嫌ブラックホール型",
+            typeName: String(localized: "不機嫌ブラックホール型", bundle: LanguageManager.appBundle),
             primaryCategories: [.moral],
             subCategories: [],
-            structureSummary: "沈黙・不機嫌で相手を操作",
+            structureSummary: String(localized: "沈黙・不機嫌で相手を操作", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "不機嫌で空気の重力を上げてくるタイプの会話です。",
-                "沈黙を武器にしているので、こちらの呼吸が浅くなります。",
+                String(localized: "不機嫌で空気の重力を上げてくるタイプの会話です。", bundle: LanguageManager.appBundle),
+                String(localized: "沈黙を武器にしているので、こちらの呼吸が浅くなります。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.guiltManipulation, .intimateRelationship],
-            darkHumorAdvice: "沈黙は感情の説明から逃げる便利な道具にされがちです。"
+            darkHumorAdvice: String(localized: "沈黙は感情の説明から逃げる便利な道具にされがちです。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "restraint_overkill",
             emoji: "🔒",
-            typeName: "束縛セキュリティ過剰型",
+            typeName: String(localized: "束縛セキュリティ過剰型", bundle: LanguageManager.appBundle),
             primaryCategories: [.moral],
             subCategories: [],
-            structureSummary: "位置情報・写真要求・交友関係制限",
+            structureSummary: String(localized: "位置情報・写真要求・交友関係制限", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "安全のためと言いつつ、行動範囲を制限する構造です。",
-                "信頼のなさをセキュリティ強化で覆っているタイプです。",
+                String(localized: "安全のためと言いつつ、行動範囲を制限する構造です。", bundle: LanguageManager.appBundle),
+                String(localized: "信頼のなさをセキュリティ強化で覆っているタイプです。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.monitoringControl, .privacyIntrusion, .intimateRelationship],
-            darkHumorAdvice: "セキュリティは行動制限ではなく、信頼関係で組むものです。"
+            darkHumorAdvice: String(localized: "セキュリティは行動制限ではなく、信頼関係で組むものです。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "victim_position_lock",
             emoji: "🎭",
-            typeName: "被害者ポジション固定型",
+            typeName: String(localized: "被害者ポジション固定型", bundle: LanguageManager.appBundle),
             primaryCategories: [.moral],
             subCategories: [],
-            structureSummary: "自分を被害者にして相手を責める",
+            structureSummary: String(localized: "自分を被害者にして相手を責める", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "常に被害者席に座って、加害の負担をこちらに置いてくるタイプです。",
-                "立場のすり替えが起きているので、責任の重心が常にずれます。",
+                String(localized: "常に被害者席に座って、加害の負担をこちらに置いてくるタイプです。", bundle: LanguageManager.appBundle),
+                String(localized: "立場のすり替えが起きているので、責任の重心が常にずれます。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.guiltManipulation, .gaslighting, .intimateRelationship],
-            darkHumorAdvice: "被害者と加害者の席は、自分で勝手に決めるものではありません。"
+            darkHumorAdvice: String(localized: "被害者と加害者の席は、自分で勝手に決めるものではありません。", bundle: LanguageManager.appBundle)
         ),
     ]
 
@@ -316,114 +316,114 @@ enum HarassmentTypeCatalog {
         HarassmentType(
             id: "gender_fossil",
             emoji: "🦴",
-            typeName: "ジェンダー化石型",
+            typeName: String(localized: "ジェンダー化石型", bundle: LanguageManager.appBundle),
             primaryCategories: [.other],
             subCategories: [.gender],
-            structureSummary: "性別役割の押し付け",
+            structureSummary: String(localized: "性別役割の押し付け", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "アップデートが止まっている価値観をそのまま押し付けてくるタイプです。",
-                "性別を理由にした要求が、令和を未読のまま届いています。",
+                String(localized: "アップデートが止まっている価値観をそのまま押し付けてくるタイプです。", bundle: LanguageManager.appBundle),
+                String(localized: "性別を理由にした要求が、令和を未読のまま届いています。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.roleStereotype, .dominance],
-            darkHumorAdvice: "アップデートしていない価値観は、押し付け用ではなく博物館用です。"
+            darkHumorAdvice: String(localized: "アップデートしていない価値観は、押し付け用ではなく博物館用です。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "drink_primitive",
             emoji: "🍺",
-            typeName: "飲み会原始人型",
+            typeName: String(localized: "飲み会原始人型", bundle: LanguageManager.appBundle),
             primaryCategories: [.other],
             subCategories: [.alcohol],
-            structureSummary: "飲酒強要・拒否への非難",
+            structureSummary: String(localized: "飲酒強要・拒否への非難", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "飲める＝偉い、で物事を片付けてくるタイプの会話です。",
-                "場のテンションを飲酒で揃えようとする、原始的な圧の構造です。",
+                String(localized: "飲める＝偉い、で物事を片付けてくるタイプの会話です。", bundle: LanguageManager.appBundle),
+                String(localized: "場のテンションを飲酒で揃えようとする、原始的な圧の構造です。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.alcoholCoercion, .dominance],
-            darkHumorAdvice: "飲める量で人を評価する時代は、本当にもう終わっています。"
+            darkHumorAdvice: String(localized: "飲める量で人を評価する時代は、本当にもう終わっています。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "customer_firebomb",
             emoji: "🔥",
-            typeName: "カスハラ火炎瓶型",
+            typeName: String(localized: "カスハラ火炎瓶型", bundle: LanguageManager.appBundle),
             primaryCategories: [.other],
             subCategories: [.customer],
-            structureSummary: "客・取引先からの過剰要求・脅し",
+            structureSummary: String(localized: "客・取引先からの過剰要求・脅し", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "客の立場で爆弾を投げてくるタイプ。要求が燃料に変わっています。",
-                "SNS・本社・誠意のワードを武器に切り出してくる構造です。",
+                String(localized: "客の立場で爆弾を投げてくるタイプ。要求が燃料に変わっています。", bundle: LanguageManager.appBundle),
+                String(localized: "SNS・本社・誠意のワードを武器に切り出してくる構造です。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.customerAggression, .disadvantageThreat],
-            darkHumorAdvice: "正当な要求は、火炎瓶にしなくても伝わります。"
+            darkHumorAdvice: String(localized: "正当な要求は、火炎瓶にしなくても伝わります。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "privacy_thief",
             emoji: "🕵️",
-            typeName: "プライバシー泥棒型",
+            typeName: String(localized: "プライバシー泥棒型", bundle: LanguageManager.appBundle),
             primaryCategories: [.other, .moral],
             subCategories: [.privacy],
-            structureSummary: "私生活への過度な干渉",
+            structureSummary: String(localized: "私生活への過度な干渉", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "プライバシーの境界線を、軽い質問の顔で越えてきます。",
-                "私生活の在庫管理をしようとしてくるタイプの会話です。",
+                String(localized: "プライバシーの境界線を、軽い質問の顔で越えてきます。", bundle: LanguageManager.appBundle),
+                String(localized: "私生活の在庫管理をしようとしてくるタイプの会話です。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.privacyIntrusion, .monitoringControl],
-            darkHumorAdvice: "プライバシーは差し出す前提のメニューではありません。"
+            darkHumorAdvice: String(localized: "プライバシーは差し出す前提のメニューではありません。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "lab_king",
             emoji: "🎓",
-            typeName: "研究室の王様型",
+            typeName: String(localized: "研究室の王様型", bundle: LanguageManager.appBundle),
             primaryCategories: [.other],
             subCategories: [.academic],
-            structureSummary: "成績・推薦・卒業権限を使った圧",
+            structureSummary: String(localized: "成績・推薦・卒業権限を使った圧", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "学業の権限を切り札に出してくる、教室サイズの絶対王政です。",
-                "推薦・卒業をちらつかせる、出口を握って指示するタイプです。",
+                String(localized: "学業の権限を切り札に出してくる、教室サイズの絶対王政です。", bundle: LanguageManager.appBundle),
+                String(localized: "推薦・卒業をちらつかせる、出口を握って指示するタイプです。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.academicPower, .dominance, .disadvantageThreat],
-            darkHumorAdvice: "学業の権限は、相手の人生を握る道具ではありません。"
+            darkHumorAdvice: String(localized: "学業の権限は、相手の人生を握る道具ではありません。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "life_event_stomper",
             emoji: "🍼",
-            typeName: "ライフイベント踏みつけ型",
+            typeName: String(localized: "ライフイベント踏みつけ型", bundle: LanguageManager.appBundle),
             primaryCategories: [.other],
             subCategories: [.maternity],
-            structureSummary: "妊娠・育児・介護への不利益示唆",
+            structureSummary: String(localized: "妊娠・育児・介護への不利益示唆", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "妊娠・育児・介護を「評価のマイナス材料」に変換してくるタイプです。",
-                "ライフイベントを軽くまたいで、評価軸を変えてくる構造です。",
+                String(localized: "妊娠・育児・介護を「評価のマイナス材料」に変換してくるタイプです。", bundle: LanguageManager.appBundle),
+                String(localized: "ライフイベントを軽くまたいで、評価軸を変えてくる構造です。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.maternityPenalty, .disadvantageThreat, .roleStereotype],
-            darkHumorAdvice: "ライフイベントは、評価で踏みつぶしていいものではありません。"
+            darkHumorAdvice: String(localized: "ライフイベントは、評価で踏みつぶしていいものではありません。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "screenshot_bomb",
             emoji: "📢",
-            typeName: "スクショ拡散爆弾型",
+            typeName: String(localized: "スクショ拡散爆弾型", bundle: LanguageManager.appBundle),
             primaryCategories: [.other],
             subCategories: [.digital],
-            structureSummary: "晒し・スクショ悪用・拡散脅迫",
+            structureSummary: String(localized: "晒し・スクショ悪用・拡散脅迫", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "拡散をちらつかせて従わせる、デジタル時代型の脅しです。",
-                "スクショ・晒しのワードで黙らせにくるタイプの会話です。",
+                String(localized: "拡散をちらつかせて従わせる、デジタル時代型の脅しです。", bundle: LanguageManager.appBundle),
+                String(localized: "スクショ・晒しのワードで黙らせにくるタイプの会話です。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.disadvantageThreat, .persistentRepetition, .customerAggression],
-            darkHumorAdvice: "拡散を交渉カードに使うのは、対等な関係ではありません。"
+            darkHumorAdvice: String(localized: "拡散を交渉カードに使うのは、対等な関係ではありません。", bundle: LanguageManager.appBundle)
         ),
         HarassmentType(
             id: "group_freeze_beam",
             emoji: "🧊",
-            typeName: "グループ冷凍ビーム型",
+            typeName: String(localized: "グループ冷凍ビーム型", bundle: LanguageManager.appBundle),
             primaryCategories: [.other],
             subCategories: [.grouping],
-            structureSummary: "無視・仲間外れ・グループ内晒し",
+            structureSummary: String(localized: "無視・仲間外れ・グループ内晒し", bundle: LanguageManager.appBundle),
             catchCopyTemplates: [
-                "グループの空気を凍らせて、特定の人だけ寒くしてくる構造です。",
-                "「無視でいい」を共通指示にしてくる、集団的な排除の形です。",
+                String(localized: "グループの空気を凍らせて、特定の人だけ寒くしてくる構造です。", bundle: LanguageManager.appBundle),
+                String(localized: "「無視でいい」を共通指示にしてくる、集団的な排除の形です。", bundle: LanguageManager.appBundle),
             ],
             triggerFactors: [.groupExclusion, .dominance],
-            darkHumorAdvice: "集団の温度差を武器にされる関係は、温まる前に離脱が安全です。"
+            darkHumorAdvice: String(localized: "集団の温度差を武器にされる関係は、温まる前に離脱が安全です。", bundle: LanguageManager.appBundle)
         ),
     ]
 

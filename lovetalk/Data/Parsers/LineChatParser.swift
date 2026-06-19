@@ -156,19 +156,19 @@ final class LineChatParser {
         if isOneOnOne {
             if let partnerName = partnerNameFromTitle,
                participants.contains(where: { $0.name == partnerName }) {
-                sessionTitle = "\(partnerName)とのトーク"
+                sessionTitle = String(format: String(localized: "%@とのトーク", bundle: LanguageManager.appBundle), partnerName)
                 estimatedSelfName = participants.first { $0.name != partnerName }?.name
             } else if let headerName = chatNameFromHeader,
                       participants.contains(where: { $0.name == headerName }) {
-                sessionTitle = "\(headerName)とのトーク"
+                sessionTitle = String(format: String(localized: "%@とのトーク", bundle: LanguageManager.appBundle), headerName)
                 estimatedSelfName = participants.first { $0.name != headerName }?.name
             } else {
                 let sortedByCount = participants.sorted { $0.messageCount < $1.messageCount }
                 if sortedByCount.count >= 2 {
-                    sessionTitle = "\(sortedByCount[1].name)とのトーク"
+                    sessionTitle = String(format: String(localized: "%@とのトーク", bundle: LanguageManager.appBundle), sortedByCount[1].name)
                     estimatedSelfName = sortedByCount[0].name
                 } else if let first = sortedByCount.first {
-                    sessionTitle = "\(first.name)とのトーク"
+                    sessionTitle = String(format: String(localized: "%@とのトーク", bundle: LanguageManager.appBundle), first.name)
                     estimatedSelfName = nil
                 } else {
                     sessionTitle = title

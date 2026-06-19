@@ -13,10 +13,10 @@ enum DiagnosisTab: String, CaseIterable, Identifiable {
 
     var localizedName: String {
         switch self {
-        case .score: return "スコア"
+        case .score: return String(localized: "スコア", bundle: LanguageManager.appBundle)
         case .type: return "TYPE"
-        case .data: return "データ"
-        case .summary: return "サマリ"
+        case .data: return String(localized: "データ", bundle: LanguageManager.appBundle)
+        case .summary: return String(localized: "サマリ", bundle: LanguageManager.appBundle)
         }
     }
 }
@@ -214,25 +214,36 @@ struct DiagnosisResultView: View {
     }
 
     private var displayName: String {
-        result.sessionTitle.isEmpty ? "毒見結果" : result.sessionTitle
+        result.sessionTitle.isEmpty ? String(localized: "毒見結果", bundle: LanguageManager.appBundle) : result.sessionTitle
     }
 
     private var subtitleText: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "M/d HH:mm"
-        return "\(formatter.string(from: result.createdAt)) の毒見"
+        return String(format: String(localized: "%1$@ の毒見", bundle: LanguageManager.appBundle), formatter.string(from: result.createdAt))
     }
 
     private var shareText: String {
-        """
-        🍬 トークの毒見結果
+        String(
+            format: String(
+                localized: """
+                🍬 トークの毒見結果
 
-        \(result.primaryType.emoji) \(result.primaryType.typeName)
-        対応: \(result.harassmentLabel)
-        やばさ: \(result.overallRiskScore)% (\(result.riskLevel.displayName))
+                %1$@ %2$@
+                対応: %3$@
+                やばさ: %4$lld%% (%5$@)
 
-        \(result.catchCopy)
-        """
+                %6$@
+                """,
+                bundle: LanguageManager.appBundle
+            ),
+            result.primaryType.emoji,
+            result.primaryType.typeName,
+            result.harassmentLabel,
+            result.overallRiskScore,
+            result.riskLevel.displayName,
+            result.catchCopy
+        )
     }
 }
 
@@ -355,7 +366,7 @@ struct DiagnosisScoreTab: View {
         if let sn, let me = verdicts.first(where: { $0.speakerName == sn }),
            let other = verdicts.filter({ $0.id != me.id }).max(by: { $0.score < $1.score }) {
             return Comparison(selfV: me, partnerV: other,
-                              selfLabel: "自分", partnerLabel: other.speakerName,
+                              selfLabel: String(localized: "自分", bundle: LanguageManager.appBundle), partnerLabel: other.speakerName,
                               resolvedSelf: true)
         }
         // 自分が特定できない → スコア上位 2 人を実名ラベルで
@@ -473,11 +484,11 @@ struct DiagnosisScoreTab: View {
     /// 偏りシェアから危険ラベル（カードのバッジ用）。
     private func shareDangerLabel(_ share: Int) -> String {
         switch RiskLevel.from(score: share) {
-        case .low: return "おとなしめ"
-        case .caution: return "ちょっと危ない"
-        case .medium: return "そこそこヤバい"
-        case .high: return "明確にやばい"
-        case .severe: return "かなり危険"
+        case .low: return String(localized: "おとなしめ", bundle: LanguageManager.appBundle)
+        case .caution: return String(localized: "ちょっと危ない", bundle: LanguageManager.appBundle)
+        case .medium: return String(localized: "そこそこヤバい", bundle: LanguageManager.appBundle)
+        case .high: return String(localized: "明確にやばい", bundle: LanguageManager.appBundle)
+        case .severe: return String(localized: "かなり危険", bundle: LanguageManager.appBundle)
         }
     }
 
@@ -601,7 +612,7 @@ struct DiagnosisScoreTab: View {
         let rows = factorCompareRows(cmp)
         return LabCard {
             VStack(alignment: .leading, spacing: 12) {
-                LabCardHeader(jp: "毒性成分分析", en: "TOXIC COMPONENTS  /  二人の割合")
+                LabCardHeader(jp: String(localized: "毒性成分分析", bundle: LanguageManager.appBundle), en: String(localized: "TOXIC COMPONENTS  /  二人の割合", bundle: LanguageManager.appBundle))
                 legendRow(cmp)
                 Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
                 if rows.isEmpty {
@@ -664,7 +675,7 @@ struct DiagnosisScoreTab: View {
     private func classificationCompareCard(_ cmp: Comparison) -> some View {
         LabCard {
             VStack(alignment: .leading, spacing: 14) {
-                LabCardHeader(jp: "ハラスメント分類", en: "CLASSIFICATION  /  二人の割合")
+                LabCardHeader(jp: String(localized: "ハラスメント分類", bundle: LanguageManager.appBundle), en: String(localized: "CLASSIFICATION  /  二人の割合", bundle: LanguageManager.appBundle))
                 legendRow(cmp)
                 ForEach(HarassmentCategory.allCases, id: \.self) { cat in
                     classificationCompareRow(cmp, cat: cat)
@@ -738,7 +749,7 @@ struct DiagnosisScoreTab: View {
     private var componentsCard: some View {
         LabCard {
             VStack(spacing: 12) {
-                LabCardHeader(jp: "毒性成分分析", en: "TOXIC COMPONENTS")
+                LabCardHeader(jp: String(localized: "毒性成分分析", bundle: LanguageManager.appBundle), en: "TOXIC COMPONENTS")
                 Rectangle().fill(MeloColors.Dark.cardStroke).frame(height: 1)
 
                 let items = result.topIngredients()
@@ -777,7 +788,7 @@ struct DiagnosisScoreTab: View {
     private var classificationCard: some View {
         LabCard {
             VStack(alignment: .leading, spacing: 14) {
-                LabCardHeader(jp: "ハラスメント分類", en: "CLASSIFICATION")
+                LabCardHeader(jp: String(localized: "ハラスメント分類", bundle: LanguageManager.appBundle), en: "CLASSIFICATION")
                 ForEach(HarassmentCategory.allCases, id: \.self) { cat in
                     classificationRow(cat)
                 }
@@ -834,7 +845,7 @@ struct DiagnosisTypeTab: View {
         let locked = !subscription.isSubscribed
         let verdicts = result.speakerVerdicts
         VStack(spacing: 16) {
-            LabSectionTitle(jp: "検体プロファイル", en: "SPECIMEN PROFILE  /  各人ごとの毒性判定")
+            LabSectionTitle(jp: String(localized: "検体プロファイル", bundle: LanguageManager.appBundle), en: String(localized: "SPECIMEN PROFILE  /  各人ごとの毒性判定", bundle: LanguageManager.appBundle))
 
             if !verdicts.isEmpty {
                 // 各人ごとのサブタブ（2 人以上のときだけセレクタを出す）
@@ -849,7 +860,7 @@ struct DiagnosisTypeTab: View {
                 if locked {
                     DiagnosisUnlockCTA(
                         source: "diag_type_lock",
-                        message: "この人の型の特性・カテゴリ別の強さを全部見る"
+                        message: String(localized: "この人の型の特性・カテゴリ別の強さを全部見る", bundle: LanguageManager.appBundle)
                     )
                 }
                 perPersonStructureCard(v, locked: locked)
@@ -860,7 +871,7 @@ struct DiagnosisTypeTab: View {
                 if locked {
                     DiagnosisUnlockCTA(
                         source: "diag_type_lock",
-                        message: "型の特性・カテゴリ別の根拠まで全部見る"
+                        message: String(localized: "型の特性・カテゴリ別の根拠まで全部見る", bundle: LanguageManager.appBundle)
                     )
                 }
                 structureCard(locked: locked)
@@ -905,7 +916,7 @@ struct DiagnosisTypeTab: View {
 
     private func speakerLabel(_ v: SpeakerVerdict) -> String {
         let sn = (selfName?.isEmpty == false) ? selfName : UserPreferredName.resolve()
-        if let sn, v.speakerName == sn { return "自分" }
+        if let sn, v.speakerName == sn { return String(localized: "自分", bundle: LanguageManager.appBundle) }
         return v.speakerName
     }
 
@@ -914,7 +925,7 @@ struct DiagnosisTypeTab: View {
     private func perPersonStructureCard(_ verdict: SpeakerVerdict, locked: Bool) -> some View {
         LabCard {
             VStack(alignment: .leading, spacing: 10) {
-                LabCardHeader(jp: "型の特性", en: "PROFILE")
+                LabCardHeader(jp: String(localized: "型の特性", bundle: LanguageManager.appBundle), en: "PROFILE")
                 LockedBody(locked: locked) {
                     VStack(alignment: .leading, spacing: 10) {
                         Text(verdict.primaryType.structureSummary)
@@ -935,14 +946,14 @@ struct DiagnosisTypeTab: View {
     private func perPersonCategoryCard(_ verdict: SpeakerVerdict, locked: Bool) -> some View {
         LabCard {
             VStack(alignment: .leading, spacing: 14) {
-                LabCardHeader(jp: "カテゴリ別の強さ", en: "BREAKDOWN")
+                LabCardHeader(jp: String(localized: "カテゴリ別の強さ", bundle: LanguageManager.appBundle), en: "BREAKDOWN")
                 LockedBody(locked: locked) {
                     VStack(alignment: .leading, spacing: 12) {
                         ForEach(HarassmentCategory.allCases, id: \.self) { cat in
                             perPersonCategoryRow(verdict, cat: cat)
                         }
                         if !verdict.topFactors.isEmpty {
-                            Text("主な成分: " + verdict.topFactors.prefix(4).map { "\($0.factor.displayName) \($0.score)%" }.joined(separator: " ・ "))
+                            Text(String(format: String(localized: "主な成分: %@", bundle: LanguageManager.appBundle), verdict.topFactors.prefix(4).map { "\($0.factor.displayName) \($0.score)%" }.joined(separator: " ・ ")))
                                 .font(MeloFonts.mono(11))
                                 .foregroundColor(MeloColors.Dark.textSecondary.opacity(0.85))
                                 .fixedSize(horizontal: false, vertical: true)
@@ -1078,7 +1089,7 @@ struct DiagnosisTypeTab: View {
     private var heroTypeCard: some View {
         LabCard(hazardColor: result.riskLevel.labColor) {
             VStack(alignment: .leading, spacing: 12) {
-                LabCardHeader(jp: "総合判定", en: "OVERALL")
+                LabCardHeader(jp: String(localized: "総合判定", bundle: LanguageManager.appBundle), en: "OVERALL")
                 HStack(alignment: .top, spacing: 14) {
                     LabCategoryTag(code: result.primaryCategory.labCode, color: result.riskLevel.labColor)
                         .scaleEffect(1.4)
@@ -1107,7 +1118,7 @@ struct DiagnosisTypeTab: View {
     private func structureCard(locked: Bool) -> some View {
         LabCard {
             VStack(alignment: .leading, spacing: 10) {
-                LabCardHeader(jp: "型の特性", en: "PROFILE")
+                LabCardHeader(jp: String(localized: "型の特性", bundle: LanguageManager.appBundle), en: "PROFILE")
                 LockedBody(locked: locked) {
                     VStack(alignment: .leading, spacing: 10) {
                         Text(result.primaryType.structureSummary)
@@ -1128,7 +1139,7 @@ struct DiagnosisTypeTab: View {
     private func categoryBreakdownsCard(locked: Bool) -> some View {
         LabCard {
             VStack(alignment: .leading, spacing: 14) {
-                LabCardHeader(jp: "カテゴリ別の根拠", en: "BASIS")
+                LabCardHeader(jp: String(localized: "カテゴリ別の根拠", bundle: LanguageManager.appBundle), en: "BASIS")
                 LockedBody(locked: locked) {
                     VStack(alignment: .leading, spacing: 14) {
                         ForEach(result.categoryBreakdowns) { breakdown in
@@ -1179,14 +1190,14 @@ struct DiagnosisDetectionDetailTab: View {
     var body: some View {
         let locked = !subscription.isSubscribed
         VStack(spacing: 16) {
-            LabSectionTitle(jp: "検出の内訳", en: "DETECTION DETAIL  /  全発言スキャン結果")
+            LabSectionTitle(jp: String(localized: "検出の内訳", bundle: LanguageManager.appBundle), en: String(localized: "DETECTION DETAIL  /  全発言スキャン結果", bundle: LanguageManager.appBundle))
             // 発生源比較までは無料。検査統計以降をプレミアム限定にする
             // （各カードはタイトルだけ見せて本文はぼかし）。
             speakerCompareCard(locked: false)
             if locked {
                 DiagnosisUnlockCTA(
                     source: "diag_detection_lock",
-                    message: "検査統計・成分詳細・証拠サンプル・検出ログを全部見る"
+                    message: String(localized: "検査統計・成分詳細・証拠サンプル・検出ログを全部見る", bundle: LanguageManager.appBundle)
                 )
             }
             funStatsCard(locked: locked)
@@ -1223,7 +1234,7 @@ struct DiagnosisDetectionDetailTab: View {
 
         return LabCard {
             VStack(alignment: .leading, spacing: 12) {
-                LabCardHeader(jp: "検出ログ", en: "DETECTION LOG")
+                LabCardHeader(jp: String(localized: "検出ログ", bundle: LanguageManager.appBundle), en: "DETECTION LOG")
                 LockedBody(locked: locked) {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("検出されたヤバ要素を全部時系列で。誰がいつ何のパターンで引っかかったか、納得できなければ実際の発言と比べてください。")
@@ -1267,7 +1278,7 @@ struct DiagnosisDetectionDetailTab: View {
         let c = severityColor(for: severity)
         return VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 8) {
-                Text(timestamp.formatted(date: .abbreviated, time: .shortened))
+                Text(timestamp.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened).locale(LanguageManager.appLocale)))
                     .font(MeloFonts.mono(10))
                     .foregroundColor(c)
                 LabCodeChip(text: factor.displayName, color: c)
@@ -1295,7 +1306,7 @@ struct DiagnosisDetectionDetailTab: View {
     private func speakerCompareCard(locked: Bool) -> some View {
         LabCard {
             VStack(alignment: .leading, spacing: 12) {
-                LabCardHeader(jp: "発生源比較", en: "SOURCE")
+                LabCardHeader(jp: String(localized: "発生源比較", bundle: LanguageManager.appBundle), en: "SOURCE")
                 LockedBody(locked: locked) {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("両者の発言を全部スキャンしてます。お互いのヤバ発言の出方を比べてみてください。")
@@ -1349,21 +1360,21 @@ struct DiagnosisDetectionDetailTab: View {
     private func funStatsCard(locked: Bool) -> some View {
         LabCard {
             VStack(alignment: .leading, spacing: 10) {
-                LabCardHeader(jp: "検査統計", en: "STATISTICS")
+                LabCardHeader(jp: String(localized: "検査統計", bundle: LanguageManager.appBundle), en: "STATISTICS")
                 LockedBody(locked: locked) {
                     VStack(alignment: .leading, spacing: 10) {
-                        statRow(label: "総発言数", value: "\(result.stats.totalMessages)", color: MeloColors.Dark.textPrimary)
-                        statRow(label: "テキスト発言", value: "\(result.stats.totalTextMessages)", color: MeloColors.Dark.textPrimary)
-                        statRow(label: "ヤバ発言の割合", value: "\(result.stats.detectionRatePercent)%", color: labSeverityColor(result.stats.detectionRatePercent))
-                        statRow(label: "検出された構成要素", value: "\(result.stats.detectedFactorCount) 件", color: MeloColors.Dark.accent)
+                        statRow(label: String(localized: "総発言数", bundle: LanguageManager.appBundle), value: "\(result.stats.totalMessages)", color: MeloColors.Dark.textPrimary)
+                        statRow(label: String(localized: "テキスト発言", bundle: LanguageManager.appBundle), value: "\(result.stats.totalTextMessages)", color: MeloColors.Dark.textPrimary)
+                        statRow(label: String(localized: "ヤバ発言の割合", bundle: LanguageManager.appBundle), value: String(format: String(localized: "%1$lld%%", bundle: LanguageManager.appBundle), result.stats.detectionRatePercent), color: labSeverityColor(result.stats.detectionRatePercent))
+                        statRow(label: String(localized: "検出された構成要素", bundle: LanguageManager.appBundle), value: String(format: String(localized: "%1$lld 件", bundle: LanguageManager.appBundle), result.stats.detectedFactorCount), color: MeloColors.Dark.accent)
                         if result.stats.nightDetectionCount > 0 {
-                            statRow(label: "深夜ヤバ発言", value: "\(result.stats.nightDetectionCount) 件", color: MeloColors.Dark.caution)
+                            statRow(label: String(localized: "深夜ヤバ発言", bundle: LanguageManager.appBundle), value: String(format: String(localized: "%1$lld 件", bundle: LanguageManager.appBundle), result.stats.nightDetectionCount), color: MeloColors.Dark.caution)
                         }
                         if let first = result.stats.firstDetectionAt {
-                            statRow(label: "最初のヤバ発言", value: first.formatted(date: .abbreviated, time: .shortened), color: MeloColors.Dark.textSecondary)
+                            statRow(label: String(localized: "最初のヤバ発言", bundle: LanguageManager.appBundle), value: first.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened).locale(LanguageManager.appLocale)), color: MeloColors.Dark.textSecondary)
                         }
                         if let last = result.stats.lastDetectionAt {
-                            statRow(label: "最新のヤバ発言", value: last.formatted(date: .abbreviated, time: .shortened), color: MeloColors.Dark.textSecondary)
+                            statRow(label: String(localized: "最新のヤバ発言", bundle: LanguageManager.appBundle), value: last.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened).locale(LanguageManager.appLocale)), color: MeloColors.Dark.textSecondary)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -1387,7 +1398,7 @@ struct DiagnosisDetectionDetailTab: View {
     private func factorDetailsCard(locked: Bool) -> some View {
         LabCard {
             VStack(alignment: .leading, spacing: 14) {
-                LabCardHeader(jp: "成分詳細", en: "COMPONENT DETAIL")
+                LabCardHeader(jp: String(localized: "成分詳細", bundle: LanguageManager.appBundle), en: "COMPONENT DETAIL")
                 LockedBody(locked: locked) {
                     VStack(alignment: .leading, spacing: 14) {
                         ForEach(result.factorDeepDives) { dive in
@@ -1451,7 +1462,7 @@ struct DiagnosisDetectionDetailTab: View {
     private func quotesCard(locked: Bool) -> some View {
         LabCard {
             VStack(alignment: .leading, spacing: 14) {
-                LabCardHeader(jp: "証拠サンプル", en: "EVIDENCE")
+                LabCardHeader(jp: String(localized: "証拠サンプル", bundle: LanguageManager.appBundle), en: "EVIDENCE")
                 LockedBody(locked: locked) {
                     VStack(alignment: .leading, spacing: 14) {
                         if result.quotedEvidences.isEmpty {
@@ -1484,7 +1495,7 @@ struct DiagnosisDetectionDetailTab: View {
                 .font(MeloFonts.zenMaruRegular(11))
                 .foregroundColor(MeloColors.Dark.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
-            Text("\(quote.speakerName) · \(quote.timestamp.formatted(date: .abbreviated, time: .shortened))")
+            Text("\(quote.speakerName) · \(quote.timestamp.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened).locale(LanguageManager.appLocale)))")
                 .font(MeloFonts.mono(9))
                 .foregroundColor(MeloColors.Dark.textSecondary.opacity(0.7))
         }
@@ -1510,7 +1521,7 @@ struct DiagnosisDataTab: View {
     var body: some View {
         let locked = !subscription.isSubscribed
         VStack(spacing: 16) {
-            LabSectionTitle(jp: "詳細鑑定データ", en: "LAB DATA  /  トーク全体の振る舞い分析")
+            LabSectionTitle(jp: String(localized: "詳細鑑定データ", bundle: LanguageManager.appBundle), en: String(localized: "LAB DATA  /  トーク全体の振る舞い分析", bundle: LanguageManager.appBundle))
             if let s = stats {
                 legend
                 volumeBalanceSection(s)   // 1. 発言量の偏り（重力）— 無料
@@ -1519,7 +1530,7 @@ struct DiagnosisDataTab: View {
                 if locked {
                     DiagnosisUnlockCTA(
                         source: "diag_data_lock",
-                        message: "振る舞いの癖・よく使うフレーズまで全部見る"
+                        message: String(localized: "振る舞いの癖・よく使うフレーズまで全部見る", bundle: LanguageManager.appBundle)
                     )
                 }
                 funStatsSection(s, locked: locked)   // 3. 振る舞いの癖（向き合い）
@@ -1578,8 +1589,8 @@ struct DiagnosisDataTab: View {
 
     private var legend: some View {
         HStack(spacing: 16) {
-            legendChip(color: selfColor, label: "自分")
-            legendChip(color: partnerColor, label: "相手")
+            legendChip(color: selfColor, label: String(localized: "自分", bundle: LanguageManager.appBundle))
+            legendChip(color: partnerColor, label: String(localized: "相手", bundle: LanguageManager.appBundle))
             Spacer(minLength: 0)
         }
     }
@@ -1598,7 +1609,7 @@ struct DiagnosisDataTab: View {
         let patterns = s.actionsStatistics?.actionPatterns ?? []
         LabCard {
             VStack(alignment: .leading, spacing: 12) {
-                LabCardHeader(jp: "発言量の偏り", en: "VOLUME BALANCE")
+                LabCardHeader(jp: String(localized: "発言量の偏り", bundle: LanguageManager.appBundle), en: "VOLUME BALANCE")
                 Text("やり取りのどこにどれだけ偏りがあるか。極端な比率は「一方的に詰める／黙らされる」の手がかり。")
                     .font(MeloFonts.zenMaruRegular(11))
                     .foregroundColor(MeloColors.Dark.textSecondary)
@@ -1620,14 +1631,14 @@ struct DiagnosisDataTab: View {
     /// 行動タイプ → 日本語ラベル（ハラスメントトーン。String Catalog 経由だと英語化するため直マップ）。
     private func actionLabel(_ type: String) -> String {
         switch type {
-        case "textMessage": return "テキスト"
-        case "sticker": return "スタンプ"
-        case "photo": return "写真"
-        case "video": return "動画"
-        case "call": return "通話"
-        case "question": return "質問・詰問"
-        case "proposal": return "要求・指示"
-        case "emotionalMessage": return "感情ぶつけ"
+        case "textMessage": return String(localized: "テキスト", bundle: LanguageManager.appBundle)
+        case "sticker": return String(localized: "スタンプ", bundle: LanguageManager.appBundle)
+        case "photo": return String(localized: "写真", bundle: LanguageManager.appBundle)
+        case "video": return String(localized: "動画", bundle: LanguageManager.appBundle)
+        case "call": return String(localized: "通話", bundle: LanguageManager.appBundle)
+        case "question": return String(localized: "質問・詰問", bundle: LanguageManager.appBundle)
+        case "proposal": return String(localized: "要求・指示", bundle: LanguageManager.appBundle)
+        case "emotionalMessage": return String(localized: "感情ぶつけ", bundle: LanguageManager.appBundle)
         default: return type
         }
     }
@@ -1655,14 +1666,14 @@ struct DiagnosisDataTab: View {
 
             // 自分 % / ドーナツ / 相手 %
             HStack(spacing: 6) {
-                ratioColumn(name: "自分", pct: selfPct, count: pattern.selfCount, color: selfColor, hasData: hasData)
+                ratioColumn(name: String(localized: "自分", bundle: LanguageManager.appBundle), pct: selfPct, count: pattern.selfCount, color: selfColor, hasData: hasData)
                 ratioDonut(selfRatio: selfRatio, hasData: hasData)
-                ratioColumn(name: "相手", pct: partnerPct, count: pattern.partnerCount, color: partnerColor, hasData: hasData)
+                ratioColumn(name: String(localized: "相手", bundle: LanguageManager.appBundle), pct: partnerPct, count: pattern.partnerCount, color: partnerColor, hasData: hasData)
             }
             .padding(.horizontal, 18)
 
             // 一言コメント
-            Text(hasData ? ratioComment(selfPct: selfPct) : "この期間のデータはありません")
+            Text(hasData ? ratioComment(selfPct: selfPct) : String(localized: "この期間のデータはありません", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruRegular(11))
                 .foregroundColor(MeloColors.Dark.textSecondary)
                 .multilineTextAlignment(.center)
@@ -1716,11 +1727,11 @@ struct DiagnosisDataTab: View {
     private func ratioComment(selfPct: Int) -> String {
         let diff = abs(selfPct - 50)
         if diff <= 5 {
-            return "ほぼ五分。釣り合いは取れている。"
+            return String(localized: "ほぼ五分。釣り合いは取れている。", bundle: LanguageManager.appBundle)
         } else if diff <= 15 {
-            return selfPct > 50 ? "あなたの方がやや多め。" : "相手の方がやや多め。"
+            return selfPct > 50 ? String(localized: "あなたの方がやや多め。", bundle: LanguageManager.appBundle) : String(localized: "相手の方がやや多め。", bundle: LanguageManager.appBundle)
         } else {
-            return selfPct > 50 ? "あなたが圧倒的に押している。" : "相手に押し負けている。"
+            return selfPct > 50 ? String(localized: "あなたが圧倒的に押している。", bundle: LanguageManager.appBundle) : String(localized: "相手に押し負けている。", bundle: LanguageManager.appBundle)
         }
     }
 
@@ -1732,18 +1743,18 @@ struct DiagnosisDataTab: View {
         let pc = t.partnerCounts
         return LabCard {
             VStack(alignment: .leading, spacing: 8) {
-                LabCardHeader(jp: "言葉の出方", en: "LANGUAGE")
+                LabCardHeader(jp: String(localized: "言葉の出方", bundle: LanguageManager.appBundle), en: "LANGUAGE")
                 Text("謝罪が一方に偏る・詰問（？）や強い言い切り（！）が多い、は圧の出やすいサイン。")
                     .font(MeloFonts.zenMaruRegular(11))
                     .foregroundColor(MeloColors.Dark.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.bottom, 4)
-                languageRow("🙏 謝罪の言葉", selfVal: sc?.apologyCount ?? 0, partnerVal: pc?.apologyCount ?? 0, totalFallback: t.apologyCount)
-                languageRow("❓ 詰問（？）", selfVal: sc?.questionMarkCount ?? 0, partnerVal: pc?.questionMarkCount ?? 0, totalFallback: t.questionMarkCount)
-                languageRow("❗ 言い切り（！）", selfVal: sc?.exclamationMarkCount ?? 0, partnerVal: pc?.exclamationMarkCount ?? 0, totalFallback: t.exclamationMarkCount)
-                languageRow("💗 感謝", selfVal: sc?.thanksCount ?? 0, partnerVal: pc?.thanksCount ?? 0, totalFallback: t.thanksCount)
-                languageRow("😄 笑い（w/草）", selfVal: sc?.totalLaughCount ?? 0, partnerVal: pc?.totalLaughCount ?? 0, totalFallback: t.totalLaughCount)
-                languageRow("👋 挨拶", selfVal: sc?.greetingCount ?? 0, partnerVal: pc?.greetingCount ?? 0, totalFallback: t.greetingCount)
+                languageRow(String(localized: "🙏 謝罪の言葉", bundle: LanguageManager.appBundle), selfVal: sc?.apologyCount ?? 0, partnerVal: pc?.apologyCount ?? 0, totalFallback: t.apologyCount)
+                languageRow(String(localized: "❓ 詰問（？）", bundle: LanguageManager.appBundle), selfVal: sc?.questionMarkCount ?? 0, partnerVal: pc?.questionMarkCount ?? 0, totalFallback: t.questionMarkCount)
+                languageRow(String(localized: "❗ 言い切り（！）", bundle: LanguageManager.appBundle), selfVal: sc?.exclamationMarkCount ?? 0, partnerVal: pc?.exclamationMarkCount ?? 0, totalFallback: t.exclamationMarkCount)
+                languageRow(String(localized: "💗 感謝", bundle: LanguageManager.appBundle), selfVal: sc?.thanksCount ?? 0, partnerVal: pc?.thanksCount ?? 0, totalFallback: t.thanksCount)
+                languageRow(String(localized: "😄 笑い（w/草）", bundle: LanguageManager.appBundle), selfVal: sc?.totalLaughCount ?? 0, partnerVal: pc?.totalLaughCount ?? 0, totalFallback: t.totalLaughCount)
+                languageRow(String(localized: "👋 挨拶", bundle: LanguageManager.appBundle), selfVal: sc?.greetingCount ?? 0, partnerVal: pc?.greetingCount ?? 0, totalFallback: t.greetingCount)
             }
         }
     }
@@ -1816,7 +1827,7 @@ struct DiagnosisDataTab: View {
         let pi = r?.estimatedPartnerReadIgnore ?? 0
         return LabCard {
             VStack(alignment: .leading, spacing: 14) {
-                LabCardHeader(jp: "振る舞いの癖", en: "BEHAVIOR")
+                LabCardHeader(jp: String(localized: "振る舞いの癖", bundle: LanguageManager.appBundle), en: "BEHAVIOR")
                 LockedBody(locked: locked) {
                     VStack(alignment: .leading, spacing: 14) {
                         Text("返信の速さの差・深夜の連絡・既読スルーの偏りは、追う／逃げるの非対称さを映す。")
@@ -1825,7 +1836,7 @@ struct DiagnosisDataTab: View {
                             .fixedSize(horizontal: false, vertical: true)
 
                         // 最速返信タイム（自分 vs 相手）
-                        funStatBlock(title: "最速返信タイム") {
+                        funStatBlock(title: String(localized: "最速返信タイム", bundle: LanguageManager.appBundle)) {
                             versusRow(
                                 selfText: formatReplyTime(r?.fastestSelfReply),
                                 partnerText: formatReplyTime(r?.fastestPartnerReply)
@@ -1833,7 +1844,7 @@ struct DiagnosisDataTab: View {
                         }
 
                         // 深夜トーク率
-                        funStatBlock(title: "深夜トーク率（0-5時）") {
+                        funStatBlock(title: String(localized: "深夜トーク率（0-5時）", bundle: LanguageManager.appBundle)) {
                             VStack(spacing: 4) {
                                 Text("\(Int((lateRate * 100).rounded()))%")
                                     .font(MeloFonts.anton(28))
@@ -1846,9 +1857,9 @@ struct DiagnosisDataTab: View {
                         }
 
                         // 既読スルー（推定）
-                        funStatBlock(title: "既読スルー（推定）") {
+                        funStatBlock(title: String(localized: "既読スルー（推定）", bundle: LanguageManager.appBundle)) {
                             if si + pi > 0 {
-                                versusRow(selfText: "\(si)回", partnerText: "\(pi)回")
+                                versusRow(selfText: String(format: String(localized: "%1$lld回", bundle: LanguageManager.appBundle), si), partnerText: String(format: String(localized: "%1$lld回", bundle: LanguageManager.appBundle), pi))
                             } else {
                                 Text("ほぼ即レス。スルーは検出されず。")
                                     .font(MeloFonts.zenMaruRegular(12))
@@ -1900,10 +1911,10 @@ struct DiagnosisDataTab: View {
 
     private func lateNightComment(_ rate: Double) -> String {
         switch rate {
-        case 0..<0.03: return "健全な生活リズム"
-        case 0.03..<0.10: return "たまに夜更かし"
-        case 0.10..<0.20: return "夜型コンビ"
-        default: return "完全に夜行性"
+        case 0..<0.03: return String(localized: "健全な生活リズム", bundle: LanguageManager.appBundle)
+        case 0.03..<0.10: return String(localized: "たまに夜更かし", bundle: LanguageManager.appBundle)
+        case 0.10..<0.20: return String(localized: "夜型コンビ", bundle: LanguageManager.appBundle)
+        default: return String(localized: "完全に夜行性", bundle: LanguageManager.appBundle)
         }
     }
 
@@ -1913,14 +1924,14 @@ struct DiagnosisDataTab: View {
         let p = s.phraseAnalysis
         return LabCard {
             VStack(alignment: .leading, spacing: 14) {
-                LabCardHeader(jp: "よく使うフレーズ", en: "SIGNATURE PHRASES")
+                LabCardHeader(jp: String(localized: "よく使うフレーズ", bundle: LanguageManager.appBundle), en: "SIGNATURE PHRASES")
                 LockedBody(locked: locked) {
                     VStack(alignment: .leading, spacing: 14) {
-                        phraseBlock(title: "あなたがよく使う", phrases: p.selfTopPhrases, color: selfColor)
-                        phraseBlock(title: "相手がよく使う", phrases: p.partnerTopPhrases, color: partnerColor)
+                        phraseBlock(title: String(localized: "あなたがよく使う", bundle: LanguageManager.appBundle), phrases: p.selfTopPhrases, color: selfColor)
+                        phraseBlock(title: String(localized: "相手がよく使う", bundle: LanguageManager.appBundle), phrases: p.partnerTopPhrases, color: partnerColor)
                         if !p.commonPhrases.isEmpty {
                             Rectangle().fill(MeloColors.Dark.divider).frame(height: 1)
-                            phraseBlock(title: "ふたりの共通フレーズ", phrases: p.commonPhrases, color: MeloColors.Dark.textSecondary)
+                            phraseBlock(title: String(localized: "ふたりの共通フレーズ", bundle: LanguageManager.appBundle), phrases: p.commonPhrases, color: MeloColors.Dark.textSecondary)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -1954,11 +1965,11 @@ struct DiagnosisDataTab: View {
     private func formatReplyTime(_ interval: TimeInterval?) -> String {
         guard let interval = interval else { return "—" }
         let seconds = Int(interval)
-        if seconds < 60 { return "\(seconds)秒" }
+        if seconds < 60 { return String(format: String(localized: "%1$lld秒", bundle: LanguageManager.appBundle), seconds) }
         let m = seconds / 60, s = seconds % 60
-        if m < 60 { return s == 0 ? "\(m)分" : "\(m)分\(s)秒" }
+        if m < 60 { return s == 0 ? String(format: String(localized: "%1$lld分", bundle: LanguageManager.appBundle), m) : String(format: String(localized: "%1$lld分%2$lld秒", bundle: LanguageManager.appBundle), m, s) }
         let h = m / 60, mm = m % 60
-        return mm > 0 ? "\(h)時間\(mm)分" : "\(h)時間"
+        return mm > 0 ? String(format: String(localized: "%1$lld時間%2$lld分", bundle: LanguageManager.appBundle), h, mm) : String(format: String(localized: "%1$lld時間", bundle: LanguageManager.appBundle), h)
     }
 }
 
@@ -2207,7 +2218,7 @@ struct HarassmentSummaryTabView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            LabSectionTitle(jp: "AI 月別鑑定", en: "MONTHLY AI REPORT  /  月ごとのハラスメント傾向")
+            LabSectionTitle(jp: String(localized: "AI 月別鑑定", bundle: LanguageManager.appBundle), en: String(localized: "MONTHLY AI REPORT  /  月ごとのハラスメント傾向", bundle: LanguageManager.appBundle))
 
             switch viewModel.summaryState {
             case .idle:
@@ -2538,9 +2549,9 @@ private func colorForScore(_ score: Int) -> Color {
 
 private func severityBadge(for severity: FactorSeverity) -> String {
     switch severity {
-    case .low: return "弱"
-    case .medium: return "中"
-    case .high: return "強"
+    case .low: return String(localized: "弱", bundle: LanguageManager.appBundle)
+    case .medium: return String(localized: "中", bundle: LanguageManager.appBundle)
+    case .high: return String(localized: "強", bundle: LanguageManager.appBundle)
     }
 }
 

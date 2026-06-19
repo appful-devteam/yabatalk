@@ -375,9 +375,9 @@ struct CommunityRoomsView: View {
 
     private func emptyMessage(for tab: CommunityRoomTab) -> String {
         switch tab {
-        case .joined: return "まだ参加している部屋はないよ"
-        case .created: return "まだ作成した部屋はないよ"
-        case .search: return "部屋が見つかりません"
+        case .joined: return String(localized: "まだ参加している部屋はないよ", bundle: LanguageManager.appBundle)
+        case .created: return String(localized: "まだ作成した部屋はないよ", bundle: LanguageManager.appBundle)
+        case .search: return String(localized: "部屋が見つかりません", bundle: LanguageManager.appBundle)
         }
     }
 
@@ -479,9 +479,9 @@ private struct RoomCard: View {
     /// カードに表示する meta 行: 投稿数 (常時) + 参加人数 (通常部屋のみ)。
     private func roomMetaText(for room: CommunityRoom) -> String {
         var parts: [String] = []
-        parts.append("投稿\(room.postCount)件")
+        parts.append(String(format: String(localized: "投稿%lld件", bundle: LanguageManager.appBundle), room.postCount))
         if room.ownerId != nil {
-            parts.append("\(room.participantCount)人が話してるよ！")
+            parts.append(String(format: String(localized: "%lld人が話してるよ！", bundle: LanguageManager.appBundle), room.participantCount))
         }
         return parts.joined(separator: " ・ ")
     }
@@ -541,7 +541,7 @@ private struct RoomCard: View {
 
     private var joinButton: some View {
         Button(action: onTapJoin) {
-            Text(room.isJoined ? "参加中" : "参加")
+            Text(room.isJoined ? String(localized: "参加中", bundle: LanguageManager.appBundle) : String(localized: "参加", bundle: LanguageManager.appBundle))
                 .font(MeloFonts.zenMaruMedium(16))
                 .tracking(0.48)
                 .foregroundColor(room.isJoined ? RoomsPalette.koiPink : MeloColors.Dark.onAccent)

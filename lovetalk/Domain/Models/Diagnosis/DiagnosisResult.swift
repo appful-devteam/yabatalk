@@ -362,7 +362,7 @@ struct DiagnosisResult: Identifiable, Codable, Hashable, Sendable {
         quotedEvidences: [QuotedEvidence],
         darkHumorAdvice: String,
         nextSteps: [String] = [],
-        disclaimer: String = "この結果はトーク内容から見た構造分析であり、法的な断定ではありません。",
+        disclaimer: String = String(localized: "この結果はトーク内容から見た構造分析であり、法的な断定ではありません。", bundle: LanguageManager.appBundle),
         detailedStatistics: DetailedStatistics? = nil
     ) {
         self.id = id
@@ -406,7 +406,7 @@ struct DiagnosisResult: Identifiable, Codable, Hashable, Sendable {
         parts.append(contentsOf: secondaryCategories.map(\.shortName))
         // その他の場合はサブ分類名を添える
         if primaryCategory == .other, let first = subCategories.first {
-            return "\(first.displayName)\(first.trailingSuffix)"
+            return String(format: String(localized: "%1$@%2$@", bundle: LanguageManager.appBundle), first.displayName, first.trailingSuffix)
         }
         return parts.joined(separator: " / ")
     }

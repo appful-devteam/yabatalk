@@ -315,7 +315,7 @@ final class CommunityRoomsViewModel: ObservableObject {
     ) async -> CommunityRoom? {
         let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedTitle.isEmpty else {
-            errorMessage = "タイトルを入力してください"
+            errorMessage = String(localized: "タイトルを入力してください", bundle: LanguageManager.appBundle)
             return nil
         }
         let ownerId = BoardAuthService.shared.currentUser?.id
@@ -345,7 +345,7 @@ final class CommunityRoomsViewModel: ObservableObject {
     @discardableResult
     func deleteRoom(_ room: CommunityRoom) async -> Bool {
         guard room.isOwnedBy(userId: BoardAuthService.shared.currentUser?.id) else {
-            errorMessage = "削除権限がありません"
+            errorMessage = String(localized: "削除権限がありません", bundle: LanguageManager.appBundle)
             return false
         }
         do {
@@ -366,12 +366,12 @@ final class CommunityRoomsViewModel: ObservableObject {
     func updateRoomInfo(roomId: String, title: String, subtitle: String) async -> CommunityRoom? {
         let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedTitle.isEmpty else {
-            errorMessage = "タイトルを入力してください"
+            errorMessage = String(localized: "タイトルを入力してください", bundle: LanguageManager.appBundle)
             return nil
         }
         guard let room = rooms.first(where: { $0.id == roomId }),
               room.isOwnedBy(userId: BoardAuthService.shared.currentUser?.id) else {
-            errorMessage = "編集権限がありません"
+            errorMessage = String(localized: "編集権限がありません", bundle: LanguageManager.appBundle)
             return nil
         }
         do {
@@ -395,7 +395,7 @@ final class CommunityRoomsViewModel: ObservableObject {
     func toggleBlock(roomId: String, userId: String) async -> CommunityRoom? {
         guard let room = rooms.first(where: { $0.id == roomId }),
               room.isOwnedBy(userId: BoardAuthService.shared.currentUser?.id) else {
-            errorMessage = "ブロック権限がありません"
+            errorMessage = String(localized: "ブロック権限がありません", bundle: LanguageManager.appBundle)
             return nil
         }
         var newList = room.blockedUserIds

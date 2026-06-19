@@ -214,7 +214,7 @@ final class InMemoryCommunityRoomRepository: CommunityRoomRepository {
             throw NSError(
                 domain: "CommunityRoomRepository",
                 code: 403,
-                userInfo: [NSLocalizedDescriptionKey: "シード部屋は削除できません"]
+                userInfo: [NSLocalizedDescriptionKey: String(localized: "シード部屋は削除できません", bundle: LanguageManager.appBundle)]
             )
         }
         // Firestore 削除を試行 (失敗しても継続して キャッシュからも削除)。
@@ -231,7 +231,7 @@ final class InMemoryCommunityRoomRepository: CommunityRoomRepository {
             throw NSError(
                 domain: "CommunityRoomRepository",
                 code: 403,
-                userInfo: [NSLocalizedDescriptionKey: "シード部屋は編集できません"]
+                userInfo: [NSLocalizedDescriptionKey: String(localized: "シード部屋は編集できません", bundle: LanguageManager.appBundle)]
             )
         }
         let updated = try await CommunityRoomFirestoreService.shared.updateRoomInfo(
@@ -246,7 +246,7 @@ final class InMemoryCommunityRoomRepository: CommunityRoomRepository {
             throw NSError(
                 domain: "CommunityRoomRepository",
                 code: 403,
-                userInfo: [NSLocalizedDescriptionKey: "シード部屋では設定できません"]
+                userInfo: [NSLocalizedDescriptionKey: String(localized: "シード部屋では設定できません", bundle: LanguageManager.appBundle)]
             )
         }
         let updated = try await CommunityRoomFirestoreService.shared.updateBlockList(

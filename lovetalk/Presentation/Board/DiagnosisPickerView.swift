@@ -112,7 +112,7 @@ struct DiagnosisPickerView: View {
                                             .lineLimit(1)
 
                                         HStack(spacing: 6) {
-                                            Text(partnerShare.map { "相手 \($0)%" } ?? "\(rowScore)点")
+                                            Text(partnerShare.map { String(format: String(localized: "相手 %lld%%", bundle: LanguageManager.appBundle), $0) } ?? String(format: String(localized: "%lld点", bundle: LanguageManager.appBundle), rowScore))
                                                 .font(MeloFonts.zenMaruMedium(11))
                                                 .foregroundColor(toxicity != nil ? MeloColors.Dark.onAccent : .white)
                                                 .padding(.horizontal, 8)
@@ -243,7 +243,9 @@ struct DiagnosisPickerView: View {
 
                                             // 相手のMBTI
                                             HStack {
-                                                Text(String(localized: isGroupChat ? "メンバーのMBTI（複数選択可）" : "相手のMBTI", bundle: LanguageManager.appBundle))
+                                                Text(isGroupChat
+                                                     ? String(localized: "メンバーのMBTI（複数選択可）", bundle: LanguageManager.appBundle)
+                                                     : String(localized: "相手のMBTI", bundle: LanguageManager.appBundle))
                                                     .font(MeloFonts.zenMaruOrFallback(12))
                                                     .foregroundColor(BoardColors.textSecondary)
                                                 Spacer()

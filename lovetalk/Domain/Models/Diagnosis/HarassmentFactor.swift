@@ -31,60 +31,60 @@ enum HarassmentFactor: String, Codable, CaseIterable, Sendable {
     /// 構成要素の正式名（日本語）
     var displayName: String {
         switch self {
-        case .dominance:            return "優位性"
-        case .workEvaluation:       return "業務・評価文脈"
-        case .sexualContext:        return "性的文脈"
-        case .intimateRelationship: return "親密関係"
-        case .personalityDenial:    return "人格否定"
-        case .abilityDenial:        return "能力否定"
-        case .existenceDenial:      return "存在・所属否定"
-        case .disadvantageThreat:   return "不利益示唆"
-        case .excessiveDemand:      return "過大要求"
-        case .refusalImpossible:    return "拒否不能性"
-        case .boundaryViolation:    return "境界線侵害"
-        case .persistentRepetition: return "反復性・執拗性"
-        case .guiltManipulation:    return "罪悪感操作"
-        case .gaslighting:          return "ガスライティング"
-        case .monitoringControl:    return "監視・束縛"
-        case .privacyIntrusion:     return "私生活侵害"
-        case .groupExclusion:       return "集団排除"
-        case .roleStereotype:       return "属性・役割押し付け"
-        case .quotaPairing:         return "評価と性的要求の結合"
-        case .mockingLaughter:      return "「笑」での軽量化"
-        case .alcoholCoercion:      return "飲酒強要"
-        case .customerAggression:   return "顧客・取引先からの脅し"
-        case .maternityPenalty:     return "妊娠・育児・介護への不利益示唆"
-        case .academicPower:        return "学業権限の濫用"
+        case .dominance:            return String(localized: "優位性", bundle: LanguageManager.appBundle)
+        case .workEvaluation:       return String(localized: "業務・評価文脈", bundle: LanguageManager.appBundle)
+        case .sexualContext:        return String(localized: "性的文脈", bundle: LanguageManager.appBundle)
+        case .intimateRelationship: return String(localized: "親密関係", bundle: LanguageManager.appBundle)
+        case .personalityDenial:    return String(localized: "人格否定", bundle: LanguageManager.appBundle)
+        case .abilityDenial:        return String(localized: "能力否定", bundle: LanguageManager.appBundle)
+        case .existenceDenial:      return String(localized: "存在・所属否定", bundle: LanguageManager.appBundle)
+        case .disadvantageThreat:   return String(localized: "不利益示唆", bundle: LanguageManager.appBundle)
+        case .excessiveDemand:      return String(localized: "過大要求", bundle: LanguageManager.appBundle)
+        case .refusalImpossible:    return String(localized: "拒否不能性", bundle: LanguageManager.appBundle)
+        case .boundaryViolation:    return String(localized: "境界線侵害", bundle: LanguageManager.appBundle)
+        case .persistentRepetition: return String(localized: "反復性・執拗性", bundle: LanguageManager.appBundle)
+        case .guiltManipulation:    return String(localized: "罪悪感操作", bundle: LanguageManager.appBundle)
+        case .gaslighting:          return String(localized: "ガスライティング", bundle: LanguageManager.appBundle)
+        case .monitoringControl:    return String(localized: "監視・束縛", bundle: LanguageManager.appBundle)
+        case .privacyIntrusion:     return String(localized: "私生活侵害", bundle: LanguageManager.appBundle)
+        case .groupExclusion:       return String(localized: "集団排除", bundle: LanguageManager.appBundle)
+        case .roleStereotype:       return String(localized: "属性・役割押し付け", bundle: LanguageManager.appBundle)
+        case .quotaPairing:         return String(localized: "評価と性的要求の結合", bundle: LanguageManager.appBundle)
+        case .mockingLaughter:      return String(localized: "「笑」での軽量化", bundle: LanguageManager.appBundle)
+        case .alcoholCoercion:      return String(localized: "飲酒強要", bundle: LanguageManager.appBundle)
+        case .customerAggression:   return String(localized: "顧客・取引先からの脅し", bundle: LanguageManager.appBundle)
+        case .maternityPenalty:     return String(localized: "妊娠・育児・介護への不利益示唆", bundle: LanguageManager.appBundle)
+        case .academicPower:        return String(localized: "学業権限の濫用", bundle: LanguageManager.appBundle)
         }
     }
 
     /// 闇成分ミックスの表示名（毒見 UI 用）。揺らがず固定。
     var ingredientName: String {
         switch self {
-        case .dominance:            return "立場ふりかけ"
-        case .workEvaluation:       return "業務指導っぽさ"
-        case .sexualContext:        return "距離感バグ味"
-        case .intimateRelationship: return "親密関係コーティング"
-        case .personalityDenial:    return "人格削りパウダー"
-        case .abilityDenial:        return "能力否定ペッパー"
-        case .existenceDenial:      return "居場所はく奪エキス"
-        case .disadvantageThreat:   return "不利益ちらつかせシロップ"
-        case .excessiveDemand:      return "重労働シロップ"
-        case .refusalImpossible:    return "逃げ道ふさぎエキス"
-        case .boundaryViolation:    return "境界線ぶち破り味"
-        case .persistentRepetition: return "しつこさ煮込み"
-        case .guiltManipulation:    return "罪悪感の素"
-        case .gaslighting:          return "記憶改ざんスパイス"
-        case .monitoringControl:    return "監視・返信強要ジュース"
-        case .privacyIntrusion:     return "プライベート漬け"
-        case .groupExclusion:       return "仲間外し氷"
-        case .roleStereotype:       return "古臭い役割タレ"
-        case .quotaPairing:         return "評価との抱き合わせ"
-        case .mockingLaughter:      return "笑でごまかし"
-        case .alcoholCoercion:      return "飲酒強要ハイボール"
-        case .customerAggression:   return "クレーマー火薬"
-        case .maternityPenalty:     return "ライフイベント踏みつけ味"
-        case .academicPower:        return "研究室の絶対権力"
+        case .dominance:            return String(localized: "立場ふりかけ", bundle: LanguageManager.appBundle)
+        case .workEvaluation:       return String(localized: "業務指導っぽさ", bundle: LanguageManager.appBundle)
+        case .sexualContext:        return String(localized: "距離感バグ味", bundle: LanguageManager.appBundle)
+        case .intimateRelationship: return String(localized: "親密関係コーティング", bundle: LanguageManager.appBundle)
+        case .personalityDenial:    return String(localized: "人格削りパウダー", bundle: LanguageManager.appBundle)
+        case .abilityDenial:        return String(localized: "能力否定ペッパー", bundle: LanguageManager.appBundle)
+        case .existenceDenial:      return String(localized: "居場所はく奪エキス", bundle: LanguageManager.appBundle)
+        case .disadvantageThreat:   return String(localized: "不利益ちらつかせシロップ", bundle: LanguageManager.appBundle)
+        case .excessiveDemand:      return String(localized: "重労働シロップ", bundle: LanguageManager.appBundle)
+        case .refusalImpossible:    return String(localized: "逃げ道ふさぎエキス", bundle: LanguageManager.appBundle)
+        case .boundaryViolation:    return String(localized: "境界線ぶち破り味", bundle: LanguageManager.appBundle)
+        case .persistentRepetition: return String(localized: "しつこさ煮込み", bundle: LanguageManager.appBundle)
+        case .guiltManipulation:    return String(localized: "罪悪感の素", bundle: LanguageManager.appBundle)
+        case .gaslighting:          return String(localized: "記憶改ざんスパイス", bundle: LanguageManager.appBundle)
+        case .monitoringControl:    return String(localized: "監視・返信強要ジュース", bundle: LanguageManager.appBundle)
+        case .privacyIntrusion:     return String(localized: "プライベート漬け", bundle: LanguageManager.appBundle)
+        case .groupExclusion:       return String(localized: "仲間外し氷", bundle: LanguageManager.appBundle)
+        case .roleStereotype:       return String(localized: "古臭い役割タレ", bundle: LanguageManager.appBundle)
+        case .quotaPairing:         return String(localized: "評価との抱き合わせ", bundle: LanguageManager.appBundle)
+        case .mockingLaughter:      return String(localized: "笑でごまかし", bundle: LanguageManager.appBundle)
+        case .alcoholCoercion:      return String(localized: "飲酒強要ハイボール", bundle: LanguageManager.appBundle)
+        case .customerAggression:   return String(localized: "クレーマー火薬", bundle: LanguageManager.appBundle)
+        case .maternityPenalty:     return String(localized: "ライフイベント踏みつけ味", bundle: LanguageManager.appBundle)
+        case .academicPower:        return String(localized: "研究室の絶対権力", bundle: LanguageManager.appBundle)
         }
     }
 
@@ -92,53 +92,53 @@ enum HarassmentFactor: String, Codable, CaseIterable, Sendable {
     func explanationTemplate() -> String {
         switch self {
         case .personalityDenial:
-            return "「やったこと」じゃなく「人としてどうなの」って言い方になりがち。"
+            return String(localized: "「やったこと」じゃなく「人としてどうなの」って言い方になりがち。", bundle: LanguageManager.appBundle)
         case .abilityDenial:
-            return "「ここを直そう」じゃなく「もうムリでしょ」って丸ごとパスかも。"
+            return String(localized: "「ここを直そう」じゃなく「もうムリでしょ」って丸ごとパスかも。", bundle: LanguageManager.appBundle)
         case .existenceDenial:
-            return "居場所そのものを取り上げるみたいな言い方が混じってます。"
+            return String(localized: "居場所そのものを取り上げるみたいな言い方が混じってます。", bundle: LanguageManager.appBundle)
         case .disadvantageThreat:
-            return "「やらないと損するよ」って匂わせがちなタイプ。"
+            return String(localized: "「やらないと損するよ」って匂わせがちなタイプ。", bundle: LanguageManager.appBundle)
         case .refusalImpossible:
-            return "一見、選べそうで実は断りにくい言い方になってるかも。"
+            return String(localized: "一見、選べそうで実は断りにくい言い方になってるかも。", bundle: LanguageManager.appBundle)
         case .excessiveDemand:
-            return "相手の体調や時間、ちょっと無視ぎみな要求が出てます。"
+            return String(localized: "相手の体調や時間、ちょっと無視ぎみな要求が出てます。", bundle: LanguageManager.appBundle)
         case .sexualContext:
-            return "ちょっと距離感バグった、踏み込みすぎな話題かも。"
+            return String(localized: "ちょっと距離感バグった、踏み込みすぎな話題かも。", bundle: LanguageManager.appBundle)
         case .quotaPairing:
-            return "色恋っぽい話と評価・仕事の話がくっついちゃってます。"
+            return String(localized: "色恋っぽい話と評価・仕事の話がくっついちゃってます。", bundle: LanguageManager.appBundle)
         case .mockingLaughter:
-            return "「笑」をつけてマイルドに見せてるけど、中身は結構強め。"
+            return String(localized: "「笑」をつけてマイルドに見せてるけど、中身は結構強め。", bundle: LanguageManager.appBundle)
         case .guiltManipulation:
-            return "「私の気持ち、あなたのせい」風の言い回しが目立ちます。"
+            return String(localized: "「私の気持ち、あなたのせい」風の言い回しが目立ちます。", bundle: LanguageManager.appBundle)
         case .gaslighting:
-            return "「そんなこと言ってない」「気のせい」で相手の感覚を上書きしがち。"
+            return String(localized: "「そんなこと言ってない」「気のせい」で相手の感覚を上書きしがち。", bundle: LanguageManager.appBundle)
         case .monitoringControl:
-            return "返信や行動の追跡みがちょっと強めかも。"
+            return String(localized: "返信や行動の追跡みがちょっと強めかも。", bundle: LanguageManager.appBundle)
         case .intimateRelationship:
-            return "愛情や関係性を条件にしたお願いが混ざってます。"
+            return String(localized: "愛情や関係性を条件にしたお願いが混ざってます。", bundle: LanguageManager.appBundle)
         case .boundaryViolation:
-            return "「やめて」「嫌」って言われた後にも、同じノリが続いてるかも。"
+            return String(localized: "「やめて」「嫌」って言われた後にも、同じノリが続いてるかも。", bundle: LanguageManager.appBundle)
         case .persistentRepetition:
-            return "短時間にバババッと連投する追い打ちタイプ。"
+            return String(localized: "短時間にバババッと連投する追い打ちタイプ。", bundle: LanguageManager.appBundle)
         case .dominance:
-            return "「立場が上だから」を前提にしてる圧、ちょっと出てます。"
+            return String(localized: "「立場が上だから」を前提にしてる圧、ちょっと出てます。", bundle: LanguageManager.appBundle)
         case .workEvaluation:
-            return "評価・仕事・成績の話を持ち出して効かせるタイプかも。"
+            return String(localized: "評価・仕事・成績の話を持ち出して効かせるタイプかも。", bundle: LanguageManager.appBundle)
         case .privacyIntrusion:
-            return "プライベート、ちょっと踏み込みすぎな質問が混ざってます。"
+            return String(localized: "プライベート、ちょっと踏み込みすぎな質問が混ざってます。", bundle: LanguageManager.appBundle)
         case .groupExclusion:
-            return "「あいつは入れない」みたいな、ハブり寄りの言い方かも。"
+            return String(localized: "「あいつは入れない」みたいな、ハブり寄りの言い方かも。", bundle: LanguageManager.appBundle)
         case .roleStereotype:
-            return "「女だから」「男なら」みたいな、役割押しつけが入ってます。"
+            return String(localized: "「女だから」「男なら」みたいな、役割押しつけが入ってます。", bundle: LanguageManager.appBundle)
         case .alcoholCoercion:
-            return "「飲もうよ」「飲まないの？」が、ちょっと強引めかも。"
+            return String(localized: "「飲もうよ」「飲まないの？」が、ちょっと強引めかも。", bundle: LanguageManager.appBundle)
         case .customerAggression:
-            return "客・取引先の立場で押してくる、強気めな出方。"
+            return String(localized: "客・取引先の立場で押してくる、強気めな出方。", bundle: LanguageManager.appBundle)
         case .maternityPenalty:
-            return "妊娠・育児・介護を理由に、ちょっと冷たいムードが出てます。"
+            return String(localized: "妊娠・育児・介護を理由に、ちょっと冷たいムードが出てます。", bundle: LanguageManager.appBundle)
         case .academicPower:
-            return "成績・推薦・卒業の話で、上から効かせる感じが出てます。"
+            return String(localized: "成績・推薦・卒業の話で、上から効かせる感じが出てます。", bundle: LanguageManager.appBundle)
         }
     }
 }

@@ -31,6 +31,19 @@ enum PostTheme: String, CaseIterable, Identifiable {
     static func from(label: String) -> PostTheme? {
         return allCases.first { $0.label == label }
     }
+
+    /// UI 表示用のローカライズ済みテーマ名。`label` は Firestore の `themes` 配列に
+    /// 保存・クエリされる安定キーなので翻訳せず、表示だけこちらを使う。
+    var displayName: String {
+        switch self {
+        case .power:    return String(localized: "パワハラ", bundle: LanguageManager.appBundle)
+        case .sexual:   return String(localized: "セクハラ", bundle: LanguageManager.appBundle)
+        case .moral:    return String(localized: "モラハラ", bundle: LanguageManager.appBundle)
+        case .customer: return String(localized: "カスハラ", bundle: LanguageManager.appBundle)
+        case .other:    return String(localized: "その他", bundle: LanguageManager.appBundle)
+        case .consult:  return String(localized: "ぶっちゃけ相談", bundle: LanguageManager.appBundle)
+        }
+    }
 }
 
 // MARK: - Draft model (internal state container)
@@ -383,7 +396,7 @@ struct BoardComposeViewV2: View {
                     .frame(width: 36, height: 36)
             }
         }
-        .accessibilityLabel("下書きメニュー")
+        .accessibilityLabel(Text(String(localized: "下書きメニュー", bundle: LanguageManager.appBundle)))
     }
 
     private func saveDraft() {
@@ -510,7 +523,7 @@ struct BoardComposeViewV2: View {
             HStack(spacing: 5) {
                 Image(systemName: "bubble.left.and.bubble.right")
                     .font(.system(size: 12, weight: .semibold))
-                Text(selectedCommunityRoom?.title ?? "相談部屋")
+                Text(selectedCommunityRoom?.title ?? String(localized: "相談部屋", bundle: LanguageManager.appBundle))
                     .font(MeloFonts.zenMaruMedium(12))
                     .lineLimit(1)
                 Image(systemName: "chevron.down")
@@ -826,7 +839,7 @@ struct BoardComposeViewV2: View {
         HStack(spacing: 5) {
             if !selected.isEmpty {
                 ForEach(selected.prefix(3)) { theme in
-                    themeChip(theme.label, filled: isPrimaryTheme(theme))
+                    themeChip(theme.displayName, filled: isPrimaryTheme(theme))
                 }
             }
         }
@@ -1379,7 +1392,7 @@ struct BoardComposeViewV2: View {
                                     draft.themes.insert(theme)
                                 }
                             } label: {
-                                Text(theme.label)
+                                Text(theme.displayName)
                                     .font(MeloFonts.zenMaruMedium(14))
                                     .foregroundColor(isSelected ? MeloColors.Dark.onAccent : MeloColors.Dark.textPrimary)
                                     .padding(.horizontal, 16)

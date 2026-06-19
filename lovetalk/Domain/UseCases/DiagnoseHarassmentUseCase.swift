@@ -187,9 +187,16 @@ struct DiagnoseHarassmentUseCase: Sendable {
                 }
                 return speakerDecision.primary.shortName
             }()
-            let oneLine = topFactors.isEmpty
-                ? "目立ったヤバ要素は検出されず。今のところ平和ライン。"
-                : "\(categoryLabel)寄り。主な持ち味は「\(topFactors.prefix(2).map { $0.factor.displayName }.joined(separator: "」と「"))」。"
+            let oneLine: String
+            if topFactors.isEmpty {
+                oneLine = String(localized: "目立ったヤバ要素は検出されず。今のところ平和ライン。", bundle: LanguageManager.appBundle)
+            } else {
+                let names = topFactors.prefix(2).map { $0.factor.displayName }
+                let flavors = names.count >= 2
+                    ? String(format: String(localized: "「%1$@」と「%2$@」", bundle: LanguageManager.appBundle), names[0], names[1])
+                    : String(format: String(localized: "「%1$@」", bundle: LanguageManager.appBundle), names[0])
+                oneLine = String(format: String(localized: "%1$@寄り。主な持ち味は%2$@。", bundle: LanguageManager.appBundle), categoryLabel, flavors)
+            }
 
             let signatures = buildSignaturePhrases(detections: dets)
 

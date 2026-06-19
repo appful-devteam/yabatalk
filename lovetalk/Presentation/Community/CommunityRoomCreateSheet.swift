@@ -49,7 +49,7 @@ struct CommunityRoomCreateSheet: View {
                     iconImagePicker
 
                     // タイトル
-                    labeledField(label: "タイトル") {
+                    labeledField(label: String(localized: "タイトル", bundle: LanguageManager.appBundle)) {
                         TextField("例: 失恋した人、集まれ", text: $title)
                             .font(MeloFonts.zenMaruMedium(16))
                             .foregroundColor(CreateSheetPalette.textMain)
@@ -68,7 +68,7 @@ struct CommunityRoomCreateSheet: View {
                     }
 
                     // 説明文
-                    labeledField(label: "説明文") {
+                    labeledField(label: String(localized: "説明文", bundle: LanguageManager.appBundle)) {
                         ZStack(alignment: .topLeading) {
                             if subtitle.isEmpty {
                                 Text("どんな話題・雰囲気の部屋かを書きましょう")

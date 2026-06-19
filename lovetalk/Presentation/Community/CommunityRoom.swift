@@ -94,7 +94,7 @@ enum CommunityThemeRoom {
     static func makeRoom(for theme: PostTheme) -> CommunityRoom {
         CommunityRoom(
             id: idPrefix + theme.rawValue,
-            title: theme.label,
+            title: theme.displayName,
             subtitle: theme.subtitle,
             participantCount: 0,
             imageURL: nil,
@@ -113,12 +113,12 @@ private extension PostTheme {
     /// 部屋詳細・カードに表示するサブタイトル文 (テーマ別)。
     var subtitle: String {
         switch self {
-        case .power:    return "職場の上下関係・威圧的な言動の悩みを話そう"
-        case .sexual:   return "性的な言動・不快な接触の相談はこちら"
-        case .moral:    return "言葉や態度による精神的な攻撃について"
-        case .customer: return "客からの理不尽な要求・暴言の相談に"
-        case .other:    return "アカハラ・マタハラなど、その他の悩みを"
-        case .consult:  return "カテゴリ問わず、本音で相談しよう"
+        case .power:    return String(localized: "職場の上下関係・威圧的な言動の悩みを話そう", bundle: LanguageManager.appBundle)
+        case .sexual:   return String(localized: "性的な言動・不快な接触の相談はこちら", bundle: LanguageManager.appBundle)
+        case .moral:    return String(localized: "言葉や態度による精神的な攻撃について", bundle: LanguageManager.appBundle)
+        case .customer: return String(localized: "客からの理不尽な要求・暴言の相談に", bundle: LanguageManager.appBundle)
+        case .other:    return String(localized: "アカハラ・マタハラなど、その他の悩みを", bundle: LanguageManager.appBundle)
+        case .consult:  return String(localized: "カテゴリ問わず、本音で相談しよう", bundle: LanguageManager.appBundle)
         }
     }
 
@@ -143,9 +143,9 @@ enum CommunityRoomTab: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .search: return "さがす"
-        case .joined: return "参加中"
-        case .created: return "作成部屋"
+        case .search: return String(localized: "さがす", bundle: LanguageManager.appBundle)
+        case .joined: return String(localized: "参加中", bundle: LanguageManager.appBundle)
+        case .created: return String(localized: "作成部屋", bundle: LanguageManager.appBundle)
         }
     }
 }

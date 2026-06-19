@@ -9,19 +9,19 @@ enum HarassmentCategory: String, Codable, CaseIterable, Sendable {
 
     var displayName: String {
         switch self {
-        case .power: return "パワハラ"
-        case .sexual: return "セクハラ"
-        case .moral: return "モラハラ"
-        case .other: return "その他ハラスメント"
+        case .power: return String(localized: "パワハラ", bundle: LanguageManager.appBundle)
+        case .sexual: return String(localized: "セクハラ", bundle: LanguageManager.appBundle)
+        case .moral: return String(localized: "モラハラ", bundle: LanguageManager.appBundle)
+        case .other: return String(localized: "その他ハラスメント", bundle: LanguageManager.appBundle)
         }
     }
 
     var shortName: String {
         switch self {
-        case .power: return "パワハラ"
-        case .sexual: return "セクハラ"
-        case .moral: return "モラハラ"
-        case .other: return "その他"
+        case .power: return String(localized: "パワハラ", bundle: LanguageManager.appBundle)
+        case .sexual: return String(localized: "セクハラ", bundle: LanguageManager.appBundle)
+        case .moral: return String(localized: "モラハラ", bundle: LanguageManager.appBundle)
+        case .other: return String(localized: "その他", bundle: LanguageManager.appBundle)
         }
     }
 
@@ -38,13 +38,13 @@ enum HarassmentCategory: String, Codable, CaseIterable, Sendable {
     var explanation: String {
         switch self {
         case .power:
-            return "立場や力関係を使って、相手を追い詰めたり評価・居場所で脅したりするタイプ。"
+            return String(localized: "立場や力関係を使って、相手を追い詰めたり評価・居場所で脅したりするタイプ。", bundle: LanguageManager.appBundle)
         case .sexual:
-            return "性的な話題・距離感の踏み込みや、恋愛と評価をくっつけて効かせるタイプ。"
+            return String(localized: "性的な話題・距離感の踏み込みや、恋愛と評価をくっつけて効かせるタイプ。", bundle: LanguageManager.appBundle)
         case .moral:
-            return "罪悪感・束縛・「気のせい」での上書きなど、心理的にじわじわ削るタイプ。"
+            return String(localized: "罪悪感・束縛・「気のせい」での上書きなど、心理的にじわじわ削るタイプ。", bundle: LanguageManager.appBundle)
         case .other:
-            return "役割の押しつけ・お酒・客の立場・プライバシー侵害など、上記に収まらない圧。"
+            return String(localized: "役割の押しつけ・お酒・客の立場・プライバシー侵害など、上記に収まらない圧。", bundle: LanguageManager.appBundle)
         }
     }
 }
@@ -62,18 +62,18 @@ enum HarassmentSubCategory: String, Codable, CaseIterable, Sendable {
 
     var displayName: String {
         switch self {
-        case .gender:    return "ジェンダーハラスメント"
-        case .academic:  return "アカデミックハラスメント"
-        case .customer:  return "カスタマーハラスメント"
-        case .alcohol:   return "アルコールハラスメント"
-        case .maternity: return "マタニティ／育児介護ハラスメント"
-        case .digital:   return "デジタルハラスメント"
-        case .privacy:   return "プライバシー侵害"
-        case .grouping:  return "集団いじめ・排除"
+        case .gender:    return String(localized: "ジェンダーハラスメント", bundle: LanguageManager.appBundle)
+        case .academic:  return String(localized: "アカデミックハラスメント", bundle: LanguageManager.appBundle)
+        case .customer:  return String(localized: "カスタマーハラスメント", bundle: LanguageManager.appBundle)
+        case .alcohol:   return String(localized: "アルコールハラスメント", bundle: LanguageManager.appBundle)
+        case .maternity: return String(localized: "マタニティ／育児介護ハラスメント", bundle: LanguageManager.appBundle)
+        case .digital:   return String(localized: "デジタルハラスメント", bundle: LanguageManager.appBundle)
+        case .privacy:   return String(localized: "プライバシー侵害", bundle: LanguageManager.appBundle)
+        case .grouping:  return String(localized: "集団いじめ・排除", bundle: LanguageManager.appBundle)
         }
     }
 
-    var trailingSuffix: String { "傾向" }
+    var trailingSuffix: String { String(localized: "傾向", bundle: LanguageManager.appBundle) }
 
     var parentCategory: HarassmentCategory { .other }
 }
@@ -98,11 +98,11 @@ enum RiskLevel: String, Codable, CaseIterable, Sendable {
 
     var displayName: String {
         switch self {
-        case .low:     return "低い"
-        case .caution: return "注意"
-        case .medium:  return "中"
-        case .high:    return "高い"
-        case .severe:  return "非常に高い"
+        case .low:     return String(localized: "低い", bundle: LanguageManager.appBundle)
+        case .caution: return String(localized: "注意", bundle: LanguageManager.appBundle)
+        case .medium:  return String(localized: "中", bundle: LanguageManager.appBundle)
+        case .high:    return String(localized: "高い", bundle: LanguageManager.appBundle)
+        case .severe:  return String(localized: "非常に高い", bundle: LanguageManager.appBundle)
         }
     }
 
@@ -110,15 +110,15 @@ enum RiskLevel: String, Codable, CaseIterable, Sendable {
     var dangerLabelCandidates: [String] {
         switch self {
         case .low:
-            return ["ほぼ平和", "ひとまず安全圏", "今のところセーフ"]
+            return [String(localized: "ほぼ平和", bundle: LanguageManager.appBundle), String(localized: "ひとまず安全圏", bundle: LanguageManager.appBundle), String(localized: "今のところセーフ", bundle: LanguageManager.appBundle)]
         case .caution:
-            return ["ちょっと怪しい", "もやっと圏内", "微圧あり"]
+            return [String(localized: "ちょっと怪しい", bundle: LanguageManager.appBundle), String(localized: "もやっと圏内", bundle: LanguageManager.appBundle), String(localized: "微圧あり", bundle: LanguageManager.appBundle)]
         case .medium:
-            return ["それなりに香る", "ちょっと焦げてる", "中辛"]
+            return [String(localized: "それなりに香る", bundle: LanguageManager.appBundle), String(localized: "ちょっと焦げてる", bundle: LanguageManager.appBundle), String(localized: "中辛", bundle: LanguageManager.appBundle)]
         case .high:
-            return ["かなり香ばしい", "燻製レベル", "明確にやばい"]
+            return [String(localized: "かなり香ばしい", bundle: LanguageManager.appBundle), String(localized: "燻製レベル", bundle: LanguageManager.appBundle), String(localized: "明確にやばい", bundle: LanguageManager.appBundle)]
         case .severe:
-            return ["笑でごまかせないレベル", "丸焦げ", "即避難案件"]
+            return [String(localized: "笑でごまかせないレベル", bundle: LanguageManager.appBundle), String(localized: "丸焦げ", bundle: LanguageManager.appBundle), String(localized: "即避難案件", bundle: LanguageManager.appBundle)]
         }
     }
 }
