@@ -5,6 +5,21 @@ import Foundation
 /// 出力は FactorDetection なので既存の集計パイプラインに合流できる。
 struct ConversationPatternAnalyzer: Sendable {
 
+    /// 言語別の検知語彙（既定は日本語）
+    let lexicon: DiagnosisLexicon
+
+    init(lexicon: DiagnosisLexicon = .japanese) {
+        self.lexicon = lexicon
+    }
+
+    private var matchOptions: String.CompareOptions {
+        lexicon.caseInsensitive ? [.regularExpression, .caseInsensitive] : [.regularExpression]
+    }
+
+    private func matches(_ pattern: String, in text: String) -> Bool {
+        text.range(of: pattern, options: matchOptions) != nil
+    }
+
     /// 会話パターン検出を実行
     func analyze(session: ChatSession) -> [FactorDetection] {
         let textMessages = session.messages.filter { $0.eventType.isTextBased }
@@ -26,34 +41,21 @@ struct ConversationPatternAnalyzer: Sendable {
 
     // MARK: - 1. 心配/感情表明 → 冷たい返し
 
-    private let worryEmotionPatterns: [String] = [
-        "大丈夫", "心配", "疲れた", "しんどい", "つらい", "辛い", "悲しい",
-        "嬉しい", "楽しみ", "怖い", "不安", "落ち込", "病んで", "泣", "寂しい",
-        "ありがと", "助かった", "嬉しかった"
-    ]
-
-    /// 「うん」「そう」「おう」などの自然な相槌は cold 扱いしない。
-    /// 明確に突き放す・茶化す返しのみ。
-    private let coldShortReplies: [String] = [
-        "別に", "知らん", "知らんがな", "知らない", "知るか",
-        "あっそ", "あっそう", "ふーん。", "へーそう",
-        "は？", "は?", "で？", "で?", "だから？", "だから?",
-        "それで？", "それで?", "どうでもいい", "勝手にして"
-    ]
-
     /// A が感情・心配を出した直後 (3 メッセージ以内) に B が短い冷たい返しをしたら検出
     private func detectColdResponseToWorry(messages: [ChatMessage]) -> [FactorDetection] {
         var out: [FactorDetection] = []
+        // 英語は短文の冷たい返しがやや長め ("not my problem" 等) なので上限を緩める
+        let coldMaxLen = lexicon.caseInsensitive ? 18 : 10
         for (i, msg) in messages.enumerated() {
-            let isEmotion = worryEmotionPatterns.contains { msg.content.contains($0) }
+            let isEmotion = lexicon.worryEmotionPatterns.contains { matches($0, in: msg.content) }
             guard isEmotion else { continue }
             let lookahead = (i + 1)..<min(i + 4, messages.count)
             for j in lookahead {
                 let follow = messages[j]
                 if follow.senderName == msg.senderName { continue }
                 let trimmed = follow.content.trimmingCharacters(in: .whitespaces)
-                guard trimmed.count <= 10 else { continue }
-                if coldShortReplies.contains(where: { trimmed.contains($0) }) {
+                guard trimmed.count <= coldMaxLen else { continue }
+                if lexicon.coldShortReplies.contains(where: { matches($0, in: trimmed) }) {
                     out.append(FactorDetection(
                         factor: .guiltManipulation,
                         messageId: follow.id,
@@ -72,23 +74,14 @@ struct ConversationPatternAnalyzer: Sendable {
 
     // MARK: - 2. 命令形バイアス（speakerごとの比率）
 
-    private let imperativeSuffixes: [String] = [
-        "して$", "してよ$", "してくれ$", "してくれない\\??$",
-        "やって$", "やれ$", "やりなさい$",
-        "頼む$", "頼んだ$", "頼みます$",
-        "送って$", "送れ$", "出して$", "出せ$",
-        "決めて$", "決めろ$",
-        "返して$", "返事して$", "答えて$"
-    ]
-
     /// 発言数 ≥ 8 の speaker について、命令形比率が 30% 以上なら検出
     private func detectImperativeBias(messages: [ChatMessage]) -> [FactorDetection] {
         var out: [FactorDetection] = []
         let bySpeaker = Dictionary(grouping: messages) { $0.senderName }
         for (_, msgs) in bySpeaker where msgs.count >= 8 {
             let imperatives = msgs.filter { msg in
-                imperativeSuffixes.contains { suffix in
-                    msg.content.range(of: suffix, options: .regularExpression) != nil
+                lexicon.imperativePatterns.contains { suffix in
+                    matches(suffix, in: msg.content)
                 }
             }
             let ratio = Double(imperatives.count) / Double(msgs.count)
@@ -181,16 +174,10 @@ struct ConversationPatternAnalyzer: Sendable {
 
     // MARK: - 5. マウント語
 
-    private let mountingPhrases: [String] = [
-        "私だったら", "俺だったら", "僕だったら", "私なら", "俺なら", "僕なら",
-        "普通は", "普通に考えて", "常識的に", "当たり前", "当然", "それぐらい",
-        "簡単に", "そんなの", "そんなことも", "そんな簡単", "そんなんで"
-    ]
-
     private func detectMountingPhrases(messages: [ChatMessage]) -> [FactorDetection] {
         var out: [FactorDetection] = []
         for msg in messages {
-            for phrase in mountingPhrases where msg.content.contains(phrase) {
+            for phrase in lexicon.mountingPhrases where matches(phrase, in: msg.content) {
                 out.append(FactorDetection(
                     factor: .dominance,
                     messageId: msg.id,

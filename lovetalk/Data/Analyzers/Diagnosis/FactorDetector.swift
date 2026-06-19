@@ -16,9 +16,17 @@ struct FactorDetector: Sendable {
     }
 
     let options: Options
+    /// 言語別の検知語彙（既定は日本語）。ChatSession の言語で切り替える。
+    let lexicon: DiagnosisLexicon
 
-    init(options: Options = Options()) {
+    init(options: Options = Options(), lexicon: DiagnosisLexicon = .japanese) {
         self.options = options
+        self.lexicon = lexicon
+    }
+
+    /// regex マッチオプション（英語のとき case-insensitive）
+    private var matchOptions: String.CompareOptions {
+        lexicon.caseInsensitive ? [.regularExpression, .caseInsensitive] : [.regularExpression]
     }
 
     /// 検出を実行する
@@ -40,7 +48,7 @@ struct FactorDetector: Sendable {
         var out: [FactorDetection] = []
         for message in messages where message.eventType.isTextBased {
             if let selfName, message.senderName == selfName { continue }
-            for rule in FactorRuleDictionary.rules {
+            for rule in lexicon.rules {
                 guard let range = firstMatch(rule.pattern, in: message.content) else { continue }
                 let context = surroundingContext(text: message.content, around: range)
                 // 1. suppress: モノ語 / 3 人称グチ / rule 固有 suppress
@@ -84,7 +92,7 @@ struct FactorDetector: Sendable {
         }
         // 個人攻撃系 factor: 3 人称マーカーが出てきたら抑制 (「あの上司使えない」)
         if Self.personalAttackFactors.contains(rule.factor),
-           matchesAny(SubjectMarkers.thirdPerson, in: context) {
+           matchesAny(lexicon.thirdPerson, in: context) {
             return true
         }
         return false
@@ -96,12 +104,12 @@ struct FactorDetector: Sendable {
 
         // amplify: rule 固有 + 2 人称 direct address
         let amplified = matchesAny(rule.amplifyIfNearby, in: context)
-            || matchesAny(SubjectMarkers.directAddress, in: context)
+            || matchesAny(lexicon.directAddress, in: context)
         if amplified { current = current.upgrade() }
 
         // soften: rule 固有 + 一般的 soft markers
         let softened = matchesAny(rule.softenIfNearby, in: context)
-            || matchesAny(SubjectMarkers.softMarkers, in: context)
+            || matchesAny(lexicon.softMarkers, in: context)
         if softened { current = current.downgrade() }
 
         return current
@@ -109,7 +117,7 @@ struct FactorDetector: Sendable {
 
     private func matchesAny(_ patterns: [String], in text: String) -> Bool {
         for p in patterns {
-            if text.range(of: p, options: .regularExpression) != nil { return true }
+            if text.range(of: p, options: matchOptions) != nil { return true }
         }
         return false
     }
@@ -129,7 +137,7 @@ struct FactorDetector: Sendable {
 
         for (index, msg) in textMessages.enumerated() {
             // Stop は誰のメッセージでも検出対象（自分側だけに限定しない）
-            guard stopPatterns.contains(where: { msg.content.contains($0) }) else { continue }
+            guard matchesAny(lexicon.stopPatterns, in: msg.content) else { continue }
             let stopperName = msg.senderName
 
             // 直後 5 メッセージ以内に、stop した相手以外から「継続」発言があれば検出
@@ -156,42 +164,14 @@ struct FactorDetector: Sendable {
         return out
     }
 
-    private let stopPatterns: [String] = [
-        "やめて", "やめてください", "もうやめて", "やめろ",
-        "嫌だ", "嫌です", "嫌だよ", "嫌なんだけど",
-        "無理", "無理だよ", "無理なんだけど",
-        "それはちょっと", "ちょっと困る",
-        "やめてほしい", "やめて欲しい",
-        "本気で嫌", "マジで嫌"
-    ]
-
     /// 拒否後に続く「継続行為」パターン
     private func matchedContinuationPattern(in text: String) -> String? {
-        for pattern in continuationPatterns {
-            if text.range(of: pattern, options: .regularExpression) != nil {
+        for pattern in lexicon.continuationPatterns {
+            if text.range(of: pattern, options: matchOptions) != nil {
                 return pattern
             }
         }
         return nil
-    }
-
-    private var continuationPatterns: [String] {
-        [
-            // 冗談シールド / 責任回避
-            "冗談じゃん", "ノリ悪い", "本気にすんな", "いじりじゃん",
-            "本当は嬉しい", "そういうとこ(めんどい|うざ)",
-            "なんで無理", "このくらいで(怒|キレ)", "傷つく方がおかしい",
-            "空気読めない",
-            // 圧の継続
-            "逃げるな", "好きならできる", "本当に好きなら",
-            "友達なら(普通)?やる", "親友なら",
-            // セクハラ系継続
-            "ホテル", "添い寝", "2人(きり|だけ)?で", "ふたりきり", "色気",
-            // 監視系継続
-            "今どこ", "誰といる", "写真送", "位置情報", "証拠",
-            // 評価系継続
-            "評価", "シフト", "推薦"
-        ]
     }
 
     // MARK: - Persistent Repetition
@@ -276,12 +256,11 @@ struct FactorDetector: Sendable {
     /// ChatSession の participants が 2 人で、参加者間の親密関連語彙が頻出する場合、親密関係の baseline を上げる
     private func detectIntimateRelationshipFromMeta(session: ChatSession) -> [FactorDetection] {
         guard session.isOneOnOne else { return [] }
-        let intimateKeywords = ["好き", "愛してる", "彼女", "彼氏", "付き合", "デート", "結婚", "うちら"]
         let textMessages = session.messages.filter { $0.eventType.isTextBased }
         let totalText = textMessages.count
         guard totalText > 0 else { return [] }
         let intimateHits = textMessages.filter { msg in
-            intimateKeywords.contains { msg.content.contains($0) }
+            matchesAny(lexicon.intimateKeywords, in: msg.content)
         }
         // 5% 以上のメッセージに親密語彙があれば 1on1 親密関係としてマーク
         guard Double(intimateHits.count) / Double(totalText) >= 0.05, let head = intimateHits.first else {
@@ -303,7 +282,7 @@ struct FactorDetector: Sendable {
     // MARK: - Regex helpers
 
     private func firstMatch(_ pattern: String, in text: String) -> Range<String.Index>? {
-        text.range(of: pattern, options: .regularExpression)
+        text.range(of: pattern, options: matchOptions)
     }
 
     private func extractContext(_ text: String, around range: Range<String.Index>, padding: Int) -> String {

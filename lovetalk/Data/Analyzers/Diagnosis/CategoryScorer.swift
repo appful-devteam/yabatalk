@@ -3,6 +3,13 @@ import Foundation
 /// factor スコアから 4 分類スコアと総合スコアを算出
 struct CategoryScorer: Sendable {
 
+    /// 言語別の検知語彙（既定は日本語）。severePatterns の言語切替に使う。
+    let lexicon: DiagnosisLexicon
+
+    init(lexicon: DiagnosisLexicon = .japanese) {
+        self.lexicon = lexicon
+    }
+
     /// 分類スコア算出（仕様 §4-1）
     func categoryScores(factors: [FactorScore]) -> [HarassmentCategory: Int] {
         let lookup = Dictionary(uniqueKeysWithValues: factors.map { ($0.factor, $0.score) })
@@ -93,9 +100,9 @@ struct CategoryScorer: Sendable {
         score += min(20, boosts * 4)
 
         // 「誰にも言うな」「スクショばらまく」「自殺・自傷を使った脅し」が混入していたら +12
-        let severePatterns = ["誰にも言うな", "ばらまく", "死ぬ", "自殺", "切り刻", "(消す|◯す)ぞ"]
+        let severeOptions: String.CompareOptions = lexicon.caseInsensitive ? [.regularExpression, .caseInsensitive] : [.regularExpression]
         let allEvidence = factors.flatMap(\.detections).map(\.evidence).joined(separator: "\n")
-        if severePatterns.contains(where: { allEvidence.range(of: $0, options: .regularExpression) != nil }) {
+        if lexicon.severePatterns.contains(where: { allEvidence.range(of: $0, options: severeOptions) != nil }) {
             score += 12
         }
 

@@ -18,11 +18,13 @@ struct DiagnoseHarassmentUseCase: Sendable {
     /// 診断を実行
     func execute(session: ChatSession) -> DiagnosisResult {
         let relationship = session.effectiveRelationship
+        // トーク言語で検知辞書を選択（英語チャットは英語ルールで解析）
+        let lexicon = DiagnosisLexicon.forLanguage(session.detectedLanguage)
 
         // 1. 構成要素検出（パターン + 会話構造）
-        let detector = FactorDetector(options: config.detectorOptions)
+        let detector = FactorDetector(options: config.detectorOptions, lexicon: lexicon)
         var detections = detector.detect(session: session)
-        let patternAnalyzer = ConversationPatternAnalyzer()
+        let patternAnalyzer = ConversationPatternAnalyzer(lexicon: lexicon)
         detections.append(contentsOf: patternAnalyzer.analyze(session: session))
 
         // 2. factor 別スコア（会話全体、関係性 multiplier 適用）
@@ -30,7 +32,7 @@ struct DiagnoseHarassmentUseCase: Sendable {
         let factorScores = factorScorer.score(detections: detections, relationship: relationship)
 
         // 3. 4 分類スコア（factor が補正済みなのでカテゴリも自動補正）
-        let categoryScorer = CategoryScorer()
+        let categoryScorer = CategoryScorer(lexicon: lexicon)
         let categoryScores = categoryScorer.categoryScores(factors: factorScores)
 
         // 4. 主分類・補助分類（関係性で優先ルール変動）

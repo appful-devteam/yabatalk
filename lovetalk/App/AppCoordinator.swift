@@ -628,14 +628,44 @@ enum YabatalkDebug {
         "7:00\t田中課長\tあと、この前の飲み会の写真、SNSに晒してやろうか笑"
     ].joined(separator: "\n")
 
+    /// 英語サンプル（-yt_seed_lang en で使用）。英語ハラスメント検知エンジンの動作確認用。
+    /// タブ区切り / 英語日付 (Thursday) / 12h 時刻 (PM) — LineChatParser の英語対応に準拠。
+    static let sampleChatEN: String = [
+        "[LINE] Chat history with Mr. Tanaka",
+        "2026.01.15 Thursday",
+        "9:30 PM\tMr. Tanaka\tthe report isn't done? you're useless, can't even do this right",
+        "9:31 PM\tMr. Tanaka\thonestly you're so dumb, how are you this slow",
+        "9:35 PM\tMe\tsorry, I'll finish it by tomorrow morning for sure",
+        "9:36 PM\tMr. Tanaka\tno. I need it tonight. no isn't an option",
+        "9:40 PM\tMr. Tanaka\tif you can't do it I'll lower your review and cut your hours",
+        "10:50 PM\tMr. Tanaka\they, you're ignoring me? answer me",
+        "11:30 PM\tMr. Tanaka\tdoesn't matter if it's late. where are you right now",
+        "11:31 PM\tMr. Tanaka\tif you don't reply you'll regret it lol",
+        "2026.01.16 Friday",
+        "12:15 AM\tMr. Tanaka\tnobody wants you here, you're a waste of space",
+        "12:20 AM\tMe\tthat's really harsh, this is too much for me",
+        "12:22 AM\tMr. Tanaka\tyou're overreacting. stop being so dramatic, that never happened",
+        "12:23 AM\tMr. Tanaka\tdon't tell anyone about this. I know where you live",
+        "7:00 AM\tMr. Tanaka\talso I'll expose those photos from the party lol",
+    ].joined(separator: "\n")
+
+    /// -yt_seed_lang en でサンプルを英語に切替（既定は日本語）
+    static var seedChatIsEnglish: Bool {
+        (UserDefaults.standard.string(forKey: "yt_seed_lang") ?? "ja").lowercased().hasPrefix("en")
+    }
+
     @MainActor
     static func seedIfNeeded(_ coordinator: AppCoordinator) {
         guard isSeedingDiagnosis else { return }
         guard coordinator.path.isEmpty else { return }  // 二重投入を防ぐ
         do {
-            var session = try LineChatParser().parse(sampleChat, title: "田中課長")
+            let isEN = seedChatIsEnglish
+            var session = try LineChatParser().parse(
+                isEN ? sampleChatEN : sampleChat,
+                title: isEN ? "Mr. Tanaka" : "田中課長"
+            )
             session.relationship = seedRelationship
-            session.estimatedSelfName = "自分"
+            session.estimatedSelfName = isEN ? "Me" : "自分"
             let result = DiagnoseHarassmentUseCase().execute(session: session)
             coordinator.selectedTab = .diagnose
             coordinator.navigateToDiagnosis(result: result, session: session)
