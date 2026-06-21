@@ -42,3 +42,34 @@
 
 ## Compliance: PASS 8 / WARN 3 (UGC利用規約のdescription明示, AdMobのApp Privacy宣言, ATT)
 ## App Privacy / ATT は別途 ASC UI 手動（drafter 出力の手順参照）
+
+---
+---
+
+# en-US 追加ローカライズ草案（2026-06-19）
+
+- primaryLocale: ja（**変更しない**）／追加対象: **en-US**
+- editableVersionId 1.2 = **READY_FOR_SALE（ライブ）** → version レベル新規ロケール追加は 409 ロックの可能性大。
+  その場合 ASC で新バージョン（1.3）を Prepare 状態にしてから version ローカライズを投入する必要あり。
+
+## App Info (en-US)
+| field | 値 | 文字数 |
+|---|---|---|
+| name | `Harassmentalk: Chat Check` | 25/30 |
+| subtitle | `Spot harassment in your chats` | 29/30 |
+| privacyPolicyUrl | `https://darkmerotalk.com/privacy` | — |
+
+## Version Localization (en-US)
+- keywords (94/100, カンマ後スペースなし):
+  `harassment,workplace,toxic,abuse,gaslighting,power harassment,chat analysis,LINE,relationship,toxic boss`
+- promotionalText (150/170):
+  `Paste your LINE chat history and instantly see power, moral, and sexual harassment patterns broken down by type. Works for English and Japanese chats.`
+- supportUrl / marketingUrl: `https://darkmerotalk.com`
+- whatsNew: （空）
+- description: ja 完全ミラー（hook→機能→18要素の仕組み(法的断定でない)→AI相談(Google Gemini明示/同意制)→掲示板(通報/ブロック/運営確認/無料は広告)→Premium(価格/自動更新/解約)→アカウント削除導線→サポート→EULA/Privacy フッター）+ 英語チャット対応を明記。本文は draft-approved.json に格納。
+
+## Categories（変更なし）: primary UTILITIES / secondary LIFESTYLE
+
+## Compliance
+- ✅ EULA+Privacy フッター(privacyPolicyUrl一致) / サブスク必須記載 / 法的・医療断定回避 / UGC通報ブロック運営確認 / AI送信先Gemini明示
+- ⚠️ 提出前(別件): darkmerotalk.com の support/privacy 200確認(4.5) / アカウント削除導線 / 年齢17+ / 審査ノートにUGCモデレーション

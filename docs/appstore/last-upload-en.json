@@ -1,0 +1,22 @@
+{
+  "appInfoId": "e7375cea-9561-4e90-aa9f-6e06ddc7bc3f",
+  "editableVersionId": "85180230-aafc-4274-99db-1bd46550898b",
+  "appInfoLocalizations": {
+    "en-US": {
+      "name": "Harassmentalk: Chat Check",
+      "subtitle": "Spot harassment in your chats",
+      "privacyPolicyUrl": "https://darkmerotalk.com/privacy",
+      "id": "5c865d57-4f80-40ee-8235-339c3756d149"
+    }
+  },
+  "versionLocalizations": {
+    "en-US": {
+      "description": "That chat... kind of off, right? Just paste it in.\n\nHarassmentalk reads your LINE chat history (text export) and analyzes it for power, sexual, moral, and other harassment patterns. When something feels off and you think \"wait, is this harassment?\", run it through the toxicity check first.\n\nWorks for both English and Japanese chat logs.\n\n■ What you can do\n\n- Auto-diagnose by simply importing your LINE chat history\n- Score across 4 major categories: power / sexual / moral / other harassment\n- See the \"toxicity\" as a number and a type name (processed on-device — your chat text is never sent to a server)\n- Share your experience anonymously on the community board, and ask for honest advice\n- Optional, consent-based AI consultation: talk through the parts that bother you with an AI\n\n■ How the analysis works\n\nIt rule-detects 18 structural factors (position of authority, personal attacks, boundary violations, gaslighting, and more), then presents a score per category along with quoted evidence. Results are an analysis of text structure — not a legal judgment, and not a substitute for professional advice.\n\n■ About the AI consultation (optional)\n\nIf you use the consultation feature, part of your chat is sent to Google Gemini (Google LLC). A consent screen appears before anything is sent. If you decline, you can still use the diagnosis without any AI features.\n\n■ Community board (user-generated content)\n\nPost and share harassment experiences and questions on an anonymous board. Inappropriate posts can be handled via report and block; reported content is reviewed by the operator and removed in accordance with the Terms of Use. The free plan shows ads.\n\n■ Premium subscription\n\nDiagnosis is available on the free plan. Premium plans add unlimited diagnoses, detailed data, a higher AI-consultation limit, and ad removal.\n\nHarassmentalk Premium … ¥500/week · ¥980/month · ¥5,000/year\nHarassmentalk Premium+ … ¥980/week · ¥1,980/month · ¥12,800/year\n\n- Payment is charged to your Apple ID at confirmation of purchase.\n- Subscriptions auto-renew at the same price unless cancelled at least 24 hours before the end of the period.\n- Cancel anytime from Settings > Apple ID > Subscriptions.\n\n■ Account and diagnosis data\n\nYour diagnosis history is stored only on your device. If you use the board, an anonymous account is created automatically. You can delete your account and all data from Settings > Delete Account.\n\n■ Support\n\nFor questions or requests, please contact us via the support page below.\nhttps://darkmerotalk.com\n\nEULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/\nPrivacy Policy: https://darkmerotalk.com/privacy",
+      "keywords": "harassment,workplace,toxic,abuse,gaslighting,power harassment,chat analysis,LINE,toxic boss",
+      "promotionalText": "Paste your LINE chat history and instantly see power, moral, and sexual harassment patterns broken down by type. Works for English and Japanese chats.",
+      "supportUrl": "https://darkmerotalk.com",
+      "marketingUrl": "https://darkmerotalk.com",
+      "id": "0e19f406-f9a3-4b67-838c-68d576461791"
+    }
+  }
+}

@@ -137,7 +137,7 @@ ci:
 
 localization:
   default: ja
-  supported: [ja]
+  supported: [ja, en-US]
 
 secrets:
   keychainService: appful.yabatalk
