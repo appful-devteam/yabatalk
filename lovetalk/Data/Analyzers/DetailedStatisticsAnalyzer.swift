@@ -432,7 +432,7 @@ final class DetailedStatisticsAnalyzer {
 
     /// 正規表現でフレーズを抽出するヘルパー
     private func extractByRegex(text: String, pattern: String) -> [String] {
-        guard let regex = try? NSRegularExpression(pattern: pattern) else { return [] }
+        guard let regex = RegexCache.shared.regex(pattern) else { return [] }
         let range = NSRange(text.startIndex..., in: text)
         return regex.matches(in: text, range: range).compactMap { match in
             Range(match.range, in: text).map { String(text[$0]) }
@@ -446,9 +446,15 @@ final class DetailedStatisticsAnalyzer {
             return []
         }
 
-        // 句読点・記号を除去してトークン化
-        let cleaned = text.lowercased()
-            .replacingOccurrences(of: "[^a-z'\\s]", with: " ", options: .regularExpression)
+        // 句読点・記号を除去してトークン化（regex はキャッシュ済みを再利用）
+        let lowered = text.lowercased()
+        let cleaned: String
+        if let regex = RegexCache.shared.regex("[^a-z'\\s]") {
+            let range = NSRange(lowered.startIndex..., in: lowered)
+            cleaned = regex.stringByReplacingMatches(in: lowered, range: range, withTemplate: " ")
+        } else {
+            cleaned = lowered
+        }
         let words = cleaned.split(separator: " ")
             .map(String.init)
             .filter { $0.count >= 1 && !$0.allSatisfy({ $0 == "'" }) }

@@ -24,11 +24,6 @@ struct FactorDetector: Sendable {
         self.lexicon = lexicon
     }
 
-    /// regex マッチオプション（英語のとき case-insensitive）
-    private var matchOptions: String.CompareOptions {
-        lexicon.caseInsensitive ? [.regularExpression, .caseInsensitive] : [.regularExpression]
-    }
-
     /// 検出を実行する
     func detect(session: ChatSession) -> [FactorDetection] {
         let selfName = options.excludeSelfSpeaker ? session.estimatedSelfName : nil
@@ -117,7 +112,7 @@ struct FactorDetector: Sendable {
 
     private func matchesAny(_ patterns: [String], in text: String) -> Bool {
         for p in patterns {
-            if text.range(of: p, options: matchOptions) != nil { return true }
+            if RegexCache.shared.matches(p, in: text, caseInsensitive: lexicon.caseInsensitive) { return true }
         }
         return false
     }
@@ -167,7 +162,7 @@ struct FactorDetector: Sendable {
     /// 拒否後に続く「継続行為」パターン
     private func matchedContinuationPattern(in text: String) -> String? {
         for pattern in lexicon.continuationPatterns {
-            if text.range(of: pattern, options: matchOptions) != nil {
+            if RegexCache.shared.matches(pattern, in: text, caseInsensitive: lexicon.caseInsensitive) {
                 return pattern
             }
         }
@@ -282,7 +277,7 @@ struct FactorDetector: Sendable {
     // MARK: - Regex helpers
 
     private func firstMatch(_ pattern: String, in text: String) -> Range<String.Index>? {
-        text.range(of: pattern, options: matchOptions)
+        RegexCache.shared.firstMatchRange(pattern, in: text, caseInsensitive: lexicon.caseInsensitive)
     }
 
     private func extractContext(_ text: String, around range: Range<String.Index>, padding: Int) -> String {

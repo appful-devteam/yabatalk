@@ -9,6 +9,20 @@ struct TypeMatcher: Sendable {
         let secondary: [HarassmentType]
     }
 
+    /// カタログが空という到達不能ケースのための安全な既定タイプ。
+    /// 通常の診断では使われない（クラッシュ回避専用のフォールバック）。
+    private static let fallbackType = HarassmentType(
+        id: "unknown",
+        emoji: "❓",
+        typeName: "判定不能",
+        primaryCategories: [.other],
+        subCategories: [],
+        structureSummary: "",
+        catchCopyTemplates: [""],
+        triggerFactors: [],
+        darkHumorAdvice: ""
+    )
+
     /// 関係性なしの後方互換 API。
     func match(
         primaryCategory: HarassmentCategory,
@@ -62,7 +76,9 @@ struct TypeMatcher: Sendable {
             .map { type in (type: type, score: profileScore(type: type, lookup: lookup)) }
             .sorted { $0.score > $1.score }
 
-        let primary = ranked.first?.type ?? pool.first ?? HarassmentTypeCatalog.all.first!
+        // 通常は ranked.first が必ず存在する。pool/all まで空になるのは実装上あり得ないが、
+        // force unwrap でクラッシュさせず defensive にフォールバックタイプを返す。
+        let primary = ranked.first?.type ?? pool.first ?? HarassmentTypeCatalog.all.first ?? Self.fallbackType
         let secondary = ranked.dropFirst().prefix(2).map(\.type).filter { $0.id != primary.id }
         return Selection(primary: primary, secondary: Array(secondary))
     }

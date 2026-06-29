@@ -100,9 +100,8 @@ struct CategoryScorer: Sendable {
         score += min(20, boosts * 4)
 
         // 「誰にも言うな」「スクショばらまく」「自殺・自傷を使った脅し」が混入していたら +12
-        let severeOptions: String.CompareOptions = lexicon.caseInsensitive ? [.regularExpression, .caseInsensitive] : [.regularExpression]
         let allEvidence = factors.flatMap(\.detections).map(\.evidence).joined(separator: "\n")
-        if lexicon.severePatterns.contains(where: { allEvidence.range(of: $0, options: severeOptions) != nil }) {
+        if lexicon.severePatterns.contains(where: { RegexCache.shared.matches($0, in: allEvidence, caseInsensitive: lexicon.caseInsensitive) }) {
             score += 12
         }
 

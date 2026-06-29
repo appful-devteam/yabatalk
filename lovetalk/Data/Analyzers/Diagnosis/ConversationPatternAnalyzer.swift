@@ -12,12 +12,8 @@ struct ConversationPatternAnalyzer: Sendable {
         self.lexicon = lexicon
     }
 
-    private var matchOptions: String.CompareOptions {
-        lexicon.caseInsensitive ? [.regularExpression, .caseInsensitive] : [.regularExpression]
-    }
-
     private func matches(_ pattern: String, in text: String) -> Bool {
-        text.range(of: pattern, options: matchOptions) != nil
+        RegexCache.shared.matches(pattern, in: text, caseInsensitive: lexicon.caseInsensitive)
     }
 
     /// 会話パターン検出を実行
@@ -207,7 +203,7 @@ struct ConversationPatternAnalyzer: Sendable {
             let trimmed = msg.content.trimmingCharacters(in: .whitespaces)
             guard trimmed.count <= 20 else { continue }
             for pattern in sarcasmPatterns {
-                if trimmed.range(of: pattern, options: .regularExpression) != nil {
+                if RegexCache.shared.matches(pattern, in: trimmed, caseInsensitive: false) {
                     out.append(FactorDetection(
                         factor: .mockingLaughter,
                         messageId: msg.id,
@@ -267,7 +263,7 @@ struct ConversationPatternAnalyzer: Sendable {
             let trimmed = msg.content.trimmingCharacters(in: .whitespaces)
             guard trimmed.count <= 15 else { continue }
             for pattern in dismissivePatterns {
-                if trimmed.range(of: pattern, options: .regularExpression) != nil {
+                if RegexCache.shared.matches(pattern, in: trimmed, caseInsensitive: false) {
                     out.append(FactorDetection(
                         factor: .guiltManipulation,
                         messageId: msg.id,

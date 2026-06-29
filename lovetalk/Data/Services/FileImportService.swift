@@ -17,49 +17,74 @@ final class FileImportService {
     // MARK: - Import Methods
 
     /// URLからファイルを読み込んでパース
+    ///
+    /// 重い I/O（ファイル読み込み）＋パースは呼び出し元（`@MainActor` の
+    /// `HomeViewModel`）のスレッドではなく `Task.detached` でメインスレッド外に
+    /// 逃がし、UI が固まらないようにする。`url`(Sendable) と上限値(Int) だけを
+    /// キャプチャし、`LineChatParser` / `MemoryPressureObserver` は detached closure
+    /// 内で生成・破棄して isolation 境界を跨がせない（Swift 6 strict concurrency 対応）。
+    /// 戻り値の `ChatSession` は値型のみで構成され暗黙的に Sendable。
     func importFile(from url: URL) async throws -> ChatSession {
-        // セキュリティスコープ付きリソースへのアクセス開始
-        // 注意: falseが返ってもアクセス可能な場合がある（サンドボックス内のファイルなど）
-        let shouldStopAccessing = url.startAccessingSecurityScopedResource()
+        let maxBytes = Constants.Analysis.maximumFileBytes
+        let maxMessages = Constants.Analysis.maximumMessagesAllowed
 
-        defer {
-            if shouldStopAccessing {
-                url.stopAccessingSecurityScopedResource()
+        return try await Task.detached(priority: .userInitiated) {
+            // セキュリティスコープ付きリソースへのアクセス開始
+            // 注意: falseが返ってもアクセス可能な場合がある（サンドボックス内のファイルなど）
+            let shouldStopAccessing = url.startAccessingSecurityScopedResource()
+            defer {
+                if shouldStopAccessing {
+                    url.stopAccessingSecurityScopedResource()
+                }
             }
-        }
 
-        // メモリ警告を監視
-        let memoryObserver = MemoryPressureObserver()
-        defer { memoryObserver.stop() }
+            // メモリ警告を監視
+            let memoryObserver = MemoryPressureObserver()
+            defer { memoryObserver.stop() }
 
-        // ファイル読み込み
-        let content: String
-        do {
-            // まずUTF-8で試行
-            content = try String(contentsOf: url, encoding: .utf8)
-        } catch {
-            // Shift-JISで再試行
+            // ファイル読み込み
+            let content: String
             do {
-                content = try String(contentsOf: url, encoding: .shiftJIS)
+                // まずUTF-8で試行
+                content = try String(contentsOf: url, encoding: .utf8)
             } catch {
-                throw FileImportError.encodingError
+                // Shift-JISで再試行
+                do {
+                    content = try String(contentsOf: url, encoding: .shiftJIS)
+                } catch {
+                    throw FileImportError.encodingError
+                }
             }
-        }
 
-        guard !memoryObserver.didReceiveWarning else {
-            throw FileImportError.outOfMemory
-        }
+            // 【入力サイズ上限ガード】巨大履歴を診断ループに流す前に弾く（OOM/フリーズ防止）
+            let byteCount = content.utf8.count
+            guard byteCount <= maxBytes else {
+                throw FileImportError.fileTooLarge(size: byteCount)
+            }
 
-        // パース
-        do {
-            let session = try parser.parse(content, title: url.lastPathComponent)
-            return session
-        } catch {
-            if memoryObserver.didReceiveWarning {
+            guard !memoryObserver.didReceiveWarning else {
                 throw FileImportError.outOfMemory
             }
-            throw FileImportError.parsingError(error.localizedDescription)
-        }
+
+            // パース（parser は closure 内で生成して Sendable 制約を回避）
+            let parser = LineChatParser()
+            let session: ChatSession
+            do {
+                session = try parser.parse(content, title: url.lastPathComponent)
+            } catch {
+                if memoryObserver.didReceiveWarning {
+                    throw FileImportError.outOfMemory
+                }
+                throw FileImportError.parsingError(error.localizedDescription)
+            }
+
+            // 【メッセージ数上限ガード】バイト数をすり抜けた異常入力への安全弁
+            guard session.totalMessageCount <= maxMessages else {
+                throw FileImportError.fileTooLarge(size: byteCount)
+            }
+
+            return session
+        }.value
     }
 
     /// 文字列からパース（デバッグ用）

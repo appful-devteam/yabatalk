@@ -27,6 +27,16 @@ enum Constants {
         /// 分析に必要な最小メッセージ数
         static let minimumMessagesRequired = 20
 
+        /// インポート可能なトーク履歴ファイルの最大バイト数（UTF-8 換算）。
+        /// これを超える巨大履歴は診断ループに流す前に弾き、OOM / フリーズを防ぐ。
+        /// 15MB。目安としてLINEのテキスト履歴では十数万メッセージ相当。
+        static let maximumFileBytes = 15 * 1024 * 1024 // 15MB
+
+        /// 解析可能な最大メッセージ数（安全弁）。
+        /// 主ガードはバイト数（maximumFileBytes）。こちらはバイト数をすり抜けた
+        /// 異常に短い行が大量にあるケースのための保険なので、やや高めに設定する。
+        static let maximumMessagesAllowed = 80_000
+
         /// 分析期間（日数）
         enum Period {
             static let week = 7

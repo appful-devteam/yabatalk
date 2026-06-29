@@ -235,7 +235,7 @@ final class LineChatParser {
         ]
 
         for pattern in patterns {
-            if let regex = try? NSRegularExpression(pattern: pattern),
+            if let regex = RegexCache.shared.regex(pattern),
                let match = regex.firstMatch(in: filename, range: NSRange(filename.startIndex..., in: filename)),
                let nameRange = Range(match.range(at: 1), in: filename) {
                 let name = String(filename[nameRange]).trimmingCharacters(in: .whitespaces)
@@ -254,7 +254,7 @@ final class LineChatParser {
         let patterns = [dateLinePattern, dateLinePatternEN]
 
         for pattern in patterns {
-            guard let regex = try? NSRegularExpression(pattern: pattern),
+            guard let regex = RegexCache.shared.regex(pattern),
                   let match = regex.firstMatch(in: line, range: NSRange(line.startIndex..., in: line)) else {
                 continue
             }
@@ -375,7 +375,7 @@ final class LineChatParser {
         var minute: Int?
 
         // 1) 24時間制: "21:30"
-        if let regex24 = try? NSRegularExpression(pattern: time24Pattern),
+        if let regex24 = RegexCache.shared.regex(time24Pattern),
            let match = regex24.firstMatch(in: trimmed, range: NSRange(trimmed.startIndex..., in: trimmed)),
            let hRange = Range(match.range(at: 1), in: trimmed),
            let mRange = Range(match.range(at: 2), in: trimmed) {
@@ -385,7 +385,7 @@ final class LineChatParser {
 
         // 2) 12時間制日本語: "午後9:30" / "午前10:00"
         if hour == nil,
-           let regex12JP = try? NSRegularExpression(pattern: time12JPPattern),
+           let regex12JP = RegexCache.shared.regex(time12JPPattern),
            let match = regex12JP.firstMatch(in: trimmed, range: NSRange(trimmed.startIndex..., in: trimmed)),
            let periodRange = Range(match.range(at: 1), in: trimmed),
            let hRange = Range(match.range(at: 2), in: trimmed),
@@ -402,7 +402,7 @@ final class LineChatParser {
 
         // 3) 12時間制英語: "9:30 PM" / "10:00 AM"
         if hour == nil,
-           let regex12EN = try? NSRegularExpression(pattern: time12ENPattern),
+           let regex12EN = RegexCache.shared.regex(time12ENPattern),
            let match = regex12EN.firstMatch(in: trimmed, range: NSRange(trimmed.startIndex..., in: trimmed)),
            let hRange = Range(match.range(at: 1), in: trimmed),
            let mRange = Range(match.range(at: 2), in: trimmed),

@@ -59,7 +59,7 @@ struct MessageTypeDetector {
         ]
 
         for pattern in patterns {
-            if let regex = try? NSRegularExpression(pattern: pattern),
+            if let regex = RegexCache.shared.regex(pattern),
                let match = regex.firstMatch(in: content, range: NSRange(content.startIndex..., in: content)) {
 
                 if match.numberOfRanges == 4 {
@@ -105,7 +105,7 @@ struct MessageTypeDetector {
             return true
         }
         // 英語版: 通話時間のみ（例: "1:04:49", "23:45"）
-        if let regex = try? NSRegularExpression(pattern: #"^\d{1,2}:\d{2}:\d{2}$"#),
+        if let regex = RegexCache.shared.regex(#"^\d{1,2}:\d{2}:\d{2}$"#),
            regex.firstMatch(in: content, range: NSRange(content.startIndex..., in: content)) != nil {
             return true
         }

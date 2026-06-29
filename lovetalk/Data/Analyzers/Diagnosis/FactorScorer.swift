@@ -47,7 +47,7 @@ struct FactorScorer: Sendable {
 
     private func ruleWeight(for detection: FactorDetection) -> Double {
         // matchedPattern と一致する rule の baseWeight を引き当て、無ければ severity 既定値
-        if let rule = FactorRuleDictionary.rules.first(where: { detection.matchedPattern.range(of: $0.pattern, options: .regularExpression) != nil && $0.factor == detection.factor }) {
+        if let rule = FactorRuleDictionary.rules.first(where: { RegexCache.shared.matches($0.pattern, in: detection.matchedPattern, caseInsensitive: false) && $0.factor == detection.factor }) {
             return Double(rule.baseWeight)
         }
         switch detection.severity {
