@@ -57,6 +57,13 @@ service cloud.firestore {
         allow read: if signedIn();
         allow create, update, delete: if isUser(uid);
       }
+
+      // ブロック中リスト: 自分のブロックのみ読み書き可（全端末同期）
+      match /blockedUsers/{blockedUid} {
+        allow read: if isUser(uid);
+        allow create, delete: if isUser(uid);
+        allow update: if false;
+      }
     }
 
     // ============================================================

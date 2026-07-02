@@ -25,6 +25,7 @@ struct CommunityPostDetailSheet: View {
     @State private var isSendingReply = false
     @State private var showDeleteConfirm = false
     @State private var pendingDeleteReply: BoardReply?
+    @State private var showReportSheet = false
     @FocusState private var replyFocused: Bool
 
     private let repository = InMemoryCommunityRoomPostRepository.shared
@@ -99,6 +100,25 @@ struct CommunityPostDetailSheet: View {
             .navigationTitle(String(localized: "投稿", bundle: LanguageManager.appBundle))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                // 他人の投稿のみ通報メニューを表示
+                if !isOwnPost {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Menu {
+                            Button(role: .destructive) {
+                                showReportSheet = true
+                            } label: {
+                                Label(
+                                    String(localized: "通報する", bundle: LanguageManager.appBundle),
+                                    systemImage: "exclamationmark.triangle"
+                                )
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(MeloColors.Dark.textPrimary)
+                        }
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         dismiss()
@@ -107,6 +127,11 @@ struct CommunityPostDetailSheet: View {
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(MeloColors.Dark.textPrimary)
                     }
+                }
+            }
+            .sheet(isPresented: $showReportSheet) {
+                ReportReasonSheet { reason in
+                    Task { await reportPost(reason: reason) }
                 }
             }
             .alert(
@@ -535,6 +560,18 @@ struct CommunityPostDetailSheet: View {
                 )
             }
         }
+    }
+
+    /// コミュニティ投稿の通報。roomId + postId を reports に記録する。
+    private func reportPost(reason: String) async {
+        guard let userId = authService.currentUser?.id else { return }
+        try? await BoardFirestoreService.shared.reportCommunityPost(
+            roomId: post.roomId,
+            postId: post.id,
+            reporterId: userId,
+            reason: reason
+        )
+        HapticManager.success()
     }
 
     private func deleteReply(_ reply: BoardReply) async {
