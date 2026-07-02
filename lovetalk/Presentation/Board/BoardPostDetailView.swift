@@ -113,13 +113,10 @@ struct BoardPostDetailView: View {
                 }
             }
             .navigationBarHidden(true)
-            .alert(String(localized: "この投稿を通報しますか？", bundle: LanguageManager.appBundle), isPresented: $showReportSheet) {
-                Button(String(localized: "通報する", bundle: LanguageManager.appBundle), role: .destructive) {
-                    Task { await reportPost() }
+            .sheet(isPresented: $showReportSheet) {
+                ReportReasonSheet { reason in
+                    Task { await reportPost(reason: reason) }
                 }
-                Button(String(localized: "キャンセル", bundle: LanguageManager.appBundle), role: .cancel) {}
-            } message: {
-                Text(String(localized: "不適切な内容として報告されます", bundle: LanguageManager.appBundle))
             }
             .alert(String(localized: "この投稿を削除しますか？", bundle: LanguageManager.appBundle), isPresented: $showDeleteConfirm) {
                 Button(String(localized: "削除する", bundle: LanguageManager.appBundle), role: .destructive) {
@@ -1758,9 +1755,9 @@ struct BoardPostDetailView: View {
         isSendingReply = false
     }
 
-    private func reportPost() async {
+    private func reportPost(reason: String) async {
         guard let userId = authService.currentUser?.id else { return }
-        try? await firestoreService.reportPost(postId: post.id, reporterId: userId, reason: "inappropriate")
+        try? await firestoreService.reportPost(postId: post.id, reporterId: userId, reason: reason)
         HapticManager.success()
     }
 
@@ -2196,4 +2193,82 @@ struct BoardDiagnosisCardFull: View {
 
 #Preview {
     BoardPostDetailView(post: BoardPost.samplePosts[1])
+}
+
+// MARK: - Report Reason Sheet
+
+/// 投稿の通報理由を選択させるシート。
+/// 掲示板 (`BoardPostDetailView`) とコミュニティルーム (`CommunityPostDetailSheet`) で共用。
+/// プロバイダ責任制限法対応で、通報理由を選択肢化して `reports` コレクションに記録する。
+struct ReportReasonSheet: View {
+    /// 選択された理由コード ("defamation" 等) を返す。
+    let onReport: (String) -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    /// (表示ラベル, 理由コード)。コードは Cloud Functions (reportNotifier) と対応。
+    private let reasons: [(label: String, code: String)] = [
+        (String(localized: "名誉毀損・誹謗中傷", bundle: LanguageManager.appBundle), "defamation"),
+        (String(localized: "著作権侵害", bundle: LanguageManager.appBundle), "copyright"),
+        (String(localized: "わいせつ・性的コンテンツ", bundle: LanguageManager.appBundle), "obscene"),
+        (String(localized: "個人情報の暴露", bundle: LanguageManager.appBundle), "privacy"),
+        (String(localized: "スパム・広告", bundle: LanguageManager.appBundle), "spam"),
+        (String(localized: "その他", bundle: LanguageManager.appBundle), "other"),
+    ]
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 0) {
+                    Text(String(localized: "不適切な内容として運営に報告されます", bundle: LanguageManager.appBundle))
+                        .font(MeloFonts.zenMaruRegular(13))
+                        .foregroundColor(MeloColors.Dark.textSecondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 16)
+                        .padding(.bottom, 8)
+
+                    ForEach(reasons, id: \.code) { reason in
+                        Button {
+                            HapticManager.light()
+                            onReport(reason.code)
+                            dismiss()
+                        } label: {
+                            HStack {
+                                Text(reason.label)
+                                    .font(MeloFonts.zenMaruMedium(15))
+                                    .foregroundColor(MeloColors.Dark.textPrimary)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundColor(MeloColors.Dark.textSecondary)
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 16)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+
+                        Rectangle()
+                            .fill(MeloColors.Dark.divider)
+                            .frame(height: 0.5)
+                            .padding(.leading, 20)
+                    }
+                }
+            }
+            .background(MeloColors.Dark.bg.ignoresSafeArea())
+            .navigationTitle(String(localized: "通報理由を選択", bundle: LanguageManager.appBundle))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text(String(localized: "キャンセル", bundle: LanguageManager.appBundle))
+                            .font(MeloFonts.zenMaruMedium(15))
+                            .foregroundColor(MeloColors.Dark.accent)
+                    }
+                }
+            }
+        }
+    }
 }

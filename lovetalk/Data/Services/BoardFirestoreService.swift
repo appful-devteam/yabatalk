@@ -627,6 +627,24 @@ final class BoardFirestoreService: ObservableObject {
             "postId": postId,
             "reporterId": reporterId,
             "reason": reason,
+            "source": "board",
+            // yabatalk / darkmerotalk が同一 Firebase を共有するため送信元アプリを記録
+            // （通報メール通知 reportNotifier がアプリ区別に使う）。
+            "app": "yabatalk",
+            "createdAt": Timestamp(date: Date()),
+            "status": "pending"
+        ])
+    }
+
+    /// コミュニティルーム投稿の通報。`roomId` も記録して運営が特定できるようにする。
+    func reportCommunityPost(roomId: String, postId: String, reporterId: String, reason: String) async throws {
+        try await db.collection("reports").addDocument(data: [
+            "postId": postId,
+            "roomId": roomId,
+            "reporterId": reporterId,
+            "reason": reason,
+            "source": "community",
+            "app": "yabatalk",
             "createdAt": Timestamp(date: Date()),
             "status": "pending"
         ])
